@@ -6,7 +6,7 @@ namespace Domain.PostgreSQL.Entities
 {
     public class Registrator : Human
     {
-        public Guid AuthorityId { get; set; }
+        public string AuthorityId { get; set; }
 
         public Authority Authority { get; set; }
         public ICollection<RegistratorEncumbranceActionsHistory> RegistratorEncumbranceActions { get; set; }

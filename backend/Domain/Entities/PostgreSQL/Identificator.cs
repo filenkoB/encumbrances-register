@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.PostgreSQL.Entities
 {
     public class Identificator
     {
+        [Key]
         public string Login { get; set; }
         public string Password { get; set; }
         public Guid RefreshTokenId { get; set; }

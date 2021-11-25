@@ -12,7 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRESQL_CONNECTION_STRING": "Host=localhost;Port=5433;Database=Encumbrances_Register_DB;Username=postgres;Password=3497279088"
       }
     },
     "WebAPI": {
