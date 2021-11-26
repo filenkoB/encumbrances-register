@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Infrastructure.EF.PostgreSQL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
+using System.Reflection;
 
 namespace WebAPI
 {
