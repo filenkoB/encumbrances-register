@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "OLs2AHtaEiUbSfpr9ct3GlDCtVhRU91Jh/L3wdP4u1SRG7OqbzP54uyPzIeJGI8QNNz//9GU7MM3ovwMbYKH5g==",
+  "dgSpecHash": "cbkFp1dPb0eSJLKqRN/AkzcjMtYqzC26VCaE2656tZHPYgl7oqJe3wHJ+FWICs7sDE/W9DqPETuHGss5abIfew==",
   "success": true,
   "projectFilePath": "C:\\Users\\bogda\\encumbrances-register\\backend\\WebAPI\\WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bogda\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.12\\microsoft.entityframeworkcore.5.0.12.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.12\\microsoft.entityframeworkcore.abstractions.5.0.12.nupkg.sha512",
