@@ -12,6 +12,7 @@ namespace Domain.PostgreSQL.Entities
         public Guid AddressId { get; set; }
         public string AdditionalInfo { get; set; }
 
-        public Encumbrance Encumbrance { get; set; }
+        public Encumbrance EncumbranceToTier { get; set; }
+        public Encumbrance EncumbranceToDebtor { get; set; }
     }
 }

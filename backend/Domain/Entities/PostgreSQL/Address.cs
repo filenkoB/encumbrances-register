@@ -22,6 +22,6 @@ namespace Domain.PostgreSQL.Entities
         public District District { get; set; }
         public City City { get; set; }
         public Street Street { get; set; }
-        public ICollection<Authority> Authorities { get; set; }
+        public Authority Authority { get; set; }
     }
 }

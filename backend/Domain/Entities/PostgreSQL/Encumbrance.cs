@@ -19,10 +19,8 @@ namespace Domain.PostgreSQL.Entities
         public Guid TermsId { get; set; }
         public Guid ObjectId { get; set; }
 
-        public EncumbranceParticipant TierEncumbranceParticipant { get; set; }
-        public User TierUser { get; set; }
-        public EncumbranceParticipant DebtorEncumbranceParticipant { get; set; }
-        public User DebtorUser { get; set; }
+        public EncumbranceParticipant Tier { get; set; }
+        public EncumbranceParticipant Debtor{ get; set; }
         public BasisDocument BasisDocument { get; set; }
         public EncumbranceKind EncumbranceKind { get; set; }
         public RegistrationType RegistrationType { get; set; }

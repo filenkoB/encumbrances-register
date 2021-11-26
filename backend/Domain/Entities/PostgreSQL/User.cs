@@ -7,7 +7,7 @@ namespace Domain.PostgreSQL.Entities
     public class User : Human
     {
         public Guid TaxpayerAccountCardNumberId { get; set; }
-        public Guid? Authorityid { get; set; }
+        public string Authorityid { get; set; }
         public Guid AddressId { get; set; }
         public bool IsForeigner { get; set; }
 
