@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "sOIWlhf361TCaFgqYaCUC6FVstRcWBTfLUxfoyO2R6nMUQIDMQ6lhS6hmLSVcPsOBH9o2kISms9xBAHgtuDbew==",
+  "dgSpecHash": "rEUaJTKq+rREheDrH9K3nimsrLX8fHigDQRCY87Qax9jgYc27xJ2+yUomiX5hL+aGG8yFtj+Ef4HNykiSk+Rkw==",
   "success": true,
   "projectFilePath": "C:\\Users\\bogda\\encumbrances-register\\backend\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\bogda\\.nuget\\packages\\dnsclient\\1.4.0\\dnsclient.1.4.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.12\\microsoft.entityframeworkcore.5.0.12.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.12\\microsoft.entityframeworkcore.abstractions.5.0.12.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\5.0.12\\microsoft.entityframeworkcore.analyzers.5.0.12.nupkg.sha512",
@@ -17,12 +18,19 @@
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\5.0.0\\microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\mongodb.bson\\2.14.0\\mongodb.bson.2.14.0.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\mongodb.driver\\2.14.0\\mongodb.driver.2.14.0.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\mongodb.driver.core\\2.14.0\\mongodb.driver.core.2.14.0.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\mongodb.driver.gridfs\\2.14.0\\mongodb.driver.gridfs.2.14.0.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\mongodb.libmongocrypt\\1.3.0\\mongodb.libmongocrypt.1.3.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\npgsql\\5.0.10\\npgsql.5.0.10.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\5.0.10\\npgsql.entityframeworkcore.postgresql.5.0.10.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\sharpcompress\\0.30.1\\sharpcompress.0.30.1.nupkg.sha512",
+    "C:\\Users\\bogda\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\bogda\\.nuget\\packages\\system.diagnostics.diagnosticsource\\5.0.1\\system.diagnostics.diagnosticsource.5.0.1.nupkg.sha512",
-    "C:\\Users\\bogda\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512"
+    "C:\\Users\\bogda\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }
