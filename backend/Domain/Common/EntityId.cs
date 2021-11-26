@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Common
 {
     public class EntityId
     {
-        public Guid Id { get; set; }
+        [Key]
+        [DataType("uuid")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; } = Guid.NewGuid();
     }
 }

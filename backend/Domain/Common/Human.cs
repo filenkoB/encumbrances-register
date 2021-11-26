@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.PostgreSQL.Entities;
 using System;
 
 namespace Domain.Common
@@ -11,8 +11,8 @@ namespace Domain.Common
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
         public string Position { get; set; }
-        public Guid IdentificatorId { get; set; }
-        public Guid PassportInfoId { get; set; }
+        public string IdentificatorId { get; set; }
+        public string PassportInfoId { get; set; }
 
         public Identificator Identificator { get; set; }
         public PassportInfo PassportInfo { get; set; }
