@@ -1,0 +1,229 @@
+<template>
+  <div id="statements_page">
+    <div v-if="get_statements().length > 0">
+      <div id="statements_area" >
+        <div class="row" v-for="item in get_statements()"
+        v-bind:key="item.general_information.number.data">
+          <div :class="colour(item)">
+            <div class="col-auto mt-1">
+              <label class="col-form-label">Вихідний номер:</label>
+            </div>
+            <div class="col-1 border-end border-3 mt-1">
+              <label class="col-form-label">{{item.general_information.number.data}}</label>
+            </div>
+            <div class="col-auto mt-1">
+              <label class="col-form-label">Дата заяви:</label>
+            </div>
+            <div class="col-auto border-end border-3 mt-1">
+              <label class="col-form-label">{{item.general_information.date.data}}</label>
+            </div>
+            <div class="col-auto mt-1">
+              <label class="col-form-label">Тип заяви:</label>
+            </div>
+            <div class="col-3 mt-1">
+              <label class="col-form-label">реєстрація обтяженняя...</label>
+            </div>
+            <div class="col text-right p-1">
+              <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" :class="button(item)" v-on:click="show_statement_info(item)" >Переглянути все</button>
+                <button type="button" class="btn btn-outline-success" v-on:click="button_1()" :disabled="!item.status">Підтвертити</button>
+                <button  type="button" class="btn btn-outline-danger" v-on:click="button_2()" :disabled="!item.status">Відхилити</button>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2" v-if="item.status">
+            <card v-bind:cards="card" :success="remove_statement"/>
+          </div>
+          <div class="row mb-2" v-if="item.status">
+            <Statement :element='statement'/>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+         <div class="col-auto">
+          <label class="col-form-label">Кількісь записів:</label>
+        </div>
+        <div class="col-auto me-5">
+          <input type="number" class="form-control" style="width: 60px" v-model="pagination.max_items_count" 
+          value="pagination.max_items_count" min="1" max="7">
+        </div>
+        <nav class="col-7">
+          <ul class="pagination justify-content-center">
+            <span>
+              <li class="page-item disabled" v-if="pagination.active_page == 0"><a class="page-link">Previous</a></li>
+              <li class="page-item" v-else><a class="page-link" v-on:click="pagination_page(pagination.active_page)">Previous</a></li>
+            </span>
+            <span v-for="item in pagination.count_page" :key="item">
+              <li class="page-item ms-1 me-1 active" v-if="item == pagination.active_page+1"><a class="page-link" v-on:click="pagination_page(item)">{{item}}</a></li>
+              <li class="page-item ms-1 me-1" v-else><a class="page-link" v-on:click="pagination_page(item)">{{item}}</a></li>
+            </span>
+            <span>
+              <li class="page-item disabled" v-if="pagination.active_page+1 == pagination.count_page"><a class="page-link">Next</a></li>
+              <li class="page-item" v-else><a class="page-link" v-on:click="pagination_page(pagination.active_page+2)">Next</a></li>
+            </span> 
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div v-else class="p-5 m-5 border border-secondary rounded text-center">
+      На даний момент всі надані на ухвалення заяви, оброблені.
+    </div>
+  </div>
+</template>s
+<script>
+//import {el} from "./el"
+import Statement from '../../components/Statement.vue';
+import Card from '../../components/Card.vue';
+import { General_Information, Weightlifter_Information, Debtor_Information, Basis_Document, Encumbrance_Information, Terms} from '../../classes'
+export default {
+  name: 'App',
+  data: function () {
+    return {
+      pagination:{
+        active_page: 0,
+        max_items_count:3,
+        count_page: 2,
+      },
+      card: [
+        {
+          type: "success",
+          status: false,
+          header:"Вікно підтвердження відповідності даних.",
+          title:"title",
+          footer:"Після підтвердження даного вікна, даний запис \"Відомості про заяву\" будуть вилучені зі сторінки \"Активних заяв\".",
+        },
+        {
+          type: "danger",
+          status: false,
+          header:"Вікно відхилиння наданих даних",
+          title:"title",
+          footer:"Після підтвердження даного вікна, даний запис \"Відомості про заяву\" будуть вилучені зі сторінки \"Активних заяв\".",
+          values:["Недостовірність даних", "бла бла бла", "Інше"],
+          checked: "Інше"
+        }
+      ] ,
+      statement: null,
+      statements: [],
+    };
+  },
+  components:
+  {
+    Statement,
+    Card,
+  },
+  methods:{
+    colour(item){
+      if(item.status) return "row p-1 mb-1 border border-primary rounded";
+      return "row p-1 mb-1 border border-secondary rounded";
+    },
+    button(item){
+      if(!item.status) return "btn btn-info";
+      return "btn btn-outline-secondary";
+    },
+    getInfo(item){
+      this.statement.general_information = item.general_information;
+      this.statement.encumbrance_information = item.encumbrance_information;
+    },
+    show_statement_info(item){
+      for(let i = 0; i < this.statements.length; i++){
+        if(this.statements[i]!=item) this.statements[i].status = false;
+      }
+      this.card[0].status = false;
+      this.card[1].status = false;
+      if(item.status == false){
+        item.status = true;
+        this.getInfo(item)
+      }
+      else{
+        item.status = false;
+      }
+      for(let el in this.statement){
+          this.statement[el].status=false
+        }
+    },
+    remove_statement(item){
+      item.status = false;
+      for(let i = 0; i < this.statements.length; i++){
+        if(this.statements[i].general_information == this.statement.general_information){
+          ///відправка на сервер, з item взяти type і відповідно до типу можемо дізнатись checked - причину відхилення, якщо відхилена
+          this.statements.splice(i, 1);
+          this.statement.general_information = null;
+          break;
+        }
+      }
+    },
+    button_1(){
+      this.card[0].status = true;
+      if(this.card[1].status) this.card[1].status = false;
+    },
+    button_2(){
+      this.card[1].status = true;
+      if(this.card[0].status) this.card[0].status = false;
+    },
+    get_statements(){
+      this.pagination.count_page = Math.ceil(this.statements.length / this.pagination.max_items_count);
+      const position = this.pagination.active_page*this.pagination.max_items_count;
+      return this.statements.slice(position, position + this.pagination.max_items_count);
+    },
+    pagination_page(item){ this.pagination.active_page = item-1;}
+  },
+  created(){
+    this.statement = {
+      editing_status: false,
+      general_information: new General_Information(),
+      encumbrance_information: new Encumbrance_Information(),
+      weightlifter_information: new Weightlifter_Information(),
+      debtor_information: new Debtor_Information(),
+      document: new Basis_Document(),
+      terms: new Terms(),
+    },
+    this.statements = [
+        {
+          status: false,
+          general_information: new General_Information(1231211111),
+          encumbrance_information: new Encumbrance_Information(),
+        },
+        {
+          status: false,
+          general_information: new General_Information(23123),
+          encumbrance_information: new Encumbrance_Information(),
+        },
+        {
+          status: false,
+          general_information: new General_Information(123132),
+          encumbrance_information: new Encumbrance_Information(),
+        },
+        {
+          status: false,
+          general_information: new General_Information(231233),
+          encumbrance_information: new Encumbrance_Information(),
+        },
+        {
+          status: false,
+          general_information: new General_Information(1231211131),
+          encumbrance_information: new Encumbrance_Information(),
+        },
+        {
+          status: false,
+          general_information: new General_Information(2312343),
+          encumbrance_information: new Encumbrance_Information(),
+        },
+        {
+          status: false,
+          general_information: new General_Information(1231323),
+          encumbrance_information: new Encumbrance_Information(),
+        },
+        {
+          status: false,
+          general_information: new General_Information(2312334),
+          encumbrance_information: new Encumbrance_Information(),
+        }
+    ];
+  }
+}
+</script>
+<style>
+#statements_area{
+  min-height: 430px;
+}
+</style>
