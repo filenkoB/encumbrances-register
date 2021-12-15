@@ -23,6 +23,15 @@
           >
             Statements
           </button>
+          <button
+            type="button"
+            id="chatrooms"
+            class="btn btn-outline-light me-2"
+            v-on:click="search"
+            :disabled="authorized_user"
+          >
+            Search
+          </button>
         </div>
       </div>
     </div>
@@ -43,6 +52,9 @@ export default {
     },
     async statements() {
       this.$router.push({ name: "Statements" }).catch(() => {});
+    },
+    async search() {
+      this.$router.push({ name: "SearchInfo" }).catch(() => {});
     },
   },
 };

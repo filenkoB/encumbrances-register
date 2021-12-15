@@ -2,7 +2,7 @@
 <div>
   <div v-for="card in cards" v-bind:key="card.type">
     <div v-if="card.type=='success'">
-      <div v-show="card.status">
+      <div v-show="card.visible_status">
         <div class="card text-center">
           <div class="card-header">{{card.header}}</div>
           <div class="card-body">
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-else-if="card.type=='danger'">
-      <div v-show="card.status">
+      <div v-show="card.visible_status">
         <div class="card text-center">
           <div class="card-header">{{card.header}}</div>
           <div class="card-body">
