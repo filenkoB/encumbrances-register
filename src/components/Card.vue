@@ -2,7 +2,7 @@
 <div>
   <div v-for="card in cards" v-bind:key="card.type">
     <div v-if="card.type=='success'">
-      <div v-show="card.status">
+      <div v-show="card.visible_status">
         <div class="card text-center">
           <div class="card-header">{{card.header}}</div>
           <div class="card-body">
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-else-if="card.type=='danger'">
-      <div v-show="card.status">
+      <div v-show="card.visible_status">
         <div class="card text-center">
           <div class="card-header">{{card.header}}</div>
           <div class="card-body">
@@ -54,11 +54,11 @@ export default {
   props: ["cards", "success"],
   methods:{
     change(item) {
-      if(item.status == false){
-        item.status = true;
+      if(item.visible_status == false){
+        item.visible_status = true;
       }
       else{
-        item.status = false;
+        item.visible_status = false;
       } 
     }
   }

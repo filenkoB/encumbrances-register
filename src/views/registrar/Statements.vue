@@ -26,16 +26,16 @@
             <div class="col text-right p-1">
               <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                 <button type="button" :class="button(item)" v-on:click="show_statement_info(item)" >Переглянути все</button>
-                <button type="button" class="btn btn-outline-success" v-on:click="button_1()" :disabled="!item.status">Підтвертити</button>
-                <button  type="button" class="btn btn-outline-danger" v-on:click="button_2()" :disabled="!item.status">Відхилити</button>
+                <button type="button" class="btn btn-outline-success" v-on:click="button_1()" :disabled="!item.visible_status">Підтвертити</button>
+                <button  type="button" class="btn btn-outline-danger" v-on:click="button_2()" :disabled="!item.visible_status">Відхилити</button>
               </div>
             </div>
           </div>
-          <div class="row mb-2" v-if="item.status">
+          <div class="row mb-2" v-if="item.visible_status">
             <card v-bind:cards="card" :success="remove_statement"/>
           </div>
-          <div class="row mb-2" v-if="item.status">
-            <Statement :element='statement'/>
+          <div class="row mb-2" v-if="item.visible_status">
+            <Statement :element='statement' :editing_status='editing_status'/>
           </div>
         </div>
       </div>
@@ -74,36 +74,20 @@
 //import {el} from "./el"
 import Statement from '../../components/Statement.vue';
 import Card from '../../components/Card.vue';
-import { General_Information, Weightlifter_Information, Debtor_Information, Basis_Document, Encumbrance_Information, Terms} from '../../classes'
+import {statement, create_statements, card} from "../../data";
 export default {
   name: 'App',
   data: function () {
     return {
+      editing_status:false,
       pagination:{
         active_page: 0,
-        max_items_count:3,
-        count_page: 2,
+        max_items_count:7,
+        count_page: 0,
       },
-      card: [
-        {
-          type: "success",
-          status: false,
-          header:"Вікно підтвердження відповідності даних.",
-          title:"title",
-          footer:"Після підтвердження даного вікна, даний запис \"Відомості про заяву\" будуть вилучені зі сторінки \"Активних заяв\".",
-        },
-        {
-          type: "danger",
-          status: false,
-          header:"Вікно відхилиння наданих даних",
-          title:"title",
-          footer:"Після підтвердження даного вікна, даний запис \"Відомості про заяву\" будуть вилучені зі сторінки \"Активних заяв\".",
-          values:["Недостовірність даних", "бла бла бла", "Інше"],
-          checked: "Інше"
-        }
-      ] ,
+      card: null ,
       statement: null,
-      statements: [],
+      statements: null,
     };
   },
   components:
@@ -113,11 +97,11 @@ export default {
   },
   methods:{
     colour(item){
-      if(item.status) return "row p-1 mb-1 border border-primary rounded";
+      if(item.visible_status) return "row p-1 mb-1 border border-primary rounded";
       return "row p-1 mb-1 border border-secondary rounded";
     },
     button(item){
-      if(!item.status) return "btn btn-info";
+      if(!item.visible_status) return "btn btn-info";
       return "btn btn-outline-secondary";
     },
     getInfo(item){
@@ -126,23 +110,19 @@ export default {
     },
     show_statement_info(item){
       for(let i = 0; i < this.statements.length; i++){
-        if(this.statements[i]!=item) this.statements[i].status = false;
+        if(this.statements[i]!=item) this.statements[i].visible_status = false;
       }
-      this.card[0].status = false;
-      this.card[1].status = false;
-      if(item.status == false){
-        item.status = true;
+      this.card[0].visible_status = false;
+      this.card[1].visible_status = false;
+      if(item.visible_status == false){
+        item.visible_status = true;
         this.getInfo(item)
       }
-      else{
-        item.status = false;
-      }
-      for(let el in this.statement){
-          this.statement[el].status=false
-        }
+      else item.visible_status = false;
+      for(let el in this.statement) this.statement[el].visible_status=false
     },
     remove_statement(item){
-      item.status = false;
+      item.visible_status = false;
       for(let i = 0; i < this.statements.length; i++){
         if(this.statements[i].general_information == this.statement.general_information){
           ///відправка на сервер, з item взяти type і відповідно до типу можемо дізнатись checked - причину відхилення, якщо відхилена
@@ -153,14 +133,16 @@ export default {
       }
     },
     button_1(){
-      this.card[0].status = true;
-      if(this.card[1].status) this.card[1].status = false;
+      this.card[0].visible_status = true;
+      if(this.card[1].visible_status) this.card[1].visible_status = false;
     },
     button_2(){
-      this.card[1].status = true;
-      if(this.card[0].status) this.card[0].status = false;
+      this.card[1].visible_status = true;
+      if(this.card[0].visible_status) this.card[0].visible_status = false;
     },
     get_statements(){
+      if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
+      if (this.pagination.max_items_count > 7) this.pagination.max_items_count = 7;
       this.pagination.count_page = Math.ceil(this.statements.length / this.pagination.max_items_count);
       const position = this.pagination.active_page*this.pagination.max_items_count;
       return this.statements.slice(position, position + this.pagination.max_items_count);
@@ -168,57 +150,9 @@ export default {
     pagination_page(item){ this.pagination.active_page = item-1;}
   },
   created(){
-    this.statement = {
-      editing_status: false,
-      general_information: new General_Information(),
-      encumbrance_information: new Encumbrance_Information(),
-      weightlifter_information: new Weightlifter_Information(),
-      debtor_information: new Debtor_Information(),
-      document: new Basis_Document(),
-      terms: new Terms(),
-    },
-    this.statements = [
-        {
-          status: false,
-          general_information: new General_Information(1231211111),
-          encumbrance_information: new Encumbrance_Information(),
-        },
-        {
-          status: false,
-          general_information: new General_Information(23123),
-          encumbrance_information: new Encumbrance_Information(),
-        },
-        {
-          status: false,
-          general_information: new General_Information(123132),
-          encumbrance_information: new Encumbrance_Information(),
-        },
-        {
-          status: false,
-          general_information: new General_Information(231233),
-          encumbrance_information: new Encumbrance_Information(),
-        },
-        {
-          status: false,
-          general_information: new General_Information(1231211131),
-          encumbrance_information: new Encumbrance_Information(),
-        },
-        {
-          status: false,
-          general_information: new General_Information(2312343),
-          encumbrance_information: new Encumbrance_Information(),
-        },
-        {
-          status: false,
-          general_information: new General_Information(1231323),
-          encumbrance_information: new Encumbrance_Information(),
-        },
-        {
-          status: false,
-          general_information: new General_Information(2312334),
-          encumbrance_information: new Encumbrance_Information(),
-        }
-    ];
+    this.card = card;
+    this.statement = statement,
+    this.statements = create_statements(10);
   }
 }
 </script>
