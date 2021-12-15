@@ -81,7 +81,7 @@
               <label class="col-form-label d-inline">Індекс:</label>
             </div>
              <div class="col-auto">
-               <input type="data"class="form-control d-inline" :disabled="element.editing_status" :value="element.weightlifter_information.address.index.data">
+               <input type="data" class="form-control d-inline" :disabled="element.editing_status" :value="element.weightlifter_information.address.index.data">
             </div>
             <div class="col-auto mt-2">
               <label class="col-form-label d-inline">Область:</label>

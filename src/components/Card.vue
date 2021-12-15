@@ -54,12 +54,7 @@ export default {
   props: ["cards", "success"],
   methods:{
     change(item) {
-      if(item.status == false){
-        item.status = true;
-      }
-      else{
-        item.status = false;
-      } 
+      item.status = !item.status
     }
   }
 };

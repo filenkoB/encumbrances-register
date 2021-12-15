@@ -6,9 +6,16 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'SignIn',
     component: () => 
-      import(/* webpackChunkName: "login" */ "../views/Home.vue"),
+      import(/* webpackChunkName: "home" */ "../views/SignIn.vue"),
+  
+  },
+  {
+    path: "/registration",
+    name: "Registration",
+    component: () => 
+      import(/* webpackChunkName: "registration" */ "../views/Registration.vue"),
   
   },
   {
@@ -19,7 +26,7 @@ const routes = [
   },
   {
     path: "*",
-    redirect: "home",
+    redirect: "/",
   }
 ]
 
