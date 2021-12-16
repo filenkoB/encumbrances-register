@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     async home() {
-      this.$router.push({ name: "Home" }).catch(() => {});
+      this.$router.push({ name: "SignIn" }).catch(() => {});
     },
     async statements() {
       this.$router.push({ name: "Statements" }).catch(() => {});
