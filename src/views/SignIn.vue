@@ -44,6 +44,14 @@ export default {
   methods: {
     signIn() {
       this.wasClicked = true;
+
+      if (this.isInvalidLogin && this.isInvalidPassword) {
+        
+        // запит на перевірку логіна та пароля
+
+        // перехід на відповідну сторінку
+        
+      }
     },
     async regIn() {
       this.$router.push({ name: "Registration" }).catch(() => {});
