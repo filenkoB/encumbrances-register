@@ -32,6 +32,24 @@
           >
             Search
           </button>
+          <button
+            type="button"
+            id="chatrooms"
+            class="btn btn-outline-light me-2"
+            v-on:click="my_statements"
+            :disabled="authorized_user"
+          >
+            My Statments
+          </button>
+          <button
+            type="button"
+            id="chatrooms"
+            class="btn btn-outline-light me-2"
+            v-on:click="view_registrars"
+            :disabled="authorized_user"
+          >
+            View Registrars
+          </button>
         </div>
       </div>
     </div>
@@ -55,6 +73,12 @@ export default {
     },
     async search() {
       this.$router.push({ name: "SearchInfo" }).catch(() => {});
+    },
+    async my_statements() {
+      this.$router.push({ name: "MyStatements" }).catch(() => {});
+    },
+    async view_registrars() {
+      this.$router.push({ name: "ViewRegistrars" }).catch(() => {});
     },
   },
 };

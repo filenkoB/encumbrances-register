@@ -660,7 +660,6 @@ export default {
       }
       if(marker) this.clear_address(this.element.weightlifter_information.address.path, key);
       else this.clear_address(this.element.debtor_information.address.path, key);
-      
     },
     clear_address(item, key) {
       if(key == "country"){
@@ -697,6 +696,5 @@ export default {
       }
     }
   },
-
 }
 </script>
