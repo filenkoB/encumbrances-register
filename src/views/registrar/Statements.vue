@@ -1,7 +1,7 @@
 <template>
   <div id="statements_page">
     <div v-if="get_statements().length > 0">
-      <div id="statements_area" >
+      <div id="statements_area" >USER{{active_user}}USER
         <div class="row" v-for="item in get_statements()"
         v-bind:key="item.general_information.number.data">
           <div :class="colour(item)">
@@ -88,6 +88,7 @@ export default {
       card: null ,
       statement: null,
       statements: null,
+      active_user: null
     };
   },
   components:
@@ -150,6 +151,10 @@ export default {
     pagination_page(item){ this.pagination.active_page = item-1;}
   },
   created(){
+    this.active_user = this.$route.params.active_user;
+    if(this.active_user == null || this.active_user == undefined || this.active_user.user_status != "registrar"){
+      this.$router.push({ name: "SignIn"}).catch(() => {});
+    }
     this.card = card;
     this.statement = statement,
     this.statements = create_statements(10);

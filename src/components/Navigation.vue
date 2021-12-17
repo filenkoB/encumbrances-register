@@ -1,56 +1,48 @@
 <template>
-  <header class="p-3 bg-dark text-white">
-    <div id="nav">
-      <div class="d-flex flex-wrap justify-content-center">
-        <div class="d-flex justify-content-lg-start">
-          <button type="button" class="btn btn-outline-light me-2" disabled>
-            <i class="fa fa-user-circle-o"></i>
-            <span>{{ user_account }}</span>
+  <header class="row navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="col text-start ms-3">
+      <div class="btn-group" role="group" aria-label="Basic outlined example"
+        v-if="user != null && user.user_status == 'user'">
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="my_statements">
+          Мої заяви
+        </button>
+        <button type="button" class="btn btn-outline-light" v-on:click="search">
+          Пошук обтяження
+        </button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic outlined example"
+        v-else-if="user != null && user.user_status == 'registrar'">
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="statements">
+          Підтвердити заяви
+        </button>
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="search">
+          Пошук обтяження
+        </button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic outlined example"
+        v-else-if="user != null && user.user_status == 'admin'">
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="view_registrars">
+          Перелік Реєстраторів
+        </button>
+      </div>
+    </div>
+    <div class="col text-end me-3">
+      <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-light me-2" disabled>
+          <i class="fa fa-user-circle-o"></i>
+          <span v-if="user != null" class="ms-2">{{ user.login }}</span>
+        </button>
+        <button type="button" class="btn btn-outline-light me-2" 
+          v-on:click="sign_in" v-if="user == null">
+          <i class="fa fa-sign-in" ></i> Увійти
+        </button>
+        <button type="button" class="btn btn-outline-light me-2" 
+          v-on:click="sign_out" v-else>
+          <i class="fa fa-sign-out" ></i> Вийти
+        </button>
+        <button type="button" class="btn btn-outline-light" v-on:click="registration">
+            <i class="fa fa-rocket"></i> Зареєстуватися
           </button>
-          <button
-            type="button"
-            class="btn btn-outline-light me-2"
-            v-on:click="home"
-          >
-            <i class="fa fa-home"></i> Home
-          </button>
-          <button
-            type="button"
-            id="chatrooms"
-            class="btn btn-outline-light me-2"
-            v-on:click="statements"
-            :disabled="authorized_user"
-          >
-            Statements
-          </button>
-          <button
-            type="button"
-            id="chatrooms"
-            class="btn btn-outline-light me-2"
-            v-on:click="search"
-            :disabled="authorized_user"
-          >
-            Search
-          </button>
-          <button
-            type="button"
-            id="chatrooms"
-            class="btn btn-outline-light me-2"
-            v-on:click="my_statements"
-            :disabled="authorized_user"
-          >
-            My Statments
-          </button>
-          <button
-            type="button"
-            id="chatrooms"
-            class="btn btn-outline-light me-2"
-            v-on:click="view_registrars"
-            :disabled="authorized_user"
-          >
-            View Registrars
-          </button>
-        </div>
       </div>
     </div>
   </header>
@@ -58,27 +50,31 @@
 
 <script>
 export default {
-  data() {
-    return {
-      authorized_user: false,
-      user_account: "registrar",
-    };
-  },
+  props:["user", "SignOut"],
   methods: {
-    async home() {
+    async sign_in() {
+      this.SignOut();
+      this.$router.push({ name: "SignIn"}).catch(() => {});
+    },
+    async sign_out() {
+      this.SignOut();
       this.$router.push({ name: "SignIn" }).catch(() => {});
     },
+    async registration(){
+      this.SignOut();
+      this.$router.push({ name: "Registration" }).catch(() => {});
+    },
     async statements() {
-      this.$router.push({ name: "Statements" }).catch(() => {});
+      this.$router.push({ name: "Statements", params: {active_user: this.user}}).catch(() => {});
     },
     async search() {
-      this.$router.push({ name: "SearchInfo" }).catch(() => {});
+      this.$router.push({ name: "SearchInfo", params: {active_user: this.user}}).catch(() => {});
     },
     async my_statements() {
-      this.$router.push({ name: "MyStatements" }).catch(() => {});
+      this.$router.push({ name: "MyStatements", params: {active_user: this.user}}).catch(() => {});
     },
     async view_registrars() {
-      this.$router.push({ name: "ViewRegistrars" }).catch(() => {});
+      this.$router.push({ name: "ViewRegistrars", params: {active_user: this.user}}).catch(() => {});
     },
   },
 };

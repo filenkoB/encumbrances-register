@@ -73,7 +73,8 @@ export default {
         count_page: 0,
       },
       date: null,
-      statements:null,
+      statements: null,
+      active_user: null
     };
   },
   components:{},
@@ -92,6 +93,10 @@ export default {
     },
   },
   created(){
+    this.active_user = this.$route.params.active_user;
+    if(this.active_user == null || this.active_user == undefined || this.active_user.user_status != "user"){
+      this.$router.push({ name: "SignIn"}).catch(() => {});
+    }
     let today = new Date();
     this.date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+'  '+today.getHours() + ":" + today.getMinutes();
     this.statements = [
