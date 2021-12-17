@@ -53,16 +53,14 @@ namespace Infrastructure
         private static void AddPostgresDBContext(this IServiceCollection services)
         {
             services.AddDbContext<EncumbrancesRegisterDbContext>(options =>
-                options.UseNpgsql(
-                    "Host=localhost;Port=5432;Database=Encumbrances_Register_DB;Username=postgres;Password=3497279088"
-                )
+                options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION_STRING"))
             );
         }
 
         private static void AddDapper(this IServiceCollection services)
         {
             services.AddTransient<PostgresConnectionFactory>(factory =>
-                new PostgresConnectionFactory("Server=localhost;Database=Encumbrances_Register_DB;User Id=postgres;Password=3497279088;")
+                new PostgresConnectionFactory(Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION_STRING"))
             );
         }
     }
