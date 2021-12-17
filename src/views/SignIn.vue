@@ -1,5 +1,5 @@
 <template>
-  <form class="row">
+  <form class="row" @submit.prevent="signIn">
     <div class="col"></div>
     <div class="col">
       <div class="row mb-5 text-center" style="margin-top: 100px">
@@ -23,13 +23,13 @@
         <div class="col-10">
           <input type="password" :class="{'is-invalid': isInvalidPassword}" v-model="password" class="form-control" id="floatingPassword"/>
           <div class="invalid-feedback">
-            Помилка! Пусте поле паролю!
+            Пусте поле паролю!
           </div>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col">
-          <button class="w-100 btn btn-primary" @click="signIn" type="button">Увійти</button>
+          <button class="w-100 btn btn-primary" type="submit">Увійти</button>
         </div>
         <div class="col">
           <button class="w-100 btn btn-outline-dark" @click="regIn" type="button">Реєстрація</button>
