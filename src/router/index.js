@@ -21,14 +21,30 @@ const routes = [
   {
     path: "/statements",
     name: "Statements",
+    meta: { auth: true },
     component: () =>
       import(/* webpackChunkName: "chats" */ "../views/registrar/Statements.vue"),
   },
   {
     path: "/searchinfo",
     name: "SearchInfo",
+    meta: { auth: true },
     component: () =>
       import(/* webpackChunkName: "search info" */ "../views/SearchInfo.vue"),
+  },
+  {
+    path: "/mystatements",
+    name: "MyStatements",
+    meta: { auth: true },
+    component: () =>
+      import(/* webpackChunkName: "search info" */ "../views/user/MyStatements.vue"),
+  },
+  {
+    path: "/viewregistrars",
+    name: "ViewRegistrars",
+    meta: { auth: true },
+    component: () =>
+      import(/* webpackChunkName: "search info" */ "../views/admin/ViewRegistrars.vue"),
   },
   {
     path: "*",
