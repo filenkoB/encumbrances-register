@@ -2,14 +2,14 @@
   <form v-if="registration" class="position-absolute top-50 start-50 translate-middle">
     <div class="row">
       <div class="form-floating">
-        <input type="text" v-model="firstName" pattern="[А-ЯІЇЄ][а-яіїє]+" class="form-control" required placeholder=" " />
-        <label>Ім'я</label>
+        <input type="text" v-model="lastName" pattern="[А-ЯІЇЄ][а-яіїє]+(-[А-ЯІЇЄ][а-яіїє]+)*" class="form-control" required placeholder=" " />
+        <label>Прізвище</label>
       </div>
     </div>
     <div class="row mt-3">
       <div class="form-floating">
-        <input type="text" v-model="lastName" pattern="[А-ЯІЇЄ][а-яіїє]+(-[А-ЯІЇЄ][а-яіїє]+)*" class="form-control" required placeholder=" " />
-        <label>Прізвище</label>
+        <input type="text" v-model="firstName" pattern="[А-ЯІЇЄ][а-яіїє]+" class="form-control" required placeholder=" " />
+        <label>Ім'я</label>
       </div>
     </div>
     <div class="row mt-3">
@@ -107,7 +107,7 @@ export default {
         this.registration = false;
 
         // запит на відправку заявки
-        
+
     }
   },
   created() {
