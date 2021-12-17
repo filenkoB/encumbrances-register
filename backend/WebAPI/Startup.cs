@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using System.Reflection;
+using Infrastructure;
+using Application;
 
 namespace WebAPI
 {
@@ -24,12 +26,8 @@ namespace WebAPI
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<EncumbrancesRegisterDbContext>(options =>
-                options.UseNpgsql(
-                    "Host=localhost;Port=5432;Database=Encumbrances_Register_DB;Username=postgres;Password=3497279088"
-                )
-            );
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddInfrastructure();
+            services.AddApplication();
             services.AddControllers();
         }
 
@@ -44,10 +42,7 @@ namespace WebAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
