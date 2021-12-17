@@ -1,27 +1,72 @@
 <template>
-  <div id="app">
-    <navigation />
-    <main class="flex-shrink-0">
-      <div class="container">
-        <router-view :navigation="this.$root.$children[0].$children[0]" />
-      </div>
+  <div id="app" >
+    <navigation :user="user" :SignOut="sign_out"/>
+    <main class="container" style="margin-top: 80px; margin-bottom: 80px;">
+      <router-view />
     </main>
-    <footer class="footer mt-auto py-3 bg-dark">
-      <span class="text-muted"
-        >Directed by Zverev Kostya. Email: zverevfpm@gmail.com</span
-      >
+    <footer class="footer p-3 bg-dark">
+      <div class="container">
+        <span class="text-muted">Directed by Zverev Kostya. Email: zverevfpm@gmail.com</span>
+      </div>
     </footer>
   </div>
 </template>
 
 <script>
-//import { comands_mutate } from "./constants/graphql-mutation";
 import Navigation from "./components/Navigation.vue";
 export default {
   name: "app",
+  data(){
+    return {
+      user: null
+    }
+  },
   components: {
     Navigation,
   },
+  methods:{
+    sign_in(item){
+      const users = [
+        {
+          login: "u1",
+          password: "u",
+          user_status: "user"
+        },
+        {
+          login: "u2",
+          password: "u",
+          user_status: "user"
+        },
+        {
+          login: "r1",
+          password: "r",
+          user_status: "registrar"
+        },
+        {
+          login: "r2",
+          password: "r",
+          user_status: "registrar"
+        },
+        {
+          login: "a1",
+          password: "a",
+          user_status: "admin"
+        },
+        {
+          login: "a2",
+          password: "a",
+          user_status: "admin"
+        }
+      ];
+      this.user = users.filter(el=>(el.login == item.login && el.password == item.password));
+      if(this.user.length == 0) this.user = null;
+      else this.user = this.user[0];
+      return this.user;
+    },
+    sign_out(){
+      this.user = null;
+    }
+  }
 };
 </script>
 
@@ -30,16 +75,11 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-.container {
-  height: auto;
-  min-height: 531px;
-  margin-top: 60px;
 }
 .footer {
-  position: relative;
-  margin-bottom: 0px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }
 </style>
