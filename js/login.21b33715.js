@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["login"],{bb51:function(n,e,t){"use strict";t.r(e);var l=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",[n._v("Hi")])},i=[],u=t("2877"),c={},o=Object(u["a"])(c,l,i,!1,null,null,null);e["default"]=o.exports}}]);
-//# sourceMappingURL=login.21b33715.js.map
