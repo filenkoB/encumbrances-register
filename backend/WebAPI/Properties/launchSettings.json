@@ -13,7 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "POSTGRESQL_CONNECTION_STRING": "Host=localhost;Port=5433;Database=Encumbrances_Register_DB;Username=postgres;Password=3497279088"
+        "POSTGRESQL_CONNECTION_STRING": "Host=ec2-3-248-87-6.eu-west-1.compute.amazonaws.com;Port=5432;Database=d99eufmq97gniv;Username=tgmkclnueetwkj;Password=d5b69e55a15eaad84381845329ff8493fa3977c7aa06fa68fa2971ae30414a18;Trust Server Certificate=true;sslmode=Require"
       }
     },
     "WebAPI": {
