@@ -2,7 +2,7 @@
   <header class="row navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="col text-start ms-3">
       <div class="btn-group" role="group" aria-label="Basic outlined example"
-        v-if="user_status != undefined && user_status == 'user'">
+        v-if="user_status == 'user'">
         <button type="button" class="btn btn-outline-light me-2" v-on:click="my_statements">
           Мої заяви
         </button>
@@ -11,7 +11,7 @@
         </button>
       </div>
       <div class="btn-group" role="group" aria-label="Basic outlined example"
-        v-else-if="user_status != undefined && user_status == 'registrar'">
+        v-else-if="user_status == 'registrar'">
         <button type="button" class="btn btn-outline-light me-2" v-on:click="statements">
           Підтвердити заяви
         </button>
@@ -20,7 +20,7 @@
         </button>
       </div>
       <div class="btn-group" role="group" aria-label="Basic outlined example"
-        v-else-if="user_status != undefined && user_status == 'admin'">
+        v-else-if="user_status == 'admin'">
         <button type="button" class="btn btn-outline-light me-2" v-on:click="view_registrars">
           Перелік Реєстраторів
         </button>
@@ -30,7 +30,7 @@
       <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-light me-2" disabled>
           <i class="fa fa-user-circle-o"></i>
-          <span v-if="user_status != undefined" class="ms-2">{{ user_status}}</span>
+          <span v-if="user_status" class="ms-2">{{ user_status}}</span>
         </button>
         <button type="button" class="btn btn-outline-light me-2" 
         v-on:click="info" :disabled="!user_status">
@@ -38,7 +38,7 @@
           Інформаційна
         </button>
         <button type="button" class="btn btn-outline-light me-2" 
-          v-on:click="sign_in" v-if="user_status == undefined">
+          v-on:click="sign_in" v-if="user_status == null">
           <i class="fa fa-sign-in" ></i> Увійти
         </button>
         <button type="button" class="btn btn-outline-light me-2" 
