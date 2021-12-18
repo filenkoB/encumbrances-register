@@ -208,10 +208,10 @@ export default {
       }
     }
   },
-  created(){
-    this.active_user = this.$route.params.active_user;
-    if(this.active_user == null || this.active_user == undefined || !(this.active_user.user_status == "registrar"|| this.active_user.user_status == "user")){
-      this.$router.push({ name: "SignIn"}).catch(() => {});
+  mounted(){
+    this.user_status = window.sessionStorage.getItem('user_status');
+    if(!this.user_status){
+        this.$router.push({ name: "SignIn"}).catch(() => {});
     }
   }
 }

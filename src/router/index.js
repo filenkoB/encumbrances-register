@@ -8,6 +8,13 @@ const routes = [
     path: '/',
     name: 'SignIn',
     component: () => 
+      import(/* webpackChunkName: "home" */ "../views/SignIn.vue"),
+  
+  },
+  {
+    path: '/info',
+    name: 'Info',
+    component: () => 
       import(/* webpackChunkName: "home" */ "../views/Info.vue"),
   
   },
@@ -23,7 +30,7 @@ const routes = [
     name: "Statements",
     meta: { auth: true },
     component: () =>
-      import(/* webpackChunkName: "chats" */ "../views/registrar/Statements.vue"),
+      import(/* webpackChunkName: "Statments" */ "../views/registrar/Statements.vue"),
   },
   {
     path: "/searchinfo",

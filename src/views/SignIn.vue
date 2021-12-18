@@ -77,6 +77,7 @@ export default {
                       default: console.log("Who are you?");
                     }
                     window.sessionStorage.setItem('user_status', user_status);
+                    this.$root.$children[0].$children[0].user_status = user_status;
                     this.$router.push({ name: "Info" }).catch(() => {});
                   }
                   else if(res.status === 400)  this.failedAuthorization = true;
@@ -98,6 +99,7 @@ export default {
     const sessionStorage = window.sessionStorage;
     if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
     if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
+    this.$root.$children[0].$children[0].user_status = null;
   },
   computed: {
     isInvalidLogin: function() {
