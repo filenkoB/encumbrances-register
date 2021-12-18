@@ -30,7 +30,7 @@ const routes = [
     name: "Statements",
     meta: { auth: true },
     component: () =>
-      import(/* webpackChunkName: "chats" */ "../views/registrar/Statements.vue"),
+      import(/* webpackChunkName: "Statments" */ "../views/registrar/Statements.vue"),
   },
   {
     path: "/searchinfo",

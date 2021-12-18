@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <navigation :user="user" :SignOut="sign_out"/>
+    <navigation />
     <main class="container" style="margin-top: 80px; margin-bottom: 80px;">
       <router-view />
     </main>
@@ -18,54 +18,12 @@ export default {
   name: "app",
   data(){
     return {
-      user: null
     }
   },
   components: {
     Navigation,
   },
   methods:{
-    sign_in(item){
-      const users = [
-        {
-          login: "u1",
-          password: "u",
-          user_status: "user"
-        },
-        {
-          login: "u2",
-          password: "u",
-          user_status: "user"
-        },
-        {
-          login: "r1",
-          password: "r",
-          user_status: "registrar"
-        },
-        {
-          login: "r2",
-          password: "r",
-          user_status: "registrar"
-        },
-        {
-          login: "a1",
-          password: "a",
-          user_status: "admin"
-        },
-        {
-          login: "a2",
-          password: "a",
-          user_status: "admin"
-        }
-      ];
-      this.user = users.filter(el=>(el.login == item.login && el.password == item.password));
-      if(this.user.length == 0) this.user = null;
-      else this.user = this.user[0];
-      return this.user;
-    },
-    sign_out(){
-      this.user = null;
-    }
   }
 };
 </script>
