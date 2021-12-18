@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     signIn() {
-      this.wasClicked = true;
+      this.wasClicked = true; this.failedAuthorization = false; this.failedResponse = false;
       if (!this.isInvalidLogin && !this.isInvalidPassword) {
         const requestOptions = {
           method: "POST",

@@ -21,7 +21,6 @@ export default {
         User
     },
     mounted(){
-        window.sessionStorage.setItem('user_status', 'registrar');
         this.user_status = window.sessionStorage.getItem('user_status');
         if(!this.user_status) this.$router.push({ name: "SignIn"}).catch(() => {});
     }

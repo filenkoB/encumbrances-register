@@ -8,6 +8,13 @@ const routes = [
     path: '/',
     name: 'SignIn',
     component: () => 
+      import(/* webpackChunkName: "signin" */ "../views/SignIn.vue"),
+  
+  },
+  {
+    path: "/info",
+    name: "Info",
+    component: () => 
       import(/* webpackChunkName: "home" */ "../views/Info.vue"),
   
   },
@@ -48,7 +55,7 @@ const routes = [
   },
   {
     path: "*",
-    redirect: "/",
+    redirect: "/info",
   }
 ]
 

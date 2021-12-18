@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-hi user
+        hi user
     </div>
 </template>
 <script>
