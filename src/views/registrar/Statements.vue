@@ -25,7 +25,10 @@
             </div>
             <div class="col text-right p-1">
               <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" :class="button(item)" v-on:click="show_statement_info(item)" >Переглянути все</button>
+                <button type="button" :class="button(item)" v-on:click="show_statement_info(item)">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  Переглянути все
+                </button>
                 <button type="button" class="btn btn-outline-success" v-on:click="button_1()" :disabled="!item.visible_status">Підтвертити</button>
                 <button  type="button" class="btn btn-outline-danger" v-on:click="button_2()" :disabled="!item.visible_status">Відхилити</button>
               </div>

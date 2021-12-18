@@ -455,7 +455,7 @@ export class Address{
 
 export class Weightlifter_Information{
   constructor() {
-    this.visible_status = true;
+    this.visible_status = false;
     this.number = { data: "" },
     this.resident = {
       data: "",
@@ -487,7 +487,7 @@ export class Weightlifter_Information{
 }
 export class Debtor_Information{
   constructor() {
-    this.visible_status = true;
+    this.visible_status = false;
     this.number = { data: "" },
     this.resident = {
       data: "",

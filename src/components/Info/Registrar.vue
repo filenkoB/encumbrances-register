@@ -29,6 +29,7 @@
                   </div>
                   <div class="col-auto">
                     <button type="button" class="btn btn-outline-dark" disabled>
+                      <i class="fa fa-list-alt" aria-hidden="true"></i>
                       Переглянути Заяви
                     </button>
                   </div>
@@ -47,6 +48,7 @@
                   </div>
                   <div class="col-auto">
                     <button type="button" class="btn btn-outline-info" disabled>
+                      <i class="fa fa-eye" aria-hidden="true"></i>
                       Переглянути все
                     </button>
                   </div>
