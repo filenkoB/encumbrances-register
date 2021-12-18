@@ -71,99 +71,7 @@
         </div>
         <div class="col-10" :class="colour(element.weightlifter_information)" 
           v-if="element.weightlifter_information.address.visible_status">
-          <div class="row mb-2">
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Країна:</label>
-            </div>
-            <div class="col-2">
-              <select class="form-control" @change="change_byffer(true, 'country')" :disabled="editing_status" 
-              v-model="element.weightlifter_information.address.path.country">
-                <option v-if="element.weightlifter_information.address.path.country.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.weightlifter_information.address.path.country}}</option>
-                <option v-for="item in full_address.address" :key="item.name">{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Область:</label>
-            </div>
-            <div class="col-3">
-              <select class="form-control"  @change="change_byffer(true, 'region')" v-model="element.weightlifter_information.address.path.region" :disabled="editing_status || element.weightlifter_information.address.path.country.length == 0">
-                <option v-if="element.weightlifter_information.address.path.region.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.weightlifter_information.address.path.region}}</option>
-                <option v-for="item in byffer.weightlifter_information.region" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Район:</label>
-            </div>
-            <div class="col-3">
-              <select class="form-control"  @change="change_byffer(true, 'area')" v-model="element.weightlifter_information.address.path.area" :disabled="editing_status || element.weightlifter_information.address.path.region.length == 0">
-                <option v-if="element.weightlifter_information.address.path.area.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.weightlifter_information.address.path.area}}</option>
-                <option v-for="item in byffer.weightlifter_information.area" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Місто:</label>
-            </div>
-            <div class="col-2 ms-2">
-              <select class="form-control"  @change="change_byffer(true, 'city')" v-model="element.weightlifter_information.address.path.city" 
-              :disabled="editing_status || element.weightlifter_information.address.path.area.length == 0">
-                <option v-if="element.weightlifter_information.address.path.city.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.weightlifter_information.address.path.city}}</option>
-                <option v-for="item in byffer.weightlifter_information.city" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Індекс:</label>
-            </div>
-            <div class="col-2 ms-3 me-">
-              <select class="form-control"  @change="change_byffer(true, 'index')" v-model="element.weightlifter_information.address.path.index" :disabled="editing_status || element.weightlifter_information.address.path.city.length == 0">
-                <option v-if="element.weightlifter_information.address.path.index.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.weightlifter_information.address.path.index}}</option>
-                <option v-for="item in byffer.weightlifter_information.index" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2 ">
-              <label class="col-form-label d-inline">Вилиця:</label>
-            </div>
-            <div class="col-3">
-              <select class="form-control"  @change="change_byffer(true)" v-model="element.weightlifter_information.address.path.street" 
-              :disabled="editing_status || element.weightlifter_information.address.path.index.length == 0">
-                <option v-if="element.weightlifter_information.address.path.street.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.weightlifter_information.address.path.street}}</option>
-                <option v-for="item in byffer.weightlifter_information.street" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Будинок:</label>
-            </div>
-            <div class="col-auto">
-               <input type="data" class="form-control d-inline" 
-               :disabled="editing_status || element.weightlifter_information.address.path.street.length == 0"
-               v-bind:value="element.weightlifter_information.address.path.build">
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Корпус:</label>
-            </div>
-             <div class="col-auto">
-               <input type="data" class="form-control d-inline" 
-               :disabled="editing_status || element.weightlifter_information.address.path.street.length == 0"
-               v-bind:value="element.weightlifter_information.address.path.corps">
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Квартира:</label>
-            </div>
-             <div class="col-auto">
-               <input type="data" class="form-control d-inline" 
-               :disabled="editing_status || element.weightlifter_information.address.path.street.length == 0"
-               v-bind:value="element.weightlifter_information.address.path.flat">
-            </div>
-          </div>
+          <Address :path="element.weightlifter_information.address.path"/>
         </div>
         <div class="col-4 mt-1" v-else>
           <input type="text" class="col-6 form-control" disabled value="Натисніть кнопку щоб розгорнути">
@@ -220,106 +128,7 @@
         </div>
         <div class="col-10" :class="colour(element.debtor_information)" 
           v-if="element.debtor_information.address.visible_status">
-          <div class="row mb-2">
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Країна:</label>
-            </div>
-            <div class="col-2">
-              <select class="form-control" @change="change_byffer(false, 'country')" :disabled="editing_status" 
-              v-model="element.debtor_information.address.path.country">
-                <option v-if="element.debtor_information.address.path.country.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.debtor_information.address.path.country}}</option>
-                <option v-for="item in full_address.address" :key="item.name">{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Область:</label>
-            </div>
-            <div class="col-3">
-              <select class="form-control"  @change="change_byffer(false, 'region')" v-model="element.debtor_information.address.path.region" 
-              :disabled="editing_status || element.debtor_information.address.path.country.length == 0">
-                <option v-if="element.debtor_information.address.path.region.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.debtor_information.address.path.region}}</option>
-                <option v-for="item in byffer.debtor_information.region" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Район:</label>
-            </div>
-            <div class="col-3">
-              <select class="form-control"  @change="change_byffer(false, 'area')" 
-              v-model="element.debtor_information.address.path.area" 
-              :disabled="editing_status || element.debtor_information.address.path.region.length == 0">
-                <option v-if="element.debtor_information.address.path.area.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.debtor_information.address.path.area}}</option>
-                <option v-for="item in byffer.debtor_information.area" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Місто:</label>
-            </div>
-            <div class="col-2 ms-2">
-              <select class="form-control"  @change="change_byffer(false, 'city')" 
-              v-model="element.debtor_information.address.path.city" 
-              :disabled="editing_status || element.debtor_information.address.path.area.length == 0">
-                <option v-if="element.debtor_information.address.path.city.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.debtor_information.address.path.city}}</option>
-                <option v-for="item in byffer.debtor_information.city" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Індекс:</label>
-            </div>
-            <div class="col-2 ms-3 me-">
-              <select class="form-control"  @change="change_byffer(false, 'index')" 
-              v-model="element.debtor_information.address.path.index" 
-              :disabled="editing_status || element.debtor_information.address.path.city.length == 0">
-                <option v-if="element.debtor_information.address.path.index.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.debtor_information.address.path.index}}</option>
-                <option v-for="item in byffer.debtor_information.index" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="col-auto mt-2 ">
-              <label class="col-form-label d-inline">Вилиця:</label>
-            </div>
-            <div class="col-3">
-              <select class="form-control"  @change="change_byffer(false)" 
-              v-model="element.debtor_information.address.path.street" 
-              :disabled="editing_status || element.debtor_information.address.path.index.length == 0">
-                <option v-if="element.debtor_information.address.path.street.length == 0" selected disabled></option>
-                <option v-else selected disabled>{{element.debtor_information.address.path.street}}</option>
-                <option v-for="item in byffer.debtor_information.street" :key="item.name" >{{ item.name }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Будинок:</label>
-            </div>
-            <div class="col-auto">
-               <input type="data" class="form-control d-inline" 
-               :disabled="editing_status || element.debtor_information.address.path.street.length == 0"
-               v-bind:value="element.debtor_information.address.path.build">
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Корпус:</label>
-            </div>
-             <div class="col-auto">
-               <input type="data" class="form-control d-inline" 
-               :disabled="editing_status || element.debtor_information.address.path.street.length == 0"
-               v-bind:value="element.debtor_information.address.path.corps">
-            </div>
-            <div class="col-auto mt-2">
-              <label class="col-form-label d-inline">Квартира:</label>
-            </div>
-             <div class="col-auto">
-               <input type="data" class="form-control d-inline" 
-               :disabled="editing_status || element.debtor_information.address.path.street.length == 0"
-               v-bind:value="element.debtor_information.address.path.flat">
-            </div>
-          </div>
+          <Address :path="element.debtor_information.address.path"/>
         </div>
         <div class="col-4 mt-1" v-else>
           <input type="text" class="col-6 form-control" disabled value="Натисніть кнопку щоб розгорнути">
@@ -501,10 +310,16 @@
         <div class="col-auto">
           <label class="col-form-label">Вид валюти:</label>
         </div>
-        <div class="col-auto">
-          <input type="text" class="col-6 form-control" :disabled="editing_status" :value="element.terms.name.data">
+        <div class="col-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" v-if="element.terms.currency_type != 'Оберіть ...'">{{currency_type.filter(el=>el.id==element.terms.currency_type)[0].sign}}</span>
+            <span class="input-group-text" v-else><i class="fa fa-money"></i></span>
+            <select class="form-control" :disabled="editing_status"  v-model="element.terms.currency_type">
+              <option selected disabled>Оберіть ...</option>
+              <option v-for="item in currency_type" :key="item.id" :value="item.id">{{ item.name }}</option>
+            </select>
+          </div>
         </div>
-        
       </div>
       <div class="row mb-2">
         <div class="col-auto">
@@ -538,7 +353,8 @@
 
 <script>
 //import { Weightlifter_Information, Debtor_Information, Basis_Document, Encumbrance_Information, Terms} from '../classes'
-import {address} from "../data";
+import {address, statement} from "../data";
+import Address from "./Address.vue"
 export default {
    data: function () {
     return {
@@ -546,11 +362,16 @@ export default {
         weightlifter_information:{},
         debtor_information:{}
       },
-      full_address: address
+      element:null,
+      full_address: address,
+      currency_type: []
     }
   },
   name: 'Statement',
-  props: ["element","editing_status"],
+  props: ["statement_element","editing_status"],
+  components:{
+    Address
+  },
   methods: {
     change: function (pos) {
       if(!pos.visible_status) pos.visible_status = true;
@@ -563,138 +384,16 @@ export default {
     button(item){
       if(item.visible_status) return "btn btn-primary m-1";
       return "btn btn-outline-secondary m-1";
-    },
-    change_byffer(marker, key){
-      if(key == "country"){
-        let test = JSON.parse(JSON.stringify(this.full_address)).address;
-        for(let i = 0; i< test.length; i++){
-          if(marker){
-            if(test[i].name == this.element.weightlifter_information.address.path.country){
-              this.byffer.weightlifter_information.region = test[i].region;
-              break;
-            }
-           }
-          else{
-            if(test[i].name == this.element.debtor_information.address.path.country){
-              this.byffer.debtor_information.region = test[i].region;
-              break;
-            }
-          }
-        }
-      }
-      else if(key == "region"){
-        let test = null;
-        if(marker) test = JSON.parse(JSON.stringify(this.byffer.weightlifter_information.region));
-        else test = JSON.parse(JSON.stringify(this.byffer.debtor_information.region));
-        for(let i = 0; i< test.length; i++){
-          if(marker){
-            if(test[i].name == this.element.weightlifter_information.address.path.region){
-              this.byffer.weightlifter_information.area = test[i].area;
-              break;
-            }
-           }
-          else{
-            if(test[i].name == this.element.debtor_information.address.path.region){
-              this.byffer.debtor_information.area = test[i].area;
-              break;
-            }
-          }
-        }
-      }
-      else if(key == "area"){
-        let test = null;
-        if(marker) test = JSON.parse(JSON.stringify(this.byffer.weightlifter_information.area));
-        else test = JSON.parse(JSON.stringify(this.byffer.debtor_information.area));
-        for(let i = 0; i< test.length; i++){
-          if(marker){
-            if(test[i].name == this.element.weightlifter_information.address.path.area){
-              this.byffer.weightlifter_information.city = test[i].city;
-              break;
-            }
-           }
-          else{
-            if(test[i].name == this.element.debtor_information.address.path.area){
-              this.byffer.debtor_information.city = test[i].city;
-              break;
-            }
-          }
-        }
-      }
-      else if(key == "city"){
-        let test = null;
-        if(marker) test = JSON.parse(JSON.stringify(this.byffer.weightlifter_information.city));
-        else test = JSON.parse(JSON.stringify(this.byffer.debtor_information.city));
-        for(let i = 0; i< test.length; i++){
-          if(marker){
-            if(test[i].name == this.element.weightlifter_information.address.path.city){
-              this.byffer.weightlifter_information.index = test[i].index;
-              break;
-            }
-           }
-          else{
-            if(test[i].name == this.element.debtor_information.address.path.city){
-              this.byffer.debtor_information.index = test[i].index;
-              break;
-            }
-          }
-        }
-      }
-      else if(key == "index"){
-        let test = null;
-        if(marker) test = JSON.parse(JSON.stringify(this.byffer.weightlifter_information.index));
-        else test = JSON.parse(JSON.stringify(this.byffer.debtor_information.index));
-        for(let i = 0; i< test.length; i++){
-          if(marker){
-            if(test[i].name == this.element.weightlifter_information.address.path.index){
-              this.byffer.weightlifter_information.street = test[i].street;
-              break;
-            }
-           }
-          else{
-            if(test[i].name == this.element.debtor_information.address.path.index){
-              this.byffer.debtor_information.street = test[i].street;
-              break;
-            }
-          }
-        }
-      }
-      if(marker) this.clear_address(this.element.weightlifter_information.address.path, key);
-      else this.clear_address(this.element.debtor_information.address.path, key);
-    },
-    clear_address(item, key) {
-      if(key == "country"){
-        item.region = "",
-        this.clear_address(item, "region");
-      }
-      else if(key == "region"){
-        item.area = "",
-        this.clear_address(item, "area");
-      }
-      else if(key == "area"){
-        item.city = "";
-        this.clear_address(item, "city");
-      }
-      else if(key == "city"){
-        item.index = "";
-        this.clear_address(item, "index");
-      }
-      else if(key == "index"){
-        item.street = "";
-        this.clear_address(item, "");
-      }
-      else{
-        item.build = "";
-        item.corps = "";
-        item.flat = "";
-      }
-    },
-    getItems(items, key){
-      console.log(items.length, key);
-      for(let i = 0; i < items.length; i++){
-        console.log(items[i].name, key);
-        if(items[i].name == key) return items[i].data;
-      }
     }
   },
+  created(){
+    fetch(process.env.VUE_APP_HEROKU_PATH + "/CurrencyType")
+    .then(response =>{
+      if( response.status == 200){
+        response.json().then(data=>this.currency_type=data)
+      }
+    })
+    this.element = statement;
+  }
 }
 </script>

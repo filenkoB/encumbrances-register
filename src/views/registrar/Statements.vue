@@ -1,7 +1,7 @@
 <template>
   <div id="statements_page">
     <div v-if="get_statements().length > 0">
-      <div id="statements_area" >USER{{active_user}}USER
+      <div id="statements_area" >
         <div class="row" v-for="item in get_statements()"
         v-bind:key="item.general_information.number.data">
           <div :class="colour(item)">
@@ -35,7 +35,7 @@
             <card v-bind:cards="card" :success="remove_statement"/>
           </div>
           <div class="row mb-2" v-if="item.visible_status">
-            <Statement :element='statement' :editing_status='editing_status'/>
+            <Statement :statement_element='item' :editing_status='editing_status'/>
           </div>
         </div>
       </div>
@@ -71,7 +71,6 @@
   </div>
 </template>s
 <script>
-//import {el} from "./el"
 import Statement from '../../components/Statement.vue';
 import Card from '../../components/Card.vue';
 import {statement, create_statements, card} from "../../data";

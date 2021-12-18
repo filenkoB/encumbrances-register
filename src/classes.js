@@ -465,16 +465,16 @@ export class Weightlifter_Information{
     this.address = {
       visible_status: false,
       path:{
-        country: "",
-        region: "",
-        area: "",
-        city: "",
-        index: "",
-        street: "",
-        build: "",
-        corps: "",
-        flat: ""
-      },
+        country: "Оберіть ...",
+        region: "Оберіть ...",
+        district: "Оберіть ...",
+        city: "Оберіть ...",
+        index: "Оберіть ...",
+        street: "Оберіть ...",
+        build: "Оберіть ...",
+        corps: "Оберіть ...",
+        flat:"Оберіть ..."
+      }
     }
     
   }
@@ -497,16 +497,16 @@ export class Debtor_Information{
     this.address = {
       visible_status: false,
       path:{
-        country: "",
-        region: "",
-        area: "",
-        city: "",
-        index: "",
-        street: "",
-        build: "",
-        corps: "",
-        flat: ""
-      },
+        country: "Оберіть ...",
+        region: "Оберіть ...",
+        district: "Оберіть ...",
+        city: "Оберіть ...",
+        index: "Оберіть ...",
+        street: "Оберіть ...",
+        build: "Оберіть ...",
+        corps: "Оберіть ...",
+        flat:"Оберіть ..."
+      }
     }
     
   }
@@ -576,9 +576,7 @@ export class Encumbrance_Information{
 export class Terms{
   constructor() {
     this.visible_status = false;
-    this.name = {
-      data: "alsdas"
-    },
+    this.currency_type = "Оберіть ...",
     this.number = {
       data: 2131221
     },
