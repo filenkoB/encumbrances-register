@@ -27,6 +27,12 @@
           </div>
         </div>
       </div>
+      <div v-if="failedAuthorization" class="row mt-3 alert alert-danger fs-7" role="alert">
+        Неправильний логін або пароль! Будь ласка, спробуйте ще раз!
+      </div>
+      <div v-if="failedResponse" class="row mt-3 alert alert-warning fs-7" role="alert">
+        Наразі серевер не може обробити ваш запит, будь ласка спробуйте пізніше.
+      </div>
       <div class="row mt-3">
         <div class="col">
           <button class="w-100 btn btn-primary" type="submit">Увійти</button>
@@ -45,31 +51,67 @@ export default {
   name: "sign-in",
   data() {
     return {
-      wasClicked: false,
-      login: "",
-      password: "",
+      wasClicked: false, failedAuthorization: false, failedResponse: false,
+      login: "", password: ""
     }
   },
   methods: {
     signIn() {
       this.wasClicked = true;
-      console.log("signIn");
-      //if (this.isInvalidLogin && this.isInvalidPassword) {
-        const res = this.$root.$children[0].sign_in({login: this.login, password: this.password});
-        console.log(res);
-      //}
+      if (!this.isInvalidLogin && !this.isInvalidPassword) {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ login: this.login, password: this.password })
+        };
+        fetch(process.env.VUE_APP_HEROKU_PATH + "/Auth", requestOptions)
+              .then(async res => {
+                  if(res.status === 200) {
+                    const data = await res.json();
+                    window.sessionStorage.setItem('token', data.token);
+                    let user_status = "";
+                    switch (data.userType) {
+                      case 1: user_status = "admin"; break
+                      case 2: user_status = "registrar"; break
+                      case 3: user_status = "user"; break
+                      default: console.log("Who are you?");
+                    }
+                    window.sessionStorage.setItem('user_status', user_status);
+                    this.$router.push({ name: "Info" }).catch(() => {});
+                  }
+                  else if(res.status === 400)  this.failedAuthorization = true;
+                  else this.failedResponse = true;
+                }
+              )
+              .catch(error => {
+                this.failedResponse = true;
+                this.errorMessage = error;
+                console.error('There was an error!', error);
+              });
+      }
     },
     async regIn() {
       this.$router.push({ name: "Registration" }).catch(() => {});
     }
   },
+  created() {
+    const sessionStorage = window.sessionStorage;
+    if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
+    if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
+  },
   computed: {
     isInvalidLogin: function() {
-      return (this.login === "") && this.wasClicked
+      return (this.login === "") && this.wasClicked;
     },
     isInvalidPassword: function() {
-      return (this.password === "") && this.wasClicked
+      return (this.password === "") && this.wasClicked;
     }
   }
 };
 </script>
+
+<style>
+  .fs-7 {
+    font-size: 12px;
+  }
+</style>

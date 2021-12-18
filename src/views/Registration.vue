@@ -164,11 +164,15 @@ export default {
       if (valid) {
         this.registration = false;
 
-        // запит на відправку заявки
+        // fetch запит на відправку заявки
       }
     }
   },
   created() {
+    const sessionStorage = window.sessionStorage;
+    if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
+    if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
+
     this.roles = [ {id: 'user', value: 'Користувач'},
                   {id: 'registrar', value: 'Реєстратор'},
                   {id: 'admin', value: 'Адміністратор'}]
