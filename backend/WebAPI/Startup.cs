@@ -1,15 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Infrastructure.EF.PostgreSQL;
 using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using MediatR;
-using System.Reflection;
 using Infrastructure;
 using Application;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Infrastructure.Services;
 
 namespace WebAPI
 {
@@ -28,7 +26,33 @@ namespace WebAPI
         {
             services.AddInfrastructure();
             services.AddApplication();
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+            services.AddCors();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["JWT_ISSUER"],
+
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["JWT_AUDIENCE"],
+
+                        ValidateLifetime = true,
+
+                        IssuerSigningKey = JwtService.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true,
+                    };
+                }
+            );
+
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -38,6 +62,7 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.AllowAnyOrigin());
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

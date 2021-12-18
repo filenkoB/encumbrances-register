@@ -1,9 +1,11 @@
 ﻿using Domain.Interfaces;
 using Domain.Interfaces.Read;
+using Domain.Interfaces.Services;
 using Infrastructure.Dapper;
 using Infrastructure.EF.PostgreSQL;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Read;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,6 +23,7 @@ namespace Infrastructure
             services.AddPostgresDBContext();
             services.AddDapper();
 
+            services.AddServices();
             services.AddReadRepositories();
             services.AddWriteRepositories();
         }
@@ -48,6 +51,11 @@ namespace Infrastructure
         {
             services.AddTransient<IUserRegistratorWriteRepository, UserRegistratorWriteRepository>();
             services.AddTransient<IUsersCommonWriteRepository, UsersCommonWriteRepository>();
+        }
+
+        private static void AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<IJwtService, JwtService>();
         }
 
         private static void AddPostgresDBContext(this IServiceCollection services)
