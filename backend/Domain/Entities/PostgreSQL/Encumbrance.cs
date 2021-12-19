@@ -18,6 +18,7 @@ namespace Domain.PostgreSQL.Entities
         public string TypeDescription { get; set; }
         public Guid TermsId { get; set; }
         public Guid ObjectId { get; set; }
+        public string ControlSum { get; set; }
 
         public EncumbranceParticipant Tier { get; set; }
         public EncumbranceParticipant Debtor{ get; set; }

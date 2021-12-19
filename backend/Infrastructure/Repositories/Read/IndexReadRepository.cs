@@ -1,5 +1,4 @@
 ﻿using Domain.Interfaces.Read;
-using entities = Domain.PostgreSQL.Entities;
 using Infrastructure.Dapper;
 using System.Collections.Generic;
 using System.Data;
@@ -19,11 +18,11 @@ namespace Infrastructure.Repositories.Read
             _db = postgresConenctionFactory.Connection;
         }
 
-        public async Task<IEnumerable<entities.Index>> GetAllCityIndicesAsync(Guid cityId)
+        public async Task<IEnumerable<string>> GetAllCityIndicesAsync(Guid cityId)
         {
             _db.Open();
-            var sqlQuery = "SELECT * FROM \"Indices\" WHERE \"CityId\" = @cityId";
-            var result = await _db.QueryAsync<entities.Index>(sqlQuery, new { cityId = cityId });
+            var sqlQuery = "SELECT \"IndexCode\" FROM \"Indices\" WHERE \"CityId\" = @cityId";
+            var result = await _db.QueryAsync<string>(sqlQuery, new { cityId = cityId });
             await _db.CloseAsync();
             return result;
         }

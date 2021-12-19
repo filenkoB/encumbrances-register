@@ -10,5 +10,6 @@ namespace Domain.Interfaces.Read
     public interface IEncumbranceTypeReadRepository
     {
         public Task<IEnumerable<EncumbranceType>> GetAllEncumbranceTypesAsync();
+        public Task<string> GetEncumbranceTypeNameAsync(Guid typeId);
     }
 }

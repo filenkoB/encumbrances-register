@@ -1,5 +1,4 @@
-﻿using Application.Indices.Dtos;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Interfaces.Read;
 using MediatR;
 using System;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Indices.Queries
 {
-    public class GetAllCityIndicesQuery : IRequest<IEnumerable<IndexDto>>
+    public class GetAllCityIndicesQuery : IRequest<IEnumerable<string>>
     {
         public Guid CityId { get; set; }
         public GetAllCityIndicesQuery(Guid cityId)
@@ -18,7 +17,7 @@ namespace Application.Indices.Queries
         }
     }
 
-    public class GetAllCityIndicesQueryHandler : IRequestHandler<GetAllCityIndicesQuery, IEnumerable<IndexDto>>
+    public class GetAllCityIndicesQueryHandler : IRequestHandler<GetAllCityIndicesQuery, IEnumerable<string>>
     {
         private readonly IIndexReadRepository _indexReadRepository;
         private readonly IMapper _mapper;
@@ -28,9 +27,9 @@ namespace Application.Indices.Queries
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<IndexDto>> Handle(GetAllCityIndicesQuery query, CancellationToken token)
+        public async Task<IEnumerable<string>> Handle(GetAllCityIndicesQuery query, CancellationToken token)
         {
-            return _mapper.Map<IEnumerable<IndexDto>>(await _indexReadRepository.GetAllCityIndicesAsync(query.CityId));
+            return await _indexReadRepository.GetAllCityIndicesAsync(query.CityId);
         }
     }
 }

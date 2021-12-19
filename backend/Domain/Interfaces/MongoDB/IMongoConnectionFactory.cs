@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using MongoDB.Driver;
 
 namespace Domain.Interfaces.MongoDB
@@ -17,7 +18,12 @@ namespace Domain.Interfaces.MongoDB
 
             foreach(var parentInterface in parentInterfaces)
             {
-                parentInterface.GetMethod("InitCurrentCollection").Invoke(this, new object[] { db });
+                MethodInfo initCollectionMethod = parentInterface.GetMethod("InitCurrentCollection");
+                if (initCollectionMethod is null)
+                {
+                    continue;
+                }
+                initCollectionMethod.Invoke(this, new object[] { db });
             }
         }
     }

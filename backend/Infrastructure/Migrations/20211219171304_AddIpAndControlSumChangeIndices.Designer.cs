@@ -4,15 +4,17 @@ using System.Net;
 using Infrastructure.EF.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EncumbrancesRegisterDbContext))]
-    partial class EncumbrancesRegisterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211219171304_AddIpAndControlSumChangeIndices")]
+    partial class AddIpAndControlSumChangeIndices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -467,17 +469,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.PostgreSQL.Entities.Index", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.Property<string>("IndexCode")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("CityId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("IndexCode")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
+                    b.HasKey("IndexCode");
 
                     b.HasIndex("CityId");
 

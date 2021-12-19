@@ -8,6 +8,9 @@ using Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Services;
+using Infrastructure.EF.PostgreSQL;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace WebAPI
 {
@@ -30,7 +33,22 @@ namespace WebAPI
                 .AddNewtonsoftJson(options =>
                      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
-            services.AddCors();
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "DevelopmentPolicy",
+                    builder =>
+                    {
+                        builder
+                        //.WithHeaders("Authorization")
+                        .WithHeaders("Content-Type")
+                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                        .AllowAnyOrigin();
+                        //.WithExposedHeaders("Token-Expired")
+                        //.WithOrigins(frontendUrl);
+                    }
+                );
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -62,7 +80,7 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.AllowAnyOrigin());
+            app.UseCors("DevelopmentPolicy");
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
