@@ -8,25 +8,25 @@
       <div class="row">
         <div class="form-floating">
           <input type="text" v-model="lastName" pattern="[А-ЯІЇЄ][а-яіїє]+(-[А-ЯІЇЄ][а-яіїє]+)*" class="form-control" required placeholder=" " />
-          <label class="ms-2">Прізвище</label>
+          <label class="ms-2 vertical-center">Прізвище</label>
         </div>
       </div>
       <div class="row mt-3">
         <div class="form-floating">
           <input type="text" v-model="firstName" pattern="[А-ЯІЇЄ][а-яіїє]+" class="form-control" required placeholder=" " />
-          <label class="ms-2">Ім'я</label>
+          <label class="ms-2 vertical-center">Ім'я</label>
         </div>
       </div>
       <div class="row mt-3">
         <div class="form-floating">
           <input type="text" v-model="parentName" pattern="[А-ЯІЇЄ][а-яіїє]+" class="form-control" required placeholder=" " />
-          <label class="ms-2">По-батькові</label>
+          <label class="ms-2 vertical-center">По-батькові</label>
         </div>
       </div>
       <div class="row mt-3">
         <div class="form-floating">
           <input type="date"  v-model="birthDate" required :max="maxBirthDate" class="form-control" placeholder=" " />
-          <label class="ms-2">Дата народження</label>
+          <label class="ms-2 vertical-center">Дата народження</label>
         </div>
       </div>
 
@@ -46,13 +46,13 @@
           <div class="row mt-3">
             <div class="form-floating">
               <input type="text"  v-model="pasNumber" required pattern="\d{9}" class="form-control" placeholder=" " />
-              <label class="ms-2">Номер документа</label>
+              <label class="ms-2 vertical-center">Номер документа</label>
             </div>
           </div>
           <div class="row mt-3">
             <div class="form-floating">
               <input type="text"  v-model="pasAgency" required pattern="\d{4}" class="form-control" placeholder=" " />
-              <label class="ms-2">Орган, що видав документ</label>
+              <label class="ms-2 vertical-center">Орган, що видав документ</label>
             </div>
           </div>
         </div>
@@ -73,14 +73,14 @@
         <div class="row mt-3">
           <div class="form-floating">
             <input type="date"  v-model="pasDate" required :max="today" class="form-control" placeholder=" " />
-            <label class="ms-2">Дата видачі паспорта</label>
+            <label class="ms-2 vertical-center">Дата видачі паспорта</label>
           </div>
         </div>
       </div>
       <div class="row mt-3">
         <div class="form-floating">
           <input type="text"  v-model="idNumber" required pattern="\d{12}" class="form-control" placeholder=" " />
-          <label class="ms-2">Номер картки платника податків</label>
+          <label class="ms-2 vertical-center">Номер картки платника податків</label>
         </div>
       </div>
 
@@ -89,7 +89,7 @@
       <div class="row mt-3">
         <div class="form-floating">
           <input type="email" v-model="email" required class="form-control" placeholder=" " />
-          <label class="ms-2">Електронна адреса</label>
+          <label class="ms-2 vertical-center">Електронна адреса</label>
         </div>
       </div>
       <div class="row mt-3 text-start">
@@ -99,7 +99,7 @@
         <div class="col">
           <div class="row" v-for="userType in roles" v-bind:key="userType.id">
             <div class="form-check">
-              <input class="form-check-input" type="radio" v-model="chosenRole" :value="userType.id">
+              <input class="form-check-input" type="radio" @change="clearRoleData" v-model="chosenRole" :value="userType.id">
               <label class="form-check-label" :for="userType.id">{{userType.value}}</label>
             </div>
           </div>
@@ -114,7 +114,7 @@
       <div v-if="chosenRole === 'registrar'">
         <div class="form-floating mt-3">
           <input v-model="agency" required class="form-control" placeholder=" " />
-          <label>Державний орган</label>
+          <label class="vertical-center">Державний орган</label>
         </div>
       </div>
       <div v-if="(chosenRole !== 'user') || userIsAuthorized" class="mt-3 p-3 border border-secondary border-2 rounded">
@@ -162,7 +162,7 @@ export default {
         build: "",
         corps: "",
         flat: ""}
-      },
+      }
     }
   },
   components:{
@@ -183,7 +183,38 @@ export default {
 
         // fetch запит на відправку заявки
       }
+    },
+    clearPasData(type) {
+      if (type === 'pasType-Id') {
+        this.pasSeriaB = ""; this.pasNumberB = ""; this.pasAgencyB = "";
+      }
+      else {
+        this.pasAgency = ""; this.pasNumber = "";
+      }
+      this.pasDate = ""
+    },
+    clearRoleData() {
+      this.address.path = {
+        country: "Оберіть ...",
+        region: "Оберіть ...",
+        district: "Оберіть ...",
+        city: "Оберіть ...",
+        index: "Оберіть ...",
+        street: "Оберіть ...",
+        build: "",
+        corps: "",
+        flat: ""}
+      this.agency = "";
+        this.userIsAuthorized = false;
     }
+  },
+  watch: {
+    chosenPassType: function (type) {
+      this.clearPasData(type);
+    },
+    // chosenRole: function (role) {
+    //   this.clearRoleData(role);
+    // }
   },
   created() {
     const sessionStorage = window.sessionStorage;
@@ -193,17 +224,17 @@ export default {
 
     this.roles = [ {id: 'user', value: 'Користувач'},
                   {id: 'registrar', value: 'Реєстратор'},
-                  {id: 'admin', value: 'Адміністратор'}]
+                  {id: 'admin', value: 'Адміністратор'}];
     this.pasTypes = [ {id: 'pasType-Id', text: 'ID-картка'},
-                      {id: 'pasType-Book', text: 'Зразка 1994р.(Книжка)'}]
+                      {id: 'pasType-Book', text: 'Зразка 1994р.(Книжка)'}];
     const today = new Date(Date.now()); const format = "yyyy-mm-dd"
     this.today = format.replace('yyyy', today.getFullYear())
                         .replace('mm', today.getMonth() + 1)
-                        .replace('dd', today.getDate())
+                        .replace('dd', today.getDate());
     this.maxBirthDate = format.replace('yyyy', today.getFullYear() - 18)
                         .replace('mm', today.getMonth() + 1)
-                        .replace('dd', today.getDate())
-    this.pasAgencies = ["Якась шарага", "Печінка"]
+                        .replace('dd', today.getDate());
+    this.pasAgencies = ["Якась шарага", "Печінка"];
   }
 };
 </script>
@@ -211,5 +242,9 @@ export default {
  .form-select {
    max-width: 97%;
    margin-left: 1.5%
+ }
+ .vertical-center {
+   display: flex;
+   align-items: center;
  }
 </style>
