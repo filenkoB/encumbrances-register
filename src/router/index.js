@@ -8,22 +8,26 @@ const routes = [
     path: '/',
     name: 'SignIn',
     component: () => 
-      import(/* webpackChunkName: "home" */ "../views/user/test.vue"),
-  
+      import(/* webpackChunkName: "signin" */ "../views/SignIn.vue"),
   },
   {
-    path: '/info',
-    name: 'Info',
+    path: "/info",
+    name: "Info",
     component: () => 
       import(/* webpackChunkName: "home" */ "../views/Info.vue"),
-  
   },
   {
     path: "/registration",
     name: "Registration",
     component: () => 
       import(/* webpackChunkName: "registration" */ "../views/Registration.vue"),
-  
+  },
+  {
+    path: "/regapplications",
+    name: "SystemRegApplications",
+    meta: { auth: true },
+    component: () => 
+      import(/* webpackChunkName: "regapplications" */ "../views/admin/SystemRegApplications.vue"),
   },
   {
     path: "/statements",
