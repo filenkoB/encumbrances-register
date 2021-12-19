@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import Statement from "../../components/Statement.vue"
+import Statement from "../../components/statements/statement_for_create.vue"
 export default {
   data(){
     return {
@@ -13,15 +13,6 @@ export default {
   },
   components:{
     Statement,
-    
-  },
-  methods:{
-
-  },
-  mounted(){
-    
-  },
-  created(){
   }
 }
 </script>

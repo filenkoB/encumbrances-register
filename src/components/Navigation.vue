@@ -4,18 +4,22 @@
       <div class="btn-group" role="group" aria-label="Basic outlined example"
         v-if="user_status != undefined && user_status == 'user'">
         <button type="button" class="btn btn-outline-light me-2" v-on:click="my_statements">
+          <i class="fa fa-list-alt" aria-hidden="true"></i>
           Мої заяви
         </button>
         <button type="button" class="btn btn-outline-light" v-on:click="search">
+          <i class="fa fa-search" aria-hidden="true"></i>
           Пошук обтяження
         </button>
       </div>
       <div class="btn-group" role="group" aria-label="Basic outlined example"
         v-else-if="user_status != undefined && user_status == 'registrar'">
         <button type="button" class="btn btn-outline-light me-2" v-on:click="statements">
-          Підтвердити заяви
+          <i class="fa fa-list-alt" aria-hidden="true"></i>
+          Переглянути Заяви
         </button>
         <button type="button" class="btn btn-outline-light me-2" v-on:click="search">
+          <i class="fa fa-search" aria-hidden="true"></i>
           Пошук обтяження
         </button>
       </div>
@@ -36,7 +40,7 @@
           <span v-if="user_status != undefined" class="ms-2">{{ user_status}}</span>
         </button>
         <button type="button" class="btn btn-outline-light me-2" 
-        v-on:click="info" :disabled="!user_status">
+          v-on:click="info" :disabled="!user_status">
           <i class="fa fa-info" aria-hidden="true"></i>
           Інформаційна
         </button>

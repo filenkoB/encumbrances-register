@@ -139,7 +139,11 @@ export default {
         .then(data => (this.address.street = data));
     },
     clear_address(key) {
-      if(key == "region"){
+      if(key == "cauntry"){
+        this.path.region = "Оберіть ...",
+        this.clear_address("region");
+      }
+      else if(key == "region"){
         this.path.district = "Оберіть ...",
         this.clear_address("district");
       }
@@ -156,8 +160,15 @@ export default {
       }
     }
   },
-  
+  mounted(){
+    console.log("mounted");
+  },
+  updated(){
+    console.log("updated");
+  },
   created(){
+    console.log("created");
+    this.clear_address("cauntry");
     fetch(process.env.VUE_APP_HEROKU_PATH + "/Country")
       .then(response => response.json())
       .then(data => (this.address.country = data[0]))

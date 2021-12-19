@@ -117,8 +117,10 @@
           <label class="vertical-center">Державний орган</label>
         </div>
       </div>
+      <span v-if="(chosenRole !== 'user') || userIsAuthorized">{{}}</span>
       <div v-if="(chosenRole !== 'user') || userIsAuthorized" class="mt-3 p-3 border border-secondary border-2 rounded">
         <label class="mb-3">Адреса державної установи:</label>
+        {{address.path}}
         <Address :path="address.path"/>
       </div>
       <div class="row mt-3">
@@ -141,7 +143,7 @@
 </template>
 
 <script>
-import Address from "../components/Address.vue"
+import Address from "../components/statement_parts/Address.vue"
 export default {
   name: "registration",
   data() {
@@ -169,6 +171,18 @@ export default {
     Address
   },
   methods: {
+    clear(){
+      this.address.path ={
+        country: "Оберіть ...",
+        region: "Оберіть ...",
+        district: "Оберіть ...",
+        city: "Оберіть ...",
+        index: "Оберіть ...",
+        street: "Оберіть ...",
+        build: "",
+        corps: "",
+        flat: ""}
+    },
     regIn() {
       const inputs = document.getElementsByTagName('input');
       let valid = true;
