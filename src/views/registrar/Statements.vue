@@ -1,36 +1,37 @@
 <template>
   <div id="statements_page">
-    <div v-if="get_statements().length > 0">
+    <div>
       <div id="statements_area" >
-        <div class="row" v-for="item in get_statements()"
-        v-bind:key="item.general_information.number.data">
+        <div class="row" v-for="item in statements"
+        v-bind:key="item.number">
           <div :class="colour(item)">
-            <div class="col-auto mt-1">
-              <label class="col-form-label">Вихідний номер:</label>
+            <div class="col-auto pt-1 border-end border-3">
+              <label class="col-form-label me-3">Вихідний номер:</label>
+              <label class="col-form-label">{{item.number}}</label>
             </div>
-            <div class="col-1 border-end border-3 mt-1">
-              <label class="col-form-label">{{item.general_information.number.data}}</label>
+            <div class="col-auto pt-1 border-end border-3">
+              <label class="col-form-label me-3">Дата заяви:</label>
+              <label class="col-form-label">{{item.date}}</label>
             </div>
-            <div class="col-auto mt-1">
-              <label class="col-form-label">Дата заяви:</label>
+            <div class="col-auto pt-1">
+              <label class="col-form-label me-3">Тип заяви:</label>
+              <label class="col-form-label">{{item.typeName}}</label>
             </div>
-            <div class="col-auto border-end border-3 mt-1">
-              <label class="col-form-label">{{item.general_information.date.data}}</label>
-            </div>
-            <div class="col-auto mt-1">
-              <label class="col-form-label">Тип заяви:</label>
-            </div>
-            <div class="col-3 mt-1">
-              <label class="col-form-label">реєстрація обтяженняя...</label>
-            </div>
-            <div class="col text-right p-1">
+            <div class="col text-end p-1">
               <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                 <button type="button" :class="button(item)" v-on:click="show_statement_info(item)">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                  Переглянути все
+                  <span v-if="!item.visible_status">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    Переглянути все
+                  </span>
+                  <span v-else>
+                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                  </span>
                 </button>
-                <button type="button" class="btn btn-outline-success" v-on:click="button_1()" :disabled="!item.visible_status">Підтвертити</button>
-                <button  type="button" class="btn btn-outline-danger" v-on:click="button_2()" :disabled="!item.visible_status">Відхилити</button>
+                <button type="button" class="btn btn-outline-success" v-if="item.visible_status"
+                v-on:click="button_1()" :disabled="!item.visible_status">Підтвертити</button>
+                <button  type="button" class="btn btn-outline-danger" v-if="item.visible_status"
+                v-on:click="button_2()" :disabled="!item.visible_status">Відхилити</button>
               </div>
             </div>
           </div>
@@ -42,18 +43,17 @@
           </div>
         </div>
       </div>
-      <Pagination :pagination="pagination"/>
-    </div>
-    <div v-else class="p-5 m-5 border border-secondary rounded text-center">
-      На даний момент всі надані на ухвалення заяви, оброблені.
+      <Pagination :pagination="pagination" :fun="get_statements"/>
     </div>
   </div>
-</template>s
+</template>
 <script>
 import Pagination from "../../components/Pagination.vue"
 import Statement from '../../components/Statement.vue';
 import Card from '../../components/Card.vue';
-import {statement, create_statements, card} from "../../data";
+import {card} from "../../data";
+import {GetStatements} from "../../connect_to_server"
+import {StatmentsPageElement} from "../../classes"
 export default {
   name: 'App',
   data: function () {
@@ -65,9 +65,7 @@ export default {
         count_page: 0,
       },
       card: null ,
-      statement: null,
-      statements: null,
-      active_user: null
+      statements: [],
     };
   },
   components:
@@ -78,18 +76,14 @@ export default {
   },
   methods:{
     colour(item){
-      if(item.visible_status) return "row p-1 mb-1 border border-primary rounded";
-      return "row p-1 mb-1 border border-secondary rounded";
+      if(item.visible_status) return "row mb-1 border border-primary rounded";
+      return "row mb-1 border border-secondary rounded";
     },
     button(item){
       if(!item.visible_status) return "btn btn-info";
       return "btn btn-outline-secondary";
     },
-    getInfo(item){
-      this.statement.general_information = item.general_information;
-      this.statement.encumbrance_information = item.encumbrance_information;
-    },
-    show_statement_info(item){
+    async show_statement_info(item){
       for(let i = 0; i < this.statements.length; i++){
         if(this.statements[i]!=item) this.statements[i].visible_status = false;
       }
@@ -97,21 +91,14 @@ export default {
       this.card[1].visible_status = false;
       if(item.visible_status == false){
         item.visible_status = true;
-        this.getInfo(item)
+        //this.getInfo(item)
       }
       else item.visible_status = false;
       for(let el in this.statement) this.statement[el].visible_status=false
+      
     },
     remove_statement(item){
       item.visible_status = false;
-      for(let i = 0; i < this.statements.length; i++){
-        if(this.statements[i].general_information == this.statement.general_information){
-          ///відправка на сервер, з item взяти type і відповідно до типу можемо дізнатись checked - причину відхилення, якщо відхилена
-          this.statements.splice(i, 1);
-          this.statement.general_information = null;
-          break;
-        }
-      }
     },
     button_1(){
       this.card[0].visible_status = true;
@@ -121,13 +108,15 @@ export default {
       this.card[1].visible_status = true;
       if(this.card[0].visible_status) this.card[0].visible_status = false;
     },
-    get_statements(){
+    async get_statements(){
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 7) this.pagination.max_items_count = 7;
-      this.pagination.count_page = Math.ceil(this.statements.length / this.pagination.max_items_count);
-      const position = this.pagination.active_page*this.pagination.max_items_count;
-      return this.statements.slice(position, position + this.pagination.max_items_count);
+      const data = await GetStatements(this.pagination.active_page + 1, this.pagination.max_items_count);
+      if(data.maxStatements < this.pagination.max_items_count) this.pagination.max_items_count = data.maxStatements
+      this.pagination.count_page = Math.ceil(data.maxStatements / this.pagination.max_items_count);
+      this.statements = [];
+      data.statements.forEach(item => this.statements.push(new StatmentsPageElement(item.id, item.number, item.date, item.typeName)))
     }
   },
   mounted(){
@@ -135,11 +124,11 @@ export default {
     if(!this.user_status || this.user_status != 'registrar'){
         this.$router.push({ name: "Info"}).catch(() => {});
     }
+    
   },
-  created(){
+  async created(){
+    await this.get_statements();
     this.card = card;
-    this.statement = statement,
-    this.statements = create_statements(10);
   }
 }
 </script>

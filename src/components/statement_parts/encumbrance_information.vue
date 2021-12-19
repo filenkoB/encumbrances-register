@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="item">
     <div class="col">
       <div class="row">
         <div class="col-auto">

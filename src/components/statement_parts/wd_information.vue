@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="item">
     <div class="col">
       <div class="row">
         <div class="col-auto">
@@ -14,7 +14,7 @@
               <label class="col-form-label">Ідентифікаційний номер / Код ЄДРПОУ:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" :disabled="editing_status"  :value="item.number.data">
+              <input type="text" class="col-6 form-control" :disabled="editing_status"  :value="item.taxpayerAccountCardNumber">
             </div>
           </div>
 
@@ -22,14 +22,14 @@
           <div class="row mb-2">
             <div class=" col-auto"></div>
             <div class=" col-auto mt-2 form-check">
-            <input class="form-check-input" type="checkbox" value="" :checked="item.resident.visible_status" 
-              v-on:click="change_address_vs(item.resident)" :disabled="editing_status">
+            <input class="form-check-input" type="checkbox" value="" :checked="item.isForeigner" 
+              v-on:click="foreigner()" :disabled="editing_status">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Нерезидент / Іноземець:</label>
             </div>
-            <div class="col-9" v-if="item.resident.visible_status">
-              <textarea class="form-control" rows="1" :disabled="editing_status" :value="item.resident.data"></textarea>
+            <div class="col-4" v-if="item.isForeigner">
+              <input type="text" class="col-6 form-control" disabled value="Застосовується">
             </div>
             <div class="col-4" v-else>
               <input type="text" class="col-6 form-control" disabled value="Не застосовується">
@@ -42,7 +42,7 @@
               <label class="col-form-label">ПІБ / Назва:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.obj_name.data">
+              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.name">
             </div>
           </div>
           
@@ -50,7 +50,7 @@
           <div class="row mb-2">
             <div class="col-auto mt-1">
               <button type="button" class="btn btn-primary"  
-              v-on:click="change_address_vs(item.address)">Адреса:</button>
+              v-on:click="change_address(item.address)">Адреса:</button>
             </div>
             <div class="col-10" :class="colour(item)" 
               v-if="item.address.visible_status">
@@ -73,7 +73,10 @@ export default {
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){change_item_visible_status(this.item)},
-    change_address_vs(el){change_item_visible_status(el)}
+    change_address(el){change_item_visible_status(el)},
+    foreigner(){
+      if(this.item.isForeigner) this.item.isForeigner = false;
+      else this.item.isForeigner = true}
   },
   props:["item", "button_text", "editing_status"],
   components:{ Address },

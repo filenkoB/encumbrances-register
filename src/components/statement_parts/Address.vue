@@ -13,7 +13,7 @@
         </div>
         <div class="col-3">
           <select class="form-control" @change="clear_address('region')" v-on:change="get_district"
-            :disabled="editing_status || path.country.length == 0" v-model="path.region">
+            :disabled="editing_status || path.country == undefined || path.country.length == 0" v-model="path.region">
             <option selected disabled>Оберіть ...</option>
             <option v-for="item in this.address.region" :key="item.id" :value="item.id">
               {{ item.name }}
@@ -97,7 +97,7 @@ export default {
     return {
       editing_status:false,
       address:{
-        country: "",
+        country: "Завантаження ...",
         region: null,
         district: null,
         city: null,
@@ -160,19 +160,21 @@ export default {
       }
     }
   },
-  mounted(){
-    console.log("mounted");
-  },
-  updated(){
-    console.log("updated");
-  },
   created(){
-    console.log("created");
     this.clear_address("cauntry");
+    this.address.country = "Завантаження"
     fetch(process.env.VUE_APP_HEROKU_PATH + "/Country")
-      .then(response => response.json())
-      .then(data => (this.address.country = data[0]))
-      .then(data => this.get_region(data.id));
+      .then(async response =>{
+        if(response.status == 200){
+          const data = await response.json();
+          this.address.country = data[0];
+          this.get_region(data[0].id)
+        }
+        else if(response.status != 200){
+          console.log(response.status)
+        }
+      }
+    )
   }
 }
 </script>
