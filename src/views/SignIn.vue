@@ -10,7 +10,7 @@
           <label for="floatingInput">Логін:</label>
         </div>
         <div class="col-10">
-          <input type="text" :class="{'is-invalid': isInvalidLogin}" v-model="login" class="form-control" id="floatingInput" />
+          <input type="text" :class="{'is-invalid': isInvalidLogin}" v-model="reqBody.login" class="form-control" :disabled="waitingForResponse" />
           <div class="invalid-feedback">
           Пусте поле логіну!
           </div>
@@ -21,7 +21,7 @@
           <label for="floatingPassword ">Пароль:</label>
         </div>
         <div class="col-10">
-          <input type="password" :class="{'is-invalid': isInvalidPassword}" v-model="password" class="form-control" id="floatingPassword"/>
+          <input type="password" :class="{'is-invalid': isInvalidPassword}" v-model="reqBody.password" class="form-control" :disabled="waitingForResponse" />
           <div class="invalid-feedback">
             Пусте поле паролю!
           </div>
@@ -34,11 +34,17 @@
         Наразі серевер не може обробити ваш запит, будь ласка спробуйте пізніше.
       </div>
       <div class="row mt-3">
-        <div class="col">
+        <div v-if="waitingForResponse" class="col">
+          <button class="w-100 btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Вхід...
+          </button>
+        </div>
+        <div v-else class="col">
           <button class="w-100 btn btn-primary" type="submit">Увійти</button>
         </div>
         <div class="col">
-          <button class="w-100 btn btn-outline-dark" @click="regIn" type="button">Реєстрація</button>
+          <button class="w-100 btn btn-outline-dark" @click="regIn" :disabled="waitingForResponse" type="button">Реєстрація</button>
         </div>
       </div>
     </div>
@@ -51,18 +57,20 @@ export default {
   name: "sign-in",
   data() {
     return {
-      wasClicked: false, failedAuthorization: false, failedResponse: false,
-      login: "", password: ""
+      wasClicked: false, waitingForResponse: false,
+      failedAuthorization: false, failedResponse: false,
+      reqBody: { login: "", password: "" }
     }
   },
   methods: {
     signIn() {
-      this.wasClicked = true; this.failedAuthorization = false; this.failedResponse = false;
+      this.wasClicked = true; this.waitingForResponse = true;
+      this.failedAuthorization = false; this.failedResponse = false;
       if (!this.isInvalidLogin && !this.isInvalidPassword) {
         const requestOptions = {
           method: "POST",
           headers: { "Content-type": "application/json" },
-          body: JSON.stringify({ login: this.login, password: this.password })
+          body: JSON.stringify(this.reqBody)
         };
         fetch(process.env.VUE_APP_HEROKU_PATH + "/Auth", requestOptions)
               .then(async res => {
@@ -82,14 +90,17 @@ export default {
                   }
                   else if(res.status === 400)  this.failedAuthorization = true;
                   else this.failedResponse = true;
+                  this.waitingForResponse = false;
                 }
               )
               .catch(error => {
                 this.failedResponse = true;
+                this.waitingForResponse = false;
                 this.errorMessage = error;
                 console.error('There was an error!', error);
               });
       }
+      else this.waitingForResponse = false;
     },
     async regIn() {
       this.$router.push({ name: "Registration" }).catch(() => {});
@@ -103,10 +114,10 @@ export default {
   },
   computed: {
     isInvalidLogin: function() {
-      return (this.login === "") && this.wasClicked;
+      return (this.reqBody.login === "") && this.wasClicked;
     },
     isInvalidPassword: function() {
-      return (this.password === "") && this.wasClicked;
+      return (this.reqBody.password === "") && this.wasClicked;
     }
   }
 };

@@ -24,6 +24,9 @@
         <button type="button" class="btn btn-outline-light me-2" v-on:click="view_registrars">
           Перелік Реєстраторів
         </button>
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="view_sras">
+          Заявки на реєстрацію
+        </button>
       </div>
     </div>
     <div class="col text-end me-3">
@@ -81,6 +84,9 @@ export default {
     },
     view_registrars() {
       this.$router.push({ name: "ViewRegistrars"}).catch(() => {});
+    },
+    view_sras() {
+      this.$router.push({ name: "SystemRegApplications"}).catch(() => {});
     },
   },
 };
