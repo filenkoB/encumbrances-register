@@ -45,7 +45,7 @@
             <div class=" col-auto mt-2 form-check">
               <input class="form-check-input" type="checkbox" value="" 
               :checked="item.publisher.visible_status" 
-              v-on:click="change(item.publisher)"
+              v-on:click="change_status(item.publisher)"
               :disabled="editing_status">
             </div>
             <div class="col-auto">
@@ -75,6 +75,7 @@ export default {
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){change_item_visible_status(this.item)},
+    change_status(el){change_item_visible_status(el)},
     get_currency(){
       fetch(process.env.VUE_APP_HEROKU_PATH + "/CurrencyType")
       .then(response =>{
