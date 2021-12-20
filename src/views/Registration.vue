@@ -7,19 +7,19 @@
 
       <div class="row">
         <div class="form-floating">
-          <input type="text" v-model="lastName" pattern="[А-ЯІЇЄ][а-яіїє]+(-[А-ЯІЇЄ][а-яіїє]+)*" class="form-control" required placeholder=" " />
+          <input type="text" v-model="lastName" :pattern="patterns.lastName.str" class="form-control" required placeholder=" " />
           <label class="ms-2 vertical-center">Прізвище</label>
         </div>
       </div>
       <div class="row mt-3">
         <div class="form-floating">
-          <input type="text" v-model="firstName" pattern="[А-ЯІЇЄ][а-яіїє]+" class="form-control" required placeholder=" " />
+          <input type="text" v-model="firstName" :pattern="patterns.names.str" class="form-control" required placeholder=" " />
           <label class="ms-2 vertical-center">Ім'я</label>
         </div>
       </div>
       <div class="row mt-3">
         <div class="form-floating">
-          <input type="text" v-model="parentName" pattern="[А-ЯІЇЄ][а-яіїє]+" class="form-control" required placeholder=" " />
+          <input type="text" v-model="parentName" :pattern="patterns.names.str" class="form-control" required placeholder=" " />
           <label class="ms-2 vertical-center">По-батькові</label>
         </div>
       </div>
@@ -79,7 +79,7 @@
       </div>
       <div class="row mt-3">
         <div class="form-floating">
-          <input type="text"  v-model="idNumber" required pattern="\d{12}" class="form-control" placeholder=" " />
+          <input type="text"  v-model="idNumber" required :pattern="patterns.idNumber.str" class="form-control" placeholder=" " />
           <label class="ms-2 vertical-center">Номер картки платника податків</label>
         </div>
       </div>
@@ -88,7 +88,7 @@
 
       <div class="row mt-3">
         <div class="form-floating">
-          <input type="email" v-model="email" required class="form-control" placeholder=" " />
+          <input type="email" v-model="email" required :pattern="patterns.email.str" class="form-control" placeholder=" " />
           <label class="ms-2 vertical-center">Електронна адреса</label>
         </div>
       </div>
@@ -113,14 +113,12 @@
       </div>
       <div v-if="chosenRole === 'registrar'">
         <div class="form-floating mt-3">
-          <input v-model="agency" required class="form-control" placeholder=" " />
+          <input v-model="agency" required :pattern="patterns.text.str" class="form-control" placeholder=" " />
           <label class="vertical-center">Державний орган</label>
         </div>
       </div>
-      <span v-if="(chosenRole !== 'user') || userIsAuthorized">{{}}</span>
       <div v-if="(chosenRole !== 'user') || userIsAuthorized" class="mt-3 p-3 border border-secondary border-2 rounded">
         <label class="mb-3">Адреса державної установи:</label>
-        {{address.path}}
         <Address :path="address.path"/>
       </div>
       <div class="row mt-3">
@@ -144,6 +142,7 @@
 
 <script>
 import Address from "../components/statement_parts/Address.vue"
+import {validation} from "../data";
 export default {
   name: "registration",
   data() {
@@ -171,18 +170,6 @@ export default {
     Address
   },
   methods: {
-    clear(){
-      this.address.path ={
-        country: "Оберіть ...",
-        region: "Оберіть ...",
-        district: "Оберіть ...",
-        city: "Оберіть ...",
-        index: "Оберіть ...",
-        street: "Оберіть ...",
-        build: "",
-        corps: "",
-        flat: ""}
-    },
     regIn() {
       const inputs = document.getElementsByTagName('input');
       let valid = true;
@@ -236,18 +223,14 @@ export default {
     if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
     this.$root.$children[0].$children[0].user_status = null;
 
+    this.patterns = validation.patterns;
+    this.today = validation.today;
+    this.maxBirthDate = validation.maxBirthDate;
     this.roles = [ {id: 'user', value: 'Користувач'},
                   {id: 'registrar', value: 'Реєстратор'},
                   {id: 'admin', value: 'Адміністратор'}];
     this.pasTypes = [ {id: 'pasType-Id', text: 'ID-картка'},
                       {id: 'pasType-Book', text: 'Зразка 1994р.(Книжка)'}];
-    const today = new Date(Date.now()); const format = "yyyy-mm-dd"
-    this.today = format.replace('yyyy', today.getFullYear())
-                        .replace('mm', today.getMonth() + 1)
-                        .replace('dd', today.getDate());
-    this.maxBirthDate = format.replace('yyyy', today.getFullYear() - 18)
-                        .replace('mm', today.getMonth() + 1)
-                        .replace('dd', today.getDate());
     this.pasAgencies = ["Якась шарага", "Печінка"];
   }
 };

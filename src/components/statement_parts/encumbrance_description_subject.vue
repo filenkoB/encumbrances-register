@@ -11,8 +11,7 @@
         <div class="col">
           <div class="row m-1">
             <div class="col-auto">
-              <select class="form-control" :disabled="editing_status"  v-model="item.info.checked">
-                <option selected disabled>Оберіть ...</option>
+              <select class="form-control" :disabled="editing_status" required v-model="item.info.checked">
                 <option v-for="el in item.info.data" :key="el.number" :value="el.number">{{ el.name }}</option>
               </select>
             </div>
@@ -24,7 +23,7 @@
                   <label class="col-form-label">Опис майна:</label>
                 </div>
                 <div class="col-4">
-                  <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.name">
+                  <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.name">
                 </div>
               </div>
               <div class="row mt-2">
@@ -32,7 +31,7 @@
                   <label class="col-form-label">Серійний номер:</label>
                 </div>
                 <div class="col-4">
-                  <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number">
+                  <input type="text" class="col-6 form-control" :pattern="patterns.serialNum.str" required :disabled="editing_status" :value="item.number">
                 </div>
               </div>
               <div class="row mt-2">
@@ -40,7 +39,7 @@
                   <label class="col-form-label">Номер державної реєстрації:</label>
                 </div>
                 <div class="col-4">
-                  <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number_2">
+                  <input type="text" class="col-6 form-control" :pattern="patterns.number.str" required :disabled="editing_status" :value="item.number_2">
                 </div>
               </div>
             </div> 
@@ -61,6 +60,7 @@
 </template>
 <script>
 import {get_button_colour, get_class_colour, change_item_visible_status} from "../logic";
+import {validation} from "../../data";
 export default {
   data(){
     return{
@@ -74,6 +74,7 @@ export default {
     change_status(el){change_item_visible_status(el)},
   },
   props:["item", "editing_status"],
-  name:'EncumbranceDescriptionSubject',  
+  name:'EncumbranceDescriptionSubject',
+  created() { this.patterns = validation.patterns; }  
 }
 </script>
