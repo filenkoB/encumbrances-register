@@ -67,7 +67,7 @@
             <div class="col-auto ms-3 me-5" v-for="it in info.encumbranceType" v-bind:key="it.id">
               <div class="row mb-2" v-for="el in it.data" v-bind:key="el.id">
                 <div class=" col-auto mt-2 form-check" >
-                  <input class="form-check-input" type="radio"
+                  <input class="form-check-input" @change="changed" type="radio"
                   v-model="item.encumbranceTypeId" 
                   :disabled="editing_status" :value="el.id">
                 </div>
@@ -84,7 +84,7 @@
               <label class="col-form-label">Опис типу обтяження:</label>
             </div>
             <div class="col-9" v-if="item.encumbranceTypeId == '4b0a5256-60da-4d65-a0ce-3f7a50d85184'">
-              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.typeDescription"></textarea>
+              <textarea class="form-control" rows="1" @change="changed" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.typeDescription"></textarea>
             </div>
             <div class="col-3" v-else>
               <input type="text" class="col-6 form-control" disabled value="Не застосовується">
@@ -121,10 +121,17 @@ export default {
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
-    change(){change_item_visible_status(this.item)}
+    change(){change_item_visible_status(this.item)},
+    changed() {
+      this.item.invalid = this.isInvalid();
+    },
+    isInvalid() {
+      if(this.item.encumbranceTypeId == '4b0a5256-60da-4d65-a0ce-3f7a50d85184') { return true; }
+      return false;
+    }
   },
   props:["item", "editing_status", "info"],
   name:'EncumbranceInformation',
-  created() { this.today = validation.today; this.patterns = validation.patterns; }
+  created() { this.today = validation.today; this.patterns = validation.patterns; this.item.invalid = this.isInvalid(); }
 }
 </script>

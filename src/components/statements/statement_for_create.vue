@@ -68,7 +68,6 @@ export default {
     }
     else{
       const time = new Date();
-      console.log();
       this.element = {
         generalInfo: null,
         encumbranceTier: new EncumbranceTierDebtor(null, false, null),

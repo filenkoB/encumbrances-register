@@ -14,7 +14,7 @@
               <label class="col-form-label">Розмір зобов'язання або вимоги:</label>
             </div>
             <div class="col-auto">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.money.str" :disabled="editing_status" v-model="item.obligationAmount">
+              <input type="text" class="col-6 form-control" @change="changed" required :pattern="patterns.money.str" :disabled="editing_status" v-model="item.obligationAmount">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Вид валюти:</label>
@@ -44,7 +44,7 @@
               <label class="col-form-label">Додаткові умови, у тому числі відомості про особу, на користь якої встановлено публічне обтяження:</label>
             </div>
             <div class="col-9">
-              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.additionalTerms"></textarea>
+              <textarea class="form-control" rows="1" @change="changed" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.additionalTerms"></textarea>
             </div>
           </div>
         </div>
@@ -61,9 +61,23 @@ export default {
     colour(){return get_class_colour(this.item)},
     change(){change_item_visible_status(this.item)},
     change_status(el){change_item_visible_status(el)},
+    changed() {
+      this.item.invalid = this.isInvalid();
+    },
+    isInvalid() {
+      if(!this.patterns.money.var.exec(this.item.obligationAmount)) { return true; }
+      if(!this.currencyTypeId) { return true; }
+      if(!this.patterns.text.var.exec(this.item.additionalTerms)) { return true;}
+      return false;
+    }
   },
   props:["item", "editing_status", "currency_type"],
   name:'Terms',
-  created() { this.patterns = validation.patterns; this.tomorrow = validation.tomorrow; this.decadeAfter = validation.decadeAfter; }
+  created() {
+    this.patterns = validation.patterns;
+    this.tomorrow = validation.tomorrow;
+    this.decadeAfter = validation.decadeAfter;
+    this.item.invalid = this.isInvalid();
+    }
 }
 </script>

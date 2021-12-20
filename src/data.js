@@ -46,7 +46,7 @@ const patterns = {
   text: { var: /[^^=[\]{}@!&~$;:%?*_+\\/]+/},
   money: { var: /[1-9][0-9]*(\.[0-9]|\.[0-9][0-9])?/},
   number: { var: /\d+/},
-  serialNum: { var: /[\s]+/},
+  serialNum: { var: /\w+/},
   idNumber: { var: /\d{12}/},
 };
 Object.keys(patterns).forEach( i => patterns[i].str = String(patterns[i].var).slice(1, String(patterns[i].var).length-1));

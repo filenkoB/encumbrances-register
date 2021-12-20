@@ -28,17 +28,17 @@ export class GeneralInfoType2{
 export class EncumbranceTierDebtor{
   visible_status = false;
   address = {
-    visible_status: false,
+    visible_status: true,
     path:{
-      country: "Оберіть ...",
-      region: "Оберіть ...",
-      district: "Оберіть ...",
-      city: "Оберіть ...",
-      index: "Оберіть ...",
-      street: "Оберіть ...",
-      build: "Оберіть ...",
-      corps: "Оберіть ...",
-      flat:"Оберіть ..."
+      country: "",
+      region: "",
+      district: "",
+      city: "",
+      index: "",
+      street: "",
+      build: "",
+      corps: "",
+      flat:""
     }
   }
   name = null;

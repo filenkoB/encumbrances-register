@@ -14,7 +14,7 @@
               <label class="col-form-label">Назва документу:</label>
             </div>
             <div class="col-10">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.name">
+              <input type="text" class="col-6 form-control" @change="changed" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.name">
             </div>
           </div>
 
@@ -23,7 +23,7 @@
               <label class="col-form-label">Номер документу:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.number.str" :disabled="editing_status" v-model="item.number">
+              <input type="text" class="col-6 form-control" required @change="changed" :pattern="patterns.number.str" :disabled="editing_status" v-model="item.number">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Дата документу:</label>
@@ -38,7 +38,7 @@
               <label class="col-form-label">Видавець документу:</label>
             </div>
             <div class="col-9">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.issuer">
+              <input type="text" class="col-6 form-control" required @change="changed" :pattern="patterns.text.str" :disabled="editing_status" v-model="item.issuer">
             </div>
           </div>
         </div>
@@ -53,13 +53,23 @@ export default {
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
-    change(){change_item_visible_status(this.item)}
+    change(){change_item_visible_status(this.item)},
+    changed() {
+      this.item.invalid = this.isInvalid();
+    },
+    isInvalid() {
+      if(!this.patterns.text.var.exec(this.item.name)) { return true; }
+      if(!this.patterns.number.var.exec(this.item.number)) {  return true; }
+      if(!this.patterns.text.var.exec(this.item.issuer)) { return true; }
+      return false;
+    }
   },
   props:["item", "editing_status"],
   name:'Document',
   created() {
     this.patterns = validation.patterns;
     this.today = validation.today;
-  }  
+    this.item.invalid = this.isInvalid();
+  },
 }
 </script>
