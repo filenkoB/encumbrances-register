@@ -39,7 +39,7 @@
             <card v-bind:cards="card" :success="remove_statement"/>
           </div>
           <div class="row mb-2" v-if="item.visible_status">
-            <Statement :statement_element='item' :editing_status='editing_status' :info="info"/>
+            <Statement :statement_element='item' :editing_status='editing_status' />
           </div>
         </div>
       </div>
@@ -52,13 +52,13 @@ import Pagination from "../../components/Pagination.vue"
 import Statement from '../../components/Statement.vue';
 import Card from '../../components/Card.vue';
 import {card} from "../../data";
-import {GetStatements, EncumbranceType, EncumbranceKind, RegistrationType, AlienationLimit, GetALLCurrency} from "../../connect_to_server"
+import {GetStatements} from "../../connect_to_server"
 import {StatmentsPageElement} from "../../classes"
 export default {
   name: 'App',
   data: function () {
     return {
-      editing_status:false,
+      editing_status:true,
       pagination:{
         active_page: 0,
         max_items_count:7,
@@ -66,7 +66,6 @@ export default {
       },
       card: null ,
       statements: [],
-      info:[]
     };
   },
   components:
@@ -130,11 +129,6 @@ export default {
   async created(){
     await this.get_statements();
     this.card = card;
-    this.info.encumbranceType = await EncumbranceType();
-    this.info.encumbranceKind = await EncumbranceKind();
-    this.info.registrationType = await RegistrationType();
-    this.info.alienationLimit = await AlienationLimit();
-    this.info.currency = await GetALLCurrency();
   }
 }
 </script>

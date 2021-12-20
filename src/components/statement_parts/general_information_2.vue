@@ -26,7 +26,7 @@
                   <label class="col-form-label">Контрольна сума запису:</label>
                 </div>
                 <div class="col-auto">
-                  <input type="text" class="form-control" :disabled="editing_status" :value="item.registrationDate.split('T')[0]">
+                  <input type="text" class="form-control" :disabled="editing_status" :value="item.registrationDate">
                 </div>
               </div>
               <div class="row mt-2">

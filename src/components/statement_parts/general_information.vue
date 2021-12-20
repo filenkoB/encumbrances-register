@@ -18,7 +18,7 @@
           <label class="col-form-label">Дата заяви:</label>
         </div>
         <div class="col-auto">
-          <input type="date" class="form-control" :disabled="editing_status" :value="item.registrationDate.split('T')[0]">
+          <input type="date" class="form-control" :disabled="editing_status" :value="item.registrationDate">
         </div>
       </div>
     </div>

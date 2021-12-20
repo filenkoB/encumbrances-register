@@ -29,7 +29,7 @@
               <label class="col-form-label">Дата документу:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" required :max="today" :disabled="editing_status" v-model="item.issueDate.split('T')[0]">
+              <input type="date" class="col-6 form-control" required :max="today" :disabled="editing_status" v-model="item.issueDate">
             </div>
           </div>
 

@@ -16,7 +16,7 @@
       <EncumbranceInformation :item="element.encumbranceInfo" :editing_status="editing_status" :info="info"/>
 
       <hr class="border-info border border-2">
-      <Terms :item="element.encumbranceTerm" :editing_status="editing_status" :currency_type="info.currency"/>
+      <Terms :item="element.encumbranceTerm" :editing_status="editing_status" :info="info"/>
 
       <hr class="border-info border border-2">
       <EncumbranceDescriptionSubject :item="element.encumbranceDescriptionSubject" :button_vs="true" :editing_status="editing_status"/>

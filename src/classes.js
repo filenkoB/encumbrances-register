@@ -1,3 +1,4 @@
+
 export class StatmentsPageElement{
   visible_status = false;
   constructor(id, number, date, typeName){
@@ -12,7 +13,7 @@ export class GeneralInfo{
   visible_status = false;
   constructor(number, registrationDate) {
     this.number = number;
-    this.registrationDate = registrationDate;
+    this.registrationDate = registrationDate.split('T')[0];
   }
 }
 
@@ -20,7 +21,7 @@ export class GeneralInfoType2{
   visible_status = false;
   constructor(number, registrationDate) {
     this.number = number;
-    this.registrationDate = registrationDate;
+    this.registrationDate = registrationDate.split('T')[0];
   }
 }
 
@@ -55,7 +56,7 @@ export class BasisDocument{
     this.name =name;
     this.number = number;
     this.issuer = issuer;
-    this.issueDate = issueDate;
+    this.issueDate = issueDate.split('T')[0];
   }
 }
 
@@ -65,7 +66,7 @@ export class EncumbranceInfo{
     alienationLimitId, typeDescription) {
     this.encumbranceKindId = encumbranceKindId;
     this.registrationTypeId = registrationTypeId;
-    this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate;
+    this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate.split('T')[0];
     this.encumbranceTypeId = encumbranceTypeId;
     this.alienationLimitId = alienationLimitId;
     this.typeDescription = typeDescription
@@ -76,7 +77,7 @@ export class EncumbranceTerm{
   visible_status = false;
   constructor(obligationAmount, termTo, additionalTerms, currencyTypeId) {
     this.obligationAmount = obligationAmount;
-    this.termTo = termTo;
+    this.termTo = termTo.split('T')[0];
     this.additionalTerms = additionalTerms;
     this.currencyTypeId = currencyTypeId;
   }

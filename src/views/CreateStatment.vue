@@ -51,7 +51,7 @@ export default {
   },
   mounted(){
       this.user_status = window.sessionStorage.getItem('user_status');
-      if(!this.user_status || this.user_status != ('registrar' || 'user')){
+      if(!this.user_status || this.user_status != 'registrar' && this.user_status !='user'){
       this.$router.push({ name: "Info"}).catch(() => {});
     }
   },

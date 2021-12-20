@@ -16,7 +16,7 @@
                   <label class="col-form-label">Вид обтяження:</label>
                 </div>
                 <div class="col-auto">
-                  <div class="row mb-2" v-for="el in item.EncumbranceKind" v-bind:key="el.id">
+                  <div class="row mb-2" v-for="el in info.encumbranceKind" v-bind:key="el.id">
                     <div class=" col-auto mt-2 form-check" >
                       <input class="form-check-input" type="radio" v-model="item.encumbranceKindId" 
                       :disabled="editing_status" :value="el.id">
@@ -55,7 +55,7 @@
               <label class="col-form-label">Дата виникнення попереднього обтяження:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" required :max="today" :disabled="editing_status" :value="item.lastEncumbranceOccurrenceDate.split('T')[0]">
+              <input type="date" class="col-6 form-control" required :max="today" :disabled="editing_status" :value="item.lastEncumbranceOccurrenceDate">
             </div>
           </div>
           

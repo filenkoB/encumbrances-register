@@ -50,9 +50,13 @@
             </div>
           </div>
           <div class="row mt-3">
-            <div class="form-floating">
-              <input type="text"  v-model="pasAgency" required pattern="\d{4}" class="form-control" placeholder=" " />
+            <div class="col-auto mt-2">
               <label class="ms-2 vertical-center">Орган, що видав документ</label>
+            </div>
+            <div class="col-auto">
+              <select class="form-control" v-model="pasAgency">
+                <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.name}}</option>
+              </select>
             </div>
           </div>
         </div>
@@ -111,21 +115,18 @@
           <label class="form-check-label">Працюю в уповноваженому органі</label>
         </div>
       </div>
-      <div v-if="chosenRole === 'registrar'">
-        <div class="form-floating mt-3">
-          <input v-model="agency" required :pattern="patterns.text.str" class="form-control" placeholder=" " />
-          <label class="vertical-center">Державний орган</label>
-        </div>
-      </div>
-      <div v-if="(chosenRole !== 'user') || userIsAuthorized" class="mt-3 p-3 border border-secondary border-2 rounded">
-        <label class="mb-3">Адреса державної установи:</label>
-        <Address :path="address.path"/>
+      <div v-if="((chosenRole !== 'user') || userIsAuthorized) || chosenRole === 'registrar' " class="mt-3 p-3 border border-secondary border-2 rounded">
+        <label class="mb-3">Державна установа:</label>
+        <select class="form-control" v-model="authorityId">
+          <option v-for="el in authority" :key="el.id" :value="el.id">{{el.name}}</option>
+        </select>
       </div>
       <div class="row mt-3">
         <button class="w-100 btn btn-outline-dark" type="submit">Подати заявку на реєстрацію</button>
       </div>
     </div>
-    <div class="col"></div>
+    <div class="col">
+    </div>
   </form>
 
   <!-- Сповіщення про здійснення реєстрації -->
@@ -141,33 +142,22 @@
 </template>
 
 <script>
-import Address from "../components/statement_parts/Address.vue"
 import {validation} from "../data";
+import {AuthorityPassport, Authority} from "../connect_to_server"
 export default {
   name: "registration",
   data() {
     return {
+      authorityPassport: null,
+      authority: null,
+      authorityId: null,
       registration: true,
       chosenPassType: 'pasType-Id', chosenRole: 'user',
       firstName: "", lastName: "", parentName: "", birthDate: "",
       pasNumber: "", pasSeriaB: "", pasNumberB: "",
       email: "", agency: "", idNumber: "",
       pasAgency: "", pasAgencyB: "", pasDate: "", userIsAuthorized: false,
-      address: { path:{
-        country: "Оберіть ...",
-        region: "Оберіть ...",
-        district: "Оберіть ...",
-        city: "Оберіть ...",
-        index: "Оберіть ...",
-        street: "Оберіть ...",
-        build: "",
-        corps: "",
-        flat: ""}
-      }
     }
-  },
-  components:{
-    Address
   },
   methods: {
     regIn() {
@@ -181,8 +171,27 @@ export default {
 
       if (valid) {
         this.registration = false;
-
+        
+        
         // fetch запит на відправку заявки
+        const final_element = {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            patronymic: this.parentName,
+            birthDate: this.birthDate,
+            email: this.email,
+            passportInfo: {
+                "passportNumber": "06642321223",
+                "SerialNumber": "",
+                "AuthorityId": "2254",
+                date: this.pasDate
+            },
+            taxpayerAccountCardNumber: "001023205340264",
+            taxpayerACNAbsenceReason: "",
+            authorityId: ""
+        }
+        console.log(final_element);
+        //const data = await RegistrationUserStatement(item)
       }
     },
     clearPasData(type) {
@@ -195,16 +204,6 @@ export default {
       this.pasDate = ""
     },
     clearRoleData() {
-      this.address.path = {
-        country: "Оберіть ...",
-        region: "Оберіть ...",
-        district: "Оберіть ...",
-        city: "Оберіть ...",
-        index: "Оберіть ...",
-        street: "Оберіть ...",
-        build: "",
-        corps: "",
-        flat: ""}
       this.agency = "";
         this.userIsAuthorized = false;
     }
@@ -216,8 +215,9 @@ export default {
     // chosenRole: function (role) {
     //   this.clearRoleData(role);
     // }
+    
   },
-  created() {
+  async created() {
     const sessionStorage = window.sessionStorage;
     if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
     if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
@@ -227,11 +227,13 @@ export default {
     this.today = validation.today;
     this.maxBirthDate = validation.maxBirthDate;
     this.roles = [ {id: 'user', value: 'Користувач'},
-                  {id: 'registrar', value: 'Реєстратор'},
-                  {id: 'admin', value: 'Адміністратор'}];
+                  {id: 'registrar', value: 'Реєстратор'}];
     this.pasTypes = [ {id: 'pasType-Id', text: 'ID-картка'},
                       {id: 'pasType-Book', text: 'Зразка 1994р.(Книжка)'}];
     this.pasAgencies = ["Якась шарага", "Печінка"];
+
+    this.authorityPassport = await AuthorityPassport();
+    this.authority = await Authority()
   }
 };
 </script>

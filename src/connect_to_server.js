@@ -1,3 +1,52 @@
+export async function AuthorityPassport(){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Authority/Passport");
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+export async function Authority(){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Authority");
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function RegistrationUserStatement(item){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(item)
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Statement", requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
 export async function GetStatements(page, length){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement?page=" + page + "&length=" + length);
   if(responce.status == 200){
@@ -153,7 +202,9 @@ export async function EncumbranceType(){
 }
 
 export async function EncumbranceKind(){
+  console.log("responce.status");
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceKind");
+  console.log(responce.status);
   if(responce.status == 200){
     const data = await responce.json()
     return data;

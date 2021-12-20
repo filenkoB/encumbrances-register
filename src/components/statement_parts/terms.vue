@@ -21,10 +21,10 @@
             </div>
             <div class="col-2">
               <div class="input-group mb-3">
-                <span class="input-group-text" v-if="item.currencyTypeId">{{currency_type.filter(el=>el.id==item.currencyTypeId)[0].sign}}</span>
+                <span class="input-group-text" v-if="item.currencyTypeId">{{info.currency.filter(el=>el.id==item.currencyTypeId)[0].sign}}</span>
                 <span class="input-group-text" v-else><i class="fa fa-money"></i></span>
                 <select class="form-control" required :disabled="editing_status"  v-model="item.currencyTypeId">
-                  <option v-for="it in currency_type" :key="it.id" :value="it.id">{{ it.name }}</option>
+                  <option v-for="it in info.currency" :key="it.id" :value="it.id">{{ it.name }}</option>
                 </select>
               </div>
             </div>
@@ -35,7 +35,7 @@
               <label class="col-form-label">Строк виконання зобов'язання до:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" required :min="tomorrow" :max="decadeAfter" :disabled="editing_status" v-model="item.termTo.split('T')[0]">
+              <input type="date" class="col-6 form-control" required :min="tomorrow" :max="decadeAfter" :disabled="editing_status" v-model="item.termTo">
             </div>
           </div>
 
@@ -62,7 +62,7 @@ export default {
     change(){change_item_visible_status(this.item)},
     change_status(el){change_item_visible_status(el)},
   },
-  props:["item", "editing_status", "currency_type"],
+  props:["item", "editing_status", "info"],
   name:'Terms',
   created() { this.patterns = validation.patterns; this.tomorrow = validation.tomorrow; this.decadeAfter = validation.decadeAfter; }
 }
