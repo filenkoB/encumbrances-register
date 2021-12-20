@@ -3,7 +3,7 @@
     <div class="col">
       <div class="row">
         <div class="col-auto">
-          <button type="button" :class="button()" v-on:click="change()" @click="get_currency">Умови:</button>
+          <button type="button" :class="button()" v-on:click="change()">Умови:</button>
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status">
@@ -56,26 +56,13 @@
 <script>
 import {get_button_colour, get_class_colour, change_item_visible_status} from "../logic";
 export default {
-  data(){
-    return{
-      currency_type: null
-    }
-  },
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){change_item_visible_status(this.item)},
     change_status(el){change_item_visible_status(el)},
-    get_currency(){
-      fetch(process.env.VUE_APP_HEROKU_PATH + "/CurrencyType")
-      .then(response =>{
-        if( response.status == 200){
-          response.json().then(data=>this.currency_type=data)
-        }
-      })
-    }
   },
-  props:["item", "editing_status"],
+  props:["item", "editing_status", "currency_type"],
   name:'Terms',  
 }
 </script>

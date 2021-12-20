@@ -52,7 +52,7 @@ import Pagination from "../../components/Pagination.vue"
 import Statement from '../../components/Statement.vue';
 import Card from '../../components/Card.vue';
 import {card} from "../../data";
-import {GetStatements, EncumbranceType, RegistrationType, AlienationLimit} from "../../connect_to_server"
+import {GetStatements, EncumbranceType, RegistrationType, AlienationLimit, GetALLCurrency} from "../../connect_to_server"
 import {StatmentsPageElement} from "../../classes"
 export default {
   name: 'App',
@@ -133,6 +133,7 @@ export default {
     this.info.encumbranceType = await EncumbranceType();
     this.info.registrationType = await RegistrationType();
     this.info.alienationLimit = await AlienationLimit();
+    this.info.currency = await GetALLCurrency();
   }
 }
 </script>

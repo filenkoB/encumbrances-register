@@ -68,29 +68,15 @@ export class EncumbranceInfo{
     ],
     encumbranceKindId: 1
   }
-  registration_type = {
-    data: null,
-    registrationTypeId: null
-  }
-  type_encumbrance = {
-    data: null,
-    encumbranceTypeId: null
-  }
-  information = {
-    data: null,
-    alienationLimitId: null
-  }
+
   constructor(encumbranceKindId, registrationTypeId, lastEncumbranceOccurrenceDate, encumbranceTypeId, 
-    alienationLimitId, typeDescription, type_encumbrance, registrationType, alienationLimit) {
+    alienationLimitId, typeDescription) {
     this.encumbrance_type.encumbranceKindId = encumbranceKindId;
-    this.registration_type.registrationTypeId = registrationTypeId;
+    this.registrationTypeId = registrationTypeId;
     this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate;
-    this.type_encumbrance.encumbranceTypeId = encumbranceTypeId;
-    this.information.alienationLimitId = alienationLimitId;
+    this.encumbranceTypeId = encumbranceTypeId;
+    this.alienationLimitId = alienationLimitId;
     this.typeDescription = typeDescription
-    this.type_encumbrance.data = type_encumbrance;
-    this.registration_type.data = registrationType;
-    this.information.data = alienationLimit;
   }
 }
 

@@ -13,10 +13,10 @@
       <Document :item="element.basisDocument" :editing_status="editing_status"/>
       
       <hr class="border-info border border-2">
-      <EncumbranceInformation :item="element.encumbranceInfo" :editing_status="editing_status"/>
+      <EncumbranceInformation :item="element.encumbranceInfo" :editing_status="editing_status" :info="info"/>
 
       <hr class="border-info border border-2">
-      <Terms :item="element.encumbranceTerm" :editing_status="editing_status"/>
+      <Terms :item="element.encumbranceTerm" :editing_status="editing_status" :currency_type="info.currency"/>
 
       <hr class="border-info border border-2">
       <EncumbranceDescriptionSubject :item="element.encumbranceDescriptionSubject" :editing_status="editing_status"/>
@@ -53,13 +53,15 @@ export default {
 
     this.element = {
       generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
-      encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, data.encumbranceTier.isForeigner, data.encumbranceTier.name),
-      encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
-      basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number, data.basisDocument.issuer, data.basisDocument.issueDate),
-      encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, 
-      data.encumbranceInfo.registrationTypeId, data.encumbranceInfo.lastEncumbranceOccurrenceDate, 
-      data.encumbranceInfo.encumbranceTypeId, data.encumbranceInfo.alienationLimitId,
-       data.encumbranceInfo.typeDescription, this.info.encumbranceType, this.info.registrationType, this.info.alienationLimit),
+      encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, 
+                                                data.encumbranceTier.isForeigner, data.encumbranceTier.name),
+      encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, 
+                                                data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
+      basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number,
+                                       data.basisDocument.issuer, data.basisDocument.issueDate),
+      encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, data.encumbranceInfo.registrationTypeId, 
+                      data.encumbranceInfo.lastEncumbranceOccurrenceDate, data.encumbranceInfo.encumbranceTypeId,
+                      data.encumbranceInfo.alienationLimitId, data.encumbranceInfo.typeDescription),
       encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
       encumbranceDescriptionSubject: new DescriptionSubject(),
     }

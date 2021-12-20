@@ -41,6 +41,20 @@ export async function GetALLCountry(){
     }
   }
 }
+export async function GetALLCurrency(){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/CurrencyType");
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
 
 export async function EncumbranceType(){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceType");
