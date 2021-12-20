@@ -63,7 +63,7 @@
         <div v-else>
           <div class="input-group mt-3">
             <span class="input-group-text">Серія</span>
-            <input class="form-control" required pattern="[А-ЯІЇЄ][А-ЯІЇЄ]" v-model="pasSeriaB" style="max-width: 55px">
+            <input class="form-control" required pattern="[А-ЯІЇЄ]{2}" v-model="pasSeriaB" style="max-width: 55px">
             <span class="input-group-text">Номер</span>
             <input class="form-control" required pattern="\d{6}" v-model="pasNumberB">
           </div>
@@ -76,7 +76,7 @@
         </div>
         <div class="row mt-3">
           <div class="form-floating">
-            <input type="date"  v-model="pasDate" required :max="today" class="form-control" placeholder=" " />
+            <input type="date"  v-model="pasDate" required :min="minPasDate" :max="today" class="form-control" placeholder=" " />
             <label class="ms-2 vertical-center">Дата видачі паспорта</label>
           </div>
         </div>
@@ -131,8 +131,8 @@
 
   <!-- Сповіщення про здійснення реєстрації -->
   <div v-else>
-    <div class="alert alert-success" role="alert">
-      <h4 class="alert-heading">Заявка на реєстрацію була успішно відправлена!</h4>
+    <div class="alert alert-success text-center" role="alert">
+      <h4 class="alert-heading ">Заявка на реєстрацію була успішно відправлена!</h4>
       <p>Заявка на реєстрацію профілю в "Державному реєстрі обтяженнь рухомого майна" була сформована на основі введенних вами даних та успішно відправлена для розгляду адміністраторами системи.
         Очікуйте результати реєстрації найближчим часом.</p>
       <hr>
@@ -211,6 +211,8 @@ export default {
   watch: {
     chosenPassType: function (type) {
       this.clearPasData(type);
+      if (type === 'pasType-Id') this.minPasDate = validation.minIdPasDate;
+      else this.minPasDate = validation.minBookPasDate;
     },
     // chosenRole: function (role) {
     //   this.clearRoleData(role);
@@ -226,6 +228,7 @@ export default {
     this.patterns = validation.patterns;
     this.today = validation.today;
     this.maxBirthDate = validation.maxBirthDate;
+    this.minPasDate = validation.minIdPasDate;
     this.roles = [ {id: 'user', value: 'Користувач'},
                   {id: 'registrar', value: 'Реєстратор'}];
     this.pasTypes = [ {id: 'pasType-Id', text: 'ID-картка'},

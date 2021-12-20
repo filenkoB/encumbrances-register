@@ -14,7 +14,7 @@
               <label class="col-form-label">Ідентифікаційний номер / Код ЄДРПОУ:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.idNumber.str" :disabled="editing_status"  v-model="item.taxpayerAccountCardNumber">
+              <input type="text" class="col-6 form-control" @change="changed" required :pattern="patterns.idNumber.str" :disabled="editing_status"  v-model="item.taxpayerAccountCardNumber">
             </div>
           </div>
 
@@ -42,22 +42,17 @@
               <label class="col-form-label">ПІБ / Назва:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.name">
+              <input type="text" class="col-6 form-control" @change="changed" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.name">
             </div>
           </div>
           
-          <hr class="border-secondary border border-2" v-if="!item.short_info">
-          <div class="row mb-2"  v-if="!item.short_info">
-            <div class="col-auto mt-1">
-              <button type="button" class="btn btn-primary"  
-              v-on:click="change_address(item.address)">Адреса:</button>
-            </div>
-            <div class="col-10" :class="colour(item)" 
-              v-if="item.address.visible_status">
+          <hr class="border-secondary border border-2">
+          <div class="row mb-2 mt-1">
+            <div class="col-10" :class="colour(item)">
+              <div class="col-auto mb-3">
+                <label>Адреса:</label>
+              </div>
               <Address :path="item.address.path" :editing_status="editing_status"/>
-            </div>
-            <div class="col-4 mt-1" v-else>
-              <input type="text" class="col-6 form-control" disabled value="Натисніть кнопку щоб розгорнути">
             </div>
           </div>
 
@@ -85,7 +80,16 @@ export default {
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){change_item_visible_status(this.item)},
-    change_address(el){change_item_visible_status(el)},
+    changed() {
+      this.item.invalid = this.isInvalid();
+      console.log(this.item.invalid);
+    },
+    isInvalid() {
+      if(!this.patterns.idNumber.var.exec(this.item.taxpayerAccountCardNumber)) { return true; }
+      if(!this.item.name || !this.patterns.text.var.exec(this.item.name)) { return true; }
+      if(this.item.address.path.invalid) { return true; }
+      return false;
+    },
     foreigner(){
       if(this.item.isForeigner) this.item.isForeigner = false;
       else this.item.isForeigner = true}
@@ -93,6 +97,8 @@ export default {
   props:["item", "button_text", "editing_status"],
   components:{ Address },
   name:'WDInformation',
-  created() { this.patterns = validation.patterns; }
+  created() { this.patterns = validation.patterns;
+  this.item.invalid = this.isInvalid();
+  this.item.address.path.onChanged = this.changed;}
 }
 </script>

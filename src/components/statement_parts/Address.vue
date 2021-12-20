@@ -65,14 +65,14 @@
         </div>
         <div class="col-2">
           <input type="data" class="form-control d-inline" 
-            :disabled="editing_status || path.street == ''" required :pattern="patterns.building.str" v-model="path.build">
+            :disabled="editing_status || path.street == ''" @change="changed" required :pattern="patterns.building.str" v-model="path.build">
         </div>
         <div class="col-1 mt-2">
           <label class="col-form-label d-inline">Корпус:</label>
         </div>
         <div class="col-2">
           <input type="data" class="form-control d-inline" 
-            :disabled="editing_status || path.street == ''" :pattern="patterns.corps.str" v-model="path.corps">
+            :disabled="editing_status || path.street == ''" @change="changed" :pattern="patterns.corps.str" v-model="path.corps">
         </div>
         <div class="col-1"></div>
         <div class="col-1 mt-2">
@@ -80,7 +80,7 @@
         </div>
         <div class="col-2">
           <input type="data" class="form-control d-inline" 
-            :disabled="editing_status || path.street == ''" required :pattern="patterns.flat.str" v-model="path.flat">
+            :disabled="editing_status || path.street == ''" @change="changed" required :pattern="patterns.flat.str" v-model="path.flat">
         </div>
       </div>
     </div>
@@ -93,18 +93,29 @@ export default {
   data(){
     return {
       address:{
-        country: "Завантаження ...",
+        country: {},
         region: null,
         district: null,
         city: null,
         index: null,
         street: null
       },
+      justOpened: true,
     }
   },
   props:["path", "editing_status"],
   name: 'Address',
   methods:{
+    changed() {
+      this.path.invalid = this.isInvalid();
+      this.path.onChanged();
+    },
+    isInvalid() {
+      if(!this.patterns.building.var.exec(this.path.build)) { return true; }
+      if(!this.patterns.text.var.exec(this.path.flat)) { return true; }
+      if((this.path.corps.length > 0) && !this.patterns.corps.var.exec(this.path.corps))  { return true; }
+      return false;
+    },
     async get_region(item){
       this.path.country = item;
       this.clear_address('region');
@@ -118,7 +129,7 @@ export default {
     async get_city(event){
       this.path.district = event.target.value;
       this.clear_address('city');
-      this.address.city = await GetCityByDistrict(event.target.value)
+      this.address.city = await GetCityByDistrict(event.target.value);
     },
     async get_street_index(event){
       this.path.city = event.target.value;
@@ -126,7 +137,12 @@ export default {
       this.address.index = await GetIndexByCity(event.target.value);
     },
     clear_address(key) {
-      if(key == "region"){
+      if (this.justOpened) return;
+      if(key == "cauntry"){
+        this.path.region = "",
+        this.clear_address("region");
+      }
+      else if(key == "region"){
         this.path.district = "",
         this.clear_address("district");
       }
@@ -145,9 +161,24 @@ export default {
   },
   async created(){
     this.patterns = validation.patterns;
-    this.address.country = "Завантаження"
+    this.address.country.name = "Завантаження...";
     this.address.country = (await GetALLCountry())[0];
     this.get_region(this.address.country.id);
+    if (this.path.region !== "") {
+      this.address.district = await GetDistrictByRegion(this.path.region);
+      if (this.path.district !== "") {
+        this.address.city = await GetCityByDistrict(this.path.district);
+        if (this.path.city !== "") {
+          this.address.street = await GetStreetByCity(this.path.city);
+          this.address.index = await GetIndexByCity(this.path.city);
+          this.justOpened = false;
+          this.path.invalid = this.isInvalid();
+        }
+        else {this.path.invalid = true;}
+      }
+      else {this.path.invalid = true;}
+    }
+    else {this.path.invalid = true;}
   }
 }
 </script>

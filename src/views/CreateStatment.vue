@@ -1,5 +1,5 @@
 <template>
-  <form action="" class="row mt-3 border border-3 border-secondary rounded">
+  <form @submit.prevent="submit" @reset="reset" id="form" class="row mt-3 border border-3 border-secondary rounded">
     <div class="col">
       <div class="row border-bottom border-3 border-warning p-2">
         <div class="col-auto mt-2">
@@ -20,7 +20,8 @@
       </div>
       <div class="row m-2">
         <div class="col text-center">
-          <button type="submit" class="btn btn-outline-success me-5">Підтвердити</button>
+          <button type="submit" id="submit" class="btn btn-outline-success me-5 hidden"></button>
+          <button type="button" @click="fake_submit" class="btn btn-outline-success me-5">Підтвердити</button>
           <button type="reset" class="btn btn-outline-danger ms-5">Очистити</button>
         </div> 
       </div>
@@ -36,8 +37,9 @@ export default {
       user_status: null,
       statement_type: true,
       info:[],
-      statement:{typeName: null, id: null},
-      element:null
+      statement:{},
+      element:null,
+      checking: false,
     }
   },
   name:'CreateStatment',
@@ -47,6 +49,41 @@ export default {
   methods:{
     get_info(item){
       this.element = item;
+    },
+    get_stetement(){
+      this.statement.typeName = "Заяви про реєстрацію змін обтяження рухомого майна";
+      if(this.statement_type) this.statement.typeName = "Заява про реєстрацію обтяження рухомого майна";
+      this.statement.id = null;
+      return this.statement;
+    },
+    submit() {
+      
+    },
+    fake_submit() {
+      if (this.element.encumbranceTier.invalid) {
+        this.element.encumbranceTier.visible_status = true;
+      }
+      else if (this.element.encumbranceDebtor.invalid) {
+        this.element.encumbranceDebtor.visible_status = true;
+      }
+      else if (this.element.basisDocument.invalid) {
+        this.element.basisDocument.visible_status = true;
+      }
+      else if (this.element.encumbranceInfo.invalid) {
+        this.element.encumbranceInfo.visible_status = true;
+      }
+      else if (this.element.encumbranceTerm.invalid) {
+        this.element.encumbranceTerm.visible_status = true;
+      }
+      else if (this.element.encumbranceDescriptionSubject.invalid) {
+        this.element.encumbranceDescriptionSubject.visible_status = true;
+      }
+      setTimeout(this.click_submit, 100);
+    },
+    click_submit() {
+      document.getElementById('submit').click();
+    },
+    reset() {
     }
   },
   mounted(){
@@ -64,3 +101,8 @@ export default {
   }
 }
 </script>
+<style>
+ .hidden {
+   display: none;
+ }
+</style>
