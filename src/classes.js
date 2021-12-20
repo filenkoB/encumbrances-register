@@ -1,606 +1,144 @@
-
-export class General_Information{
-  constructor() {
-    this.visible_status = false;
-    this.number = { data: "" };
-    this.date = { data: "" };
-  }
-  set_values(visible_status, number, date){
-    this.visible_status = visible_status;
-    this.number.data = number;
-    this.date.data = date;
-  }
-}
-export class Address{
-  constructor(){
-    this.address = [
-        {
-          name:"Україна",
-          region:[
-            {
-              name:"Чернігівська область",
-              area:[
-                {
-                  name:"Чернігівський район",
-                  city:[
-                    {
-                      name:"Чернігів",
-                      index:[
-                        {
-                          name: 12600,
-                          street: [
-                            {
-                              name:"Перемоги",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Тараса Шевченка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                        {
-                          name: 12400,
-                          street: [
-                            {
-                              name:"Франка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Лесі Українки",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                      ]
-                    },
-                    {
-                      name:"Прилуки",
-                      index:[
-                        {
-                          name: 1300,
-                          street: [
-                            {
-                              name:"Перемоги",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Тараса Шевченка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                        {
-                          name: 400,
-                          street: [
-                            {
-                              name:"Франка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Лесі Українки",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                      ]
-                    },
-                  ]
-                },
-                {
-                  name:"Ніжинський район",
-                  city:[
-                    {
-                      name:"Ніжин",
-                      index:[
-                        {
-                          name: 12200,
-                          street: [
-                            {
-                              name:"Перемоги",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Тараса Шевченка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                        {
-                          name: 11400,
-                          street: [
-                            {
-                              name:"Франка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Лесі Українки",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                      ]
-                    },
-                    {
-                      name:"Бахмач",
-                      index:[
-                        {
-                          name: 12200,
-                          street: [
-                            {
-                              name:"Перемоги",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Тараса Шевченка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                        {
-                          name: 11400,
-                          street: [
-                            {
-                              name:"Франка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Лесі Українки",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                      ]
-                    },
-                  ]
-                }
-              ]
-            },
-            {
-              name:"Одеська область",
-              area:[
-                {
-                  name:"Одеський район",
-                  city:[
-                    {
-                      name:"Одеса",
-                      index:[
-                        {
-                          name: 11600,
-                          street: [
-                            {
-                              name:"Перемоги",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Тараса Шевченка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                        {
-                          name: 124090,
-                          street: [
-                            {
-                              name:"Франка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Лесі Українки",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                      ]
-                    },
-                    {
-                      name:"Коблево",
-                      index:[
-                        {
-                          name: 13000,
-                          street: [
-                            {
-                              name:"Перемоги",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Тараса Шевченка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                        {
-                          name: 4090,
-                          street: [
-                            {
-                              name:"Франка",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            },
-                            {
-                              name:"Лесі Українки",
-                              build:"",
-                              corps:"",
-                              flat:""
-                            }
-                          ]
-                        },
-                      ]
-                    },
-                  ]
-                },
-              ]
-            }
-          ]
-        },
-        {
-          name:"Уганда",
-          region:[{
-            name:"1 область",
-            area:[
-              {
-                name:"1 район",
-                city:[
-                  {
-                    name:"Чернігів",
-                    index:[
-                      {
-                        name: 12600,
-                        street: [
-                          {
-                            name:"Перемоги",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Тараса Шевченка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                      {
-                        name: 12400,
-                        street: [
-                          {
-                            name:"Франка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Лесі Українки",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                    ]
-                  },
-                  {
-                    name:"Прилуки",
-                    index:[
-                      {
-                        name: 1300,
-                        street: [
-                          {
-                            name:"Перемоги",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Тараса Шевченка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                      {
-                        name: 400,
-                        street: [
-                          {
-                            name:"Франка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Лесі Українки",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                    ]
-                  },
-                ]
-              },
-              {
-                name:"2 район",
-                city:[
-                  {
-                    name:"Ніжин",
-                    index:[
-                      {
-                        name: 12200,
-                        street: [
-                          {
-                            name:"Перемоги",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Тараса Шевченка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                      {
-                        name: 11400,
-                        street: [
-                          {
-                            name:"Франка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Лесі Українки",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                    ]},{
-                    name:"Бахмач",
-                    index:[
-                      {
-                        name: 12200,
-                        street: [
-                          {
-                            name:"Перемоги",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Тараса Шевченка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                      {
-                        name: 11400,
-                        street: [
-                          {
-                            name:"Франка",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          },
-                          {
-                            name:"Лесі Українки",
-                            build:"",
-                            corps:"",
-                            flat:""
-                          }
-                        ]
-                      },
-                    ]
-                  },
-                ]
-              }
-            ]}]
-        }
-      ]
+export class StatmentsPageElement{
+  visible_status = false;
+  constructor(id, number, date, typeName){
+    this.id = id;
+    this.number = number;
+    this.date = (new Date(Date.parse(date))).toLocaleDateString('en-GB');
+    this.typeName = typeName;
   }
 }
 
-export class Weightlifter_Information{
-  constructor() {
-    this.visible_status = false;
-    this.number = { data: "" },
-    this.resident = {
-      data: "",
-      visible_status: false
-    },
-    this.obj_name = { data: ""  };
-    this.address = {
-      visible_status: false,
-      path:{
-        country: "Оберіть ...",
-        region: "Оберіть ...",
-        district: "Оберіть ...",
-        city: "Оберіть ...",
-        index: "Оберіть ...",
-        street: "Оберіть ...",
-        build: "Оберіть ...",
-        corps: "Оберіть ...",
-        flat:"Оберіть ..."
+export class GeneralInfo{
+  visible_status = false;
+  constructor(number, registrationDate) {
+    this.number = number;
+    this.registrationDate = registrationDate;
+  }
+}
+
+export class EncumbranceTierDebtor{
+  visible_status = false;
+  address = {
+    visible_status: false,
+    path:{
+      country: "Оберіть ...",
+      region: "Оберіть ...",
+      district: "Оберіть ...",
+      city: "Оберіть ...",
+      index: "Оберіть ...",
+      street: "Оберіть ...",
+      build: "Оберіть ...",
+      corps: "Оберіть ...",
+      flat:"Оберіть ..."
+    }
+  }
+  name = null;
+  constructor(taxpayerAccountCardNumber, isForeigner, name) {
+    this.taxpayerAccountCardNumber = taxpayerAccountCardNumber,
+    this.isForeigner = isForeigner;
+    this.name = name; 
+  }
+}
+
+export class BasisDocument{
+  visible_status = false;
+  constructor(name, number, issuer, issueDate) {
+    this.name =name;
+    this.number = number;
+    this.issuer = issuer;
+    this.issueDate = issueDate;
+  }
+}
+
+export class EncumbranceInfo{
+  visible_status = false;
+  encumbrance_type = {
+    data: [
+      {number:1, name:"Публічне обтяження"}, 
+      {number:2, name:"Приватне обтяження"}
+    ],
+    encumbranceKindId: 1
+  }
+  registration_type = {
+    data: [
+      {number:1, name:"Поточна"},
+      {number:2, name:"Попередня"}
+    ],
+    registrationTypeId: 1
+  }
+  type_encumbrance = {
+    data: [
+      {
+        id: 1,
+        data:[
+          {number:1, name:"Податкова застава"},
+          {number:2, name:"Арешт"}
+        ]
+      },
+      {
+        id: 2,
+        data:[
+          {number:3, name:"Звернення стягнення"},
+          {number:4, name:"Застава рухомого майна"}
+        ]
+      },
+      {
+        id: 3,
+        data:[
+          {number:5, name:"Заборона"},
+          {number:6, name:"Інший"}
+        ]
       }
-    }
-    
+    ],
+    encumbranceTypeId: 1
   }
-  set_values(visible_status, number, resident, address){
-    this.visible_status = visible_status;
-    this.number.data = number;
-    this.resident.data = resident;
-    this.address = address;
+  information = {
+    data:[
+      {number:1, name: "Дозволено відчужувати"},
+      {number:2, name: "Відчужувати заборонено"},
+      {number:3, name: "Відчужувати за погодженням з обтяжувачем"}
+    ],
+    alienationLimitId: 1
   }
-}
-export class Debtor_Information{
-  constructor() {
-    this.visible_status = false;
-    this.number = { data: "" },
-    this.resident = {
-      data: "",
-      visible_status: false
-    },
-    this.obj_name = { data: ""  };
-    this.address = {
-      visible_status: false,
-      path:{
-        country: "Оберіть ...",
-        region: "Оберіть ...",
-        district: "Оберіть ...",
-        city: "Оберіть ...",
-        index: "Оберіть ...",
-        street: "Оберіть ...",
-        build: "Оберіть ...",
-        corps: "Оберіть ...",
-        flat:"Оберіть ..."
-      }
-    }
-    
-  }
-  set_values(visible_status, number, resident, address){
-    this.visible_status = visible_status;
-    this.number.data = number;
-    this.resident.data = resident;
-    this.address = address;
+  constructor(encumbranceKindId, registrationTypeId, lastEncumbranceOccurrenceDate, encumbranceTypeId, alienationLimitId, typeDescription) {
+    //this.encumbrance_type.encumbranceKindId = encumbranceKindId;
+    //this.registration_type.registrationTypeId = registrationTypeId;
+    this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate;
+    //this.type_encumbrance.encumbranceTypeId = encumbranceTypeId;
+    this.typeDescription = typeDescription
+    //this.information.alienationLimitId = alienationLimitId;
   }
 }
 
-export class Basis_Document{
-  constructor() {
-    this.visible_status = false;
-    this.name = {
-      data: "alsdas"
-    },
-    this.number = {
-      data: 2131221
-    },
-    this.date = {
-      data: "12.12.2012"
-    },
-    this.publisher = {
-      data: "lsaldlas"
-    }
+export class EncumbranceTerm{
+  visible_status = false;
+  constructor(obligationAmount, termTo, additionalTerms, currencyTypeId) {
+    this.obligationAmount = obligationAmount;
+    this.termTo = termTo;
+    this.additionalTerms = additionalTerms;
+    this.currencyTypeId = currencyTypeId;
   }
 }
 
-export class Encumbrance_Information{
-  constructor() {
-    this.visible_status = false;
-    this.encumbrance_type = {
-      data: ["Публічне обтяження", "Приватне обтяження"],
-      checked: "Приватне обтяження"
-    },
-    this.registration_type = {
-      data: ["Поточна", "Попередня"],
-      checked: "Поточна"
-    },
-    this.date = {
-      data: "12.12.2012"
-    },
-    this.type_encumbrance = {
-      data: [["Податкова застава", "Арешт"], ["Звернення стягнення", "Застава рухомого майна"], ["Заборона", "Інший"]],
-      checked: "Арешт"
-    },
-    this.type_description = {
-      data: "",
-      visible_status: true
-    },
-    this.information = {
-      data:["Дозволено відчужувати", "Відчужувати заборонено", "Відчужувати за погодженням з обтяжувачем"],
-      checked: "Відчужувати заборонено"
-    }
-  }
-  colour(){
-    if(this.visible_status) return " align-items-center p-3 m-1 border border-dark rounded";
-    return " align-items-center p-3 m-1 border border-secondary rounded";
-  }
-  button(){
-    if(this.visible_status) return "btn btn-primary m-1";
-    return "btn btn-outline-secondary m-1";
-  }
-}
 
-export class Terms{
+export class DescriptionSubject{
+  name = null;
+  number = null;
+  number_2 = null;
+  value = null;
+  visible_status = false;
+  info={
+    data:[
+      {number: 1, name: "Рухоме майно що має серійні номери:"},
+      {number: 2, name: "Рухоме майно, крім описаного вище за серійними номерами:"},
+    ],
+    checked: null
+  }
   constructor() {
-    this.visible_status = false;
-    this.currency_type = "Оберіть ...",
-    this.number = {
-      data: 2131221
-    },
-    this.date = {
-      data: "12.12.2012"
-    },
-    this.publisher = {
-      data: "lsaldlas",
-      visible_status: true
-    }
+    this.info.checked = 2;
   }
 }
 /*
-class Encumbrance_Description_Subject{
-  constructor(element) {
-    this.visible_status = false;
-    this.name = "Опис предмета обтяження:";
-    this.body = [
-      new info_part("Рухоме майно що має серійні номери:", element.part_1, "text"),
-      new info_part("Рухоме майно, крім описаного вище за серійними номерами:", element.part_2, "text")
-    ]
-  }
-}
-
 class More_Information{
   constructor(element) {
     this.visible_status = false;

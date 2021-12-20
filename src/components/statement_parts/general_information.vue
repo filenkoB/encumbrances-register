@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="item">
     <div class="col">
       <div class="row">
         <div class="col-auto">
@@ -12,13 +12,13 @@
           <label class="col-form-label">Вихідний номер:</label>
         </div>
         <div class="col-4">
-          <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number.data">
+          <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number">
         </div>
         <div class="col-auto ms-5">
           <label class="col-form-label">Дата заяви:</label>
         </div>
-        <div class="col-4">
-          <input type="date" class="col-6 form-control" :disabled="editing_status" :value="item.date.data">
+        <div class="col-auto">
+          <input type="date" class="form-control" :disabled="editing_status" :value="item.registrationDate.split('T')[0]">
         </div>
       </div>
     </div>

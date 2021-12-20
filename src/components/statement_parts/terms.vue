@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="item">
     <div class="col">
       <div class="row">
         <div class="col-auto">
@@ -14,16 +14,16 @@
               <label class="col-form-label">Розмір зобов'язання або вимоги:</label>
             </div>
             <div class="col-auto">
-              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number.data">
+              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.obligationAmount">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Вид валюти:</label>
             </div>
             <div class="col-2">
               <div class="input-group mb-3">
-                <span class="input-group-text" v-if="item.currency_type != 'Оберіть ...'">{{currency_type.filter(el=>el.id==item.currency_type)[0].sign}}</span>
+                <span class="input-group-text" v-if="item.currencyTypeId">{{currency_type.filter(el=>el.id==item.currencyTypeId)[0].sign}}</span>
                 <span class="input-group-text" v-else><i class="fa fa-money"></i></span>
-                <select class="form-control" :disabled="editing_status"  v-model="item.currency_type">
+                <select class="form-control" :disabled="editing_status"  v-model="item.currencyTypeId">
                   <option selected disabled>Оберіть ...</option>
                   <option v-for="it in currency_type" :key="it.id" :value="it.id">{{ it.name }}</option>
                 </select>
@@ -36,26 +36,16 @@
               <label class="col-form-label">Строк виконання зобов'язання до:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" :disabled="editing_status" :value="item.date.data">
+              <input type="date" class="col-6 form-control" :disabled="editing_status" :value="item.termTo.split('T')[0]">
             </div>
           </div>
 
           <div class="row">
-            <div class="col-auto"></div>
-            <div class=" col-auto mt-2 form-check">
-              <input class="form-check-input" type="checkbox" value="" 
-              :checked="item.publisher.visible_status" 
-              v-on:click="change_status(item.publisher)"
-              :disabled="editing_status">
-            </div>
             <div class="col-auto">
               <label class="col-form-label">Додаткові умови, у тому числі відомості про особу, на користь якої встановлено публічне обтяження:</label>
             </div>
-            <div class="col-9" v-if="item.publisher.visible_status">
-              <textarea class="form-control" rows="1" :disabled="editing_status" :value="item.publisher.data"></textarea>
-            </div>
-            <div class="col-3" v-else>
-              <input type="text" class="col-6 form-control" disabled value="Не застосовується">
+            <div class="col-9">
+              <textarea class="form-control" rows="1" :disabled="editing_status" :value="item.additionalTerms"></textarea>
             </div>
           </div>
         </div>

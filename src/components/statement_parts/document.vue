@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="item">
     <div class="col">
       <div class="row">
         <div class="col-auto">
@@ -14,7 +14,7 @@
               <label class="col-form-label">Назва документу:</label>
             </div>
             <div class="col-10">
-              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.name.data">
+              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.name">
             </div>
           </div>
 
@@ -23,13 +23,13 @@
               <label class="col-form-label">Номер документу:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number.data">
+              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Дата документу:</label>
             </div>
-            <div class="col-4">
-              <input type="date" class="col-6 form-control" :disabled="editing_status" :value="item.date.data">
+            <div class="col-auto">
+              <input type="date" class="col-6 form-control" :disabled="editing_status" :value="item.issueDate.split('T')[0]">
             </div>
           </div>
 
@@ -38,7 +38,7 @@
               <label class="col-form-label">Видавець документу:</label>
             </div>
             <div class="col-9">
-              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.publisher.data">
+              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.issuer">
             </div>
           </div>
         </div>
