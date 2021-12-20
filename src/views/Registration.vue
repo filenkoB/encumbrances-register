@@ -59,7 +59,7 @@
         <div v-else>
           <div class="input-group mt-3">
             <span class="input-group-text">Серія</span>
-            <input class="form-control" required pattern="[А-ЯІЇЄ][А-ЯІЇЄ]" v-model="pasSeriaB" style="max-width: 55px">
+            <input class="form-control" required pattern="[А-ЯІЇЄ]{2}" v-model="pasSeriaB" style="max-width: 55px">
             <span class="input-group-text">Номер</span>
             <input class="form-control" required pattern="\d{6}" v-model="pasNumberB">
           </div>
@@ -72,7 +72,7 @@
         </div>
         <div class="row mt-3">
           <div class="form-floating">
-            <input type="date"  v-model="pasDate" required :max="today" class="form-control" placeholder=" " />
+            <input type="date"  v-model="pasDate" required :min="minPasDate" :max="today" class="form-control" placeholder=" " />
             <label class="ms-2 vertical-center">Дата видачі паспорта</label>
           </div>
         </div>
@@ -111,15 +111,15 @@
           <label class="form-check-label">Працюю в уповноваженому органі</label>
         </div>
       </div>
-      <div v-if="chosenRole === 'registrar'">
-        <div class="form-floating mt-3">
+      <div v-if="(chosenRole !== 'user') || userIsAuthorized" class="mt-3 ">
+        <div class="form-floating ">
           <input v-model="agency" required :pattern="patterns.text.str" class="form-control" placeholder=" " />
           <label class="vertical-center">Державний орган</label>
         </div>
-      </div>
-      <div v-if="(chosenRole !== 'user') || userIsAuthorized" class="mt-3 p-3 border border-secondary border-2 rounded">
-        <label class="mb-3">Адреса державної установи:</label>
-        <Address :path="address.path"/>
+        <div class="p-3 border border-secondary border-2 rounded mt-3">
+          <label class="mb-3">Адреса державної установи:</label>
+          <Address :path="address.path"/>
+        </div>
       </div>
       <div class="row mt-3">
         <button class="w-100 btn btn-outline-dark" type="submit">Подати заявку на реєстрацію</button>
@@ -130,8 +130,8 @@
 
   <!-- Сповіщення про здійснення реєстрації -->
   <div v-else>
-    <div class="alert alert-success" role="alert">
-      <h4 class="alert-heading">Заявка на реєстрацію була успішно відправлена!</h4>
+    <div class="alert alert-success text-center" role="alert">
+      <h4 class="alert-heading ">Заявка на реєстрацію була успішно відправлена!</h4>
       <p>Заявка на реєстрацію профілю в "Державному реєстрі обтяженнь рухомого майна" була сформована на основі введенних вами даних та успішно відправлена для розгляду адміністраторами системи.
         Очікуйте результати реєстрації найближчим часом.</p>
       <hr>
@@ -154,12 +154,12 @@ export default {
       email: "", agency: "", idNumber: "",
       pasAgency: "", pasAgencyB: "", pasDate: "", userIsAuthorized: false,
       address: { path:{
-        country: "Оберіть ...",
-        region: "Оберіть ...",
-        district: "Оберіть ...",
-        city: "Оберіть ...",
-        index: "Оберіть ...",
-        street: "Оберіть ...",
+        country: "",
+        region: "",
+        district: "",
+        city: "",
+        index: "",
+        street: "",
         build: "",
         corps: "",
         flat: ""}
@@ -196,12 +196,12 @@ export default {
     },
     clearRoleData() {
       this.address.path = {
-        country: "Оберіть ...",
-        region: "Оберіть ...",
-        district: "Оберіть ...",
-        city: "Оберіть ...",
-        index: "Оберіть ...",
-        street: "Оберіть ...",
+        country: "",
+        region: "",
+        district: "",
+        city: "",
+        index: "",
+        street: "",
         build: "",
         corps: "",
         flat: ""}
@@ -212,6 +212,8 @@ export default {
   watch: {
     chosenPassType: function (type) {
       this.clearPasData(type);
+      if (type === 'pasType-Id') this.minPasDate = validation.minIdPasDate;
+      else this.minPasDate = validation.minBookPasDate;
     },
     // chosenRole: function (role) {
     //   this.clearRoleData(role);
@@ -226,9 +228,10 @@ export default {
     this.patterns = validation.patterns;
     this.today = validation.today;
     this.maxBirthDate = validation.maxBirthDate;
+    this.minPasDate = validation.minIdPasDate;
     this.roles = [ {id: 'user', value: 'Користувач'},
                   {id: 'registrar', value: 'Реєстратор'},
-                  {id: 'admin', value: 'Адміністратор'}];
+                  /*{id: 'admin', value: 'Адміністратор'}*/];
     this.pasTypes = [ {id: 'pasType-Id', text: 'ID-картка'},
                       {id: 'pasType-Book', text: 'Зразка 1994р.(Книжка)'}];
     this.pasAgencies = ["Якась шарага", "Печінка"];

@@ -43,7 +43,7 @@ const patterns = {
   building: { var: /[1-9][0-9]?[0-9]?/ },
   corps: { var: /([1-9][0-9]?)|[А-Я]/},
   flat: { var: /[1-9][0-9]?[0-9]?[а-яА-Я]?/ },
-  text: { var: /[^^=[\]{}@!&~$;:%?*_+\\/]/},
+  text: { var: /[^^=[\]{}@!&~$;:%?*_+\\/]+/},
   money: { var: /[1-9][0-9]*(\.[0-9]|\.[0-9][0-9])?/},
   number: { var: /\d+/},
   serialNum: { var: /[\s]+/},
@@ -71,5 +71,7 @@ const validation = {
   maxBirthDate: maxBirthDate,
   tomorrow: tomorrow,
   decadeAfter: decadeAfter,
+  minIdPasDate: "2016-01-01",
+  minBookPasDate: "1994-01-01",
 }
 export {validation};
