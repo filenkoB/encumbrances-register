@@ -45,7 +45,7 @@
 <script>
 import SystemRegApplication from "../../components/SystemRegApplication.vue"
 import Card from "../../components/Card.vue"
-import {card} from  "../../data"
+import {sysAppsCards} from  "../../data"
 export default {
   name: 'SystemRegApplications',
   data: function () {
@@ -85,7 +85,6 @@ export default {
     decline() {
       this.cards[0].visible_status = false;
       this.cards[1].visible_status = true;
-      console.log(this.cards);
     },
     closeInfo(item) {
       for(let app of this.applications){
@@ -152,7 +151,7 @@ export default {
         flat: ""} }
       },
     ]
-    this.cards = card;
+    this.cards = sysAppsCards;
   }
 }
 </script>
