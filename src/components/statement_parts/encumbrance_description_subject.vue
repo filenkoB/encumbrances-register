@@ -23,7 +23,7 @@
                   <label class="col-form-label">Опис майна:</label>
                 </div>
                 <div class="col-4">
-                  <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.name">
+                  <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.name">
                 </div>
               </div>
               <div class="row mt-2">
@@ -31,7 +31,7 @@
                   <label class="col-form-label">Серійний номер:</label>
                 </div>
                 <div class="col-4">
-                  <input type="text" class="col-6 form-control" :pattern="patterns.serialNum.str" required :disabled="editing_status" :value="item.number">
+                  <input type="text" class="col-6 form-control" :pattern="patterns.serialNum.str" required :disabled="editing_status" v-model="item.number">
                 </div>
               </div>
               <div class="row mt-2">
@@ -39,7 +39,7 @@
                   <label class="col-form-label">Номер державної реєстрації:</label>
                 </div>
                 <div class="col-4">
-                  <input type="text" class="col-6 form-control" :pattern="patterns.number.str" required :disabled="editing_status" :value="item.number_2">
+                  <input type="text" class="col-6 form-control" :pattern="patterns.number.str" required :disabled="editing_status" v-model="item.number_2">
                 </div>
               </div>
             </div> 
@@ -48,7 +48,7 @@
             <div class="col">
               <div class="row">
                 <div class="col-12">
-                  <textarea class="form-control" rows="1" :disabled="editing_status" :value="item.value"></textarea>
+                  <textarea class="form-control" rows="1" :disabled="editing_status" v-model="item.value"></textarea>
                 </div>
               </div>
             </div> 

@@ -1,0 +1,73 @@
+<template>
+  <form action="" class="row mt-3 border border-3 border-secondary rounded">
+    <div class="col">
+      <div class="row border-bottom border-3 border-warning p-2">
+        <div class="col-auto mt-2">
+          <label class="col-form-label d-inline">Оберіть тип заяви:</label>
+        </div>
+        <div class="col-auto">
+          <select class="form-control" v-model="statement_type">
+            <option :value="true">Заява про реєстрацію обтяження рухомого майна</option>
+            <option :value="false">Заяви про реєстрацію змін обтяження рухомого майна</option>
+          </select>
+        </div>
+      </div>
+      <div class="row p-2" v-if="statement_type">
+        <Statement :editing_status="false" :statement_element="get_stetement()" :info="info" :fun="get_info"/>
+      </div>
+      <div class="row" v-else>
+         registarar
+      </div>
+      <div class="row m-2">
+        <div class="col text-center">
+          <button type="submit" class="btn btn-outline-success me-5">Підтвердити</button>
+          <button type="reset" class="btn btn-outline-danger ms-5">Очистити</button>
+        </div> 
+      </div>
+    </div>
+    <pre>{{element}}</pre>
+  </form>
+</template>
+<script>
+import Statement from "../components/Statement.vue"
+import {EncumbranceType, RegistrationType, AlienationLimit, GetALLCurrency} from "../connect_to_server"
+export default {
+  data(){
+    return {
+      user_status: null,
+      statement_type: true,
+      info:[],
+      statement:{},
+      element:null
+    }
+  },
+  name:'CreateStatment',
+  components:{
+    Statement
+  },
+  methods:{
+    get_info(item){
+      this.element = item;
+    },
+    get_stetement(){
+      this.statement.typeName = "Заяви про реєстрацію змін обтяження рухомого майна";
+      if(this.statement_type) this.statement.typeName = "Заява про реєстрацію обтяження рухомого майна";
+      this.statement.id = null;
+      return this.statement;
+    }
+  },
+  mounted(){
+      this.user_status = window.sessionStorage.getItem('user_status');
+      if(!this.user_status || this.user_status != ('registrar' || 'user')){
+      this.$router.push({ name: "Info"}).catch(() => {});
+    }
+  },
+
+  async created(){
+    this.info.encumbranceType = await EncumbranceType();
+    this.info.registrationType = await RegistrationType();
+    this.info.alienationLimit = await AlienationLimit();
+    this.info.currency = await GetALLCurrency();
+  }
+}
+</script>

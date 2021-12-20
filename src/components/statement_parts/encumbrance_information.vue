@@ -84,7 +84,7 @@
               <label class="col-form-label">Опис типу обтяження:</label>
             </div>
             <div class="col-9" v-if="item.encumbranceTypeId == '4b0a5256-60da-4d65-a0ce-3f7a50d85184'">
-              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.typeDescription"></textarea>
+              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.typeDescription"></textarea>
             </div>
             <div class="col-3" v-else>
               <input type="text" class="col-6 form-control" disabled value="Не застосовується">

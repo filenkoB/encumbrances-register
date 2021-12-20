@@ -3,7 +3,7 @@
     <div class="col">
       <GeneralInformation :item="element.generalInfo" :editing_status="editing_status"/>
       
-      <hr class="border-info border border-2">
+      <hr class="border-info border border-2" v-if="element.generalInfo">
       <WDInformation :item="element.encumbranceTier" button_text="Відомості про Обтяжувача:" :editing_status="editing_status"/>
       
       <hr class="border-info border border-2">
@@ -39,7 +39,7 @@ export default {
     }
   },
   name:'CreateStatment',
-  props:["editing_status","statement_element", "info"],
+  props:["editing_status","statement_element", "info", "fun"],
   components:{
     GeneralInformation,
     WDInformation,
@@ -49,21 +49,38 @@ export default {
     EncumbranceDescriptionSubject
   },
   async created(){
-    const data = await GetStatement(this.statement_element.id);
-    this.element = {
-      generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
-      encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, 
-                                                data.encumbranceTier.isForeigner, data.encumbranceTier.name),
-      encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, 
-                                                data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
-      basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number,
-                                       data.basisDocument.issuer, data.basisDocument.issueDate),
-      encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, data.encumbranceInfo.registrationTypeId, 
-                      data.encumbranceInfo.lastEncumbranceOccurrenceDate, data.encumbranceInfo.encumbranceTypeId,
-                      data.encumbranceInfo.alienationLimitId, data.encumbranceInfo.typeDescription),
-      encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
-      encumbranceDescriptionSubject: new DescriptionSubject(),
+    if(this.statement_element.id != null){
+      const data = await GetStatement(this.statement_element.id);
+      this.element = {
+        generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
+        encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, 
+                                                  data.encumbranceTier.isForeigner, data.encumbranceTier.name),
+        encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, 
+                                                  data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
+        basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number,
+                                        data.basisDocument.issuer, data.basisDocument.issueDate),
+        encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, data.encumbranceInfo.registrationTypeId, 
+                        data.encumbranceInfo.lastEncumbranceOccurrenceDate, data.encumbranceInfo.encumbranceTypeId,
+                        data.encumbranceInfo.alienationLimitId, data.encumbranceInfo.typeDescription),
+        encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
+        encumbranceDescriptionSubject: new DescriptionSubject(),
+      }
     }
-  }
+    else{
+      const time = new Date();
+      console.log();
+      this.element = {
+        generalInfo: null,
+        encumbranceTier: new EncumbranceTierDebtor(null, false, null),
+        encumbranceDebtor: new EncumbranceTierDebtor(null, false, null),
+        basisDocument: new BasisDocument(null, null, null, time.toISOString()),
+        encumbranceInfo: new EncumbranceInfo( null, null, time.toISOString(), null,null, null),
+        encumbranceTerm: new EncumbranceTerm( null, time.toISOString(), null, null),
+        encumbranceDescriptionSubject: new DescriptionSubject(),
+      }
+      this.fun(this.element);
+    }
+  },
+  updated(){}
 }
 </script>

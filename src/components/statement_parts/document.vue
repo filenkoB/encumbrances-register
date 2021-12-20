@@ -14,7 +14,7 @@
               <label class="col-form-label">Назва документу:</label>
             </div>
             <div class="col-10">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.name">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.name">
             </div>
           </div>
 
@@ -23,13 +23,13 @@
               <label class="col-form-label">Номер документу:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.number.str" :disabled="editing_status" :value="item.number">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.number.str" :disabled="editing_status" v-model="item.number">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Дата документу:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" required :max="today" :disabled="editing_status" :value="item.issueDate.split('T')[0]">
+              <input type="date" class="col-6 form-control" required :max="today" :disabled="editing_status" v-model="item.issueDate.split('T')[0]">
             </div>
           </div>
 
@@ -38,7 +38,7 @@
               <label class="col-form-label">Видавець документу:</label>
             </div>
             <div class="col-9">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.issuer">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.issuer">
             </div>
           </div>
         </div>

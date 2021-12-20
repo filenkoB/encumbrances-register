@@ -37,6 +37,13 @@ const routes = [
       import(/* webpackChunkName: "Statments" */ "../views/registrar/Statements.vue"),
   },
   {
+    path: "/createstatment",
+    name: "CreateStatment",
+    meta: { auth: true },
+    component: () =>
+      import(/* webpackChunkName: "Statments" */ "../views/CreateStatment.vue"),
+  },
+  {
     path: "/searchinfo",
     name: "SearchInfo",
     meta: { auth: true },
