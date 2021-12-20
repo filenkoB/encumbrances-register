@@ -1,3 +1,4 @@
+
 export class StatmentsPageElement{
   visible_status = false;
   constructor(id, number, date, typeName){
@@ -9,6 +10,14 @@ export class StatmentsPageElement{
 }
 
 export class GeneralInfo{
+  visible_status = false;
+  constructor(number, registrationDate) {
+    this.number = number;
+    this.registrationDate = registrationDate;
+  }
+}
+
+export class GeneralInfoType2{
   visible_status = false;
   constructor(number, registrationDate) {
     this.number = number;
@@ -60,53 +69,28 @@ export class EncumbranceInfo{
     encumbranceKindId: 1
   }
   registration_type = {
-    data: [
-      {number:1, name:"Поточна"},
-      {number:2, name:"Попередня"}
-    ],
-    registrationTypeId: 1
+    data: null,
+    registrationTypeId: null
   }
   type_encumbrance = {
-    data: [
-      {
-        id: 1,
-        data:[
-          {number:1, name:"Податкова застава"},
-          {number:2, name:"Арешт"}
-        ]
-      },
-      {
-        id: 2,
-        data:[
-          {number:3, name:"Звернення стягнення"},
-          {number:4, name:"Застава рухомого майна"}
-        ]
-      },
-      {
-        id: 3,
-        data:[
-          {number:5, name:"Заборона"},
-          {number:6, name:"Інший"}
-        ]
-      }
-    ],
-    encumbranceTypeId: 1
+    data: null,
+    encumbranceTypeId: null
   }
   information = {
-    data:[
-      {number:1, name: "Дозволено відчужувати"},
-      {number:2, name: "Відчужувати заборонено"},
-      {number:3, name: "Відчужувати за погодженням з обтяжувачем"}
-    ],
-    alienationLimitId: 1
+    data: null,
+    alienationLimitId: null
   }
-  constructor(encumbranceKindId, registrationTypeId, lastEncumbranceOccurrenceDate, encumbranceTypeId, alienationLimitId, typeDescription) {
-    //this.encumbrance_type.encumbranceKindId = encumbranceKindId;
-    //this.registration_type.registrationTypeId = registrationTypeId;
+  constructor(encumbranceKindId, registrationTypeId, lastEncumbranceOccurrenceDate, encumbranceTypeId, 
+    alienationLimitId, typeDescription, type_encumbrance, registrationType, alienationLimit) {
+    this.encumbrance_type.encumbranceKindId = encumbranceKindId;
+    this.registration_type.registrationTypeId = registrationTypeId;
     this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate;
-    //this.type_encumbrance.encumbranceTypeId = encumbranceTypeId;
+    this.type_encumbrance.encumbranceTypeId = encumbranceTypeId;
+    this.information.alienationLimitId = alienationLimitId;
     this.typeDescription = typeDescription
-    //this.information.alienationLimitId = alienationLimitId;
+    this.type_encumbrance.data = type_encumbrance;
+    this.registration_type.data = registrationType;
+    this.information.data = alienationLimit;
   }
 }
 
@@ -136,6 +120,34 @@ export class DescriptionSubject{
   }
   constructor() {
     this.info.checked = 2;
+  }
+}
+
+export class Changes{
+  visible_status = false;
+  changes = {
+    data: [
+      {number: 1, name: "Зареєструвати припинення обтяження"},
+      {number: 2, name: "Зареєструвати звернення стягнення"},
+      {number: 3, name: "Продовжити строк  дії  реєстраційного  запису  на   наступні 5 років"},
+      {number: 4, name: "Виправити дату виникнення"},
+      {number: 5, name: "Дата виникнення"}
+    ],
+    checked: 1
+  }
+  changeType = {
+    data: [
+      {number:1, name: "Замінити  Обтяжувача"},
+      {number:2, name: "Виправити Обтяжувача"},
+      {number:3, name: "Замінити Боржника"},
+      {number:4, name: "Вилучити  Боржника"},
+      {number:5, name: "Додати  Боржника"},
+      {number:6, name: "Виправити Боржника"}
+    ],
+    checked: 1
+  };
+  constructor() {
+    this.changes.checked = 1;
   }
 }
 /*

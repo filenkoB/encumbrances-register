@@ -34,11 +34,11 @@
                   <label class="col-form-label">Тип реєстрації:</label>
                 </div>
                 <div class="col-auto">
-                  <div class="row mb-2" v-for="el in item.registration_type.data" v-bind:key="el.number">
+                  <div class="row mb-2" v-for="el in item.registration_type.data" v-bind:key="el.id">
                     <div class=" col-auto mt-2 form-check" >
                       <input class="form-check-input" type="radio"
                       v-model="item.registration_type.registrationTypeId" 
-                      :disabled="editing_status" :value="el.number">
+                      :disabled="editing_status" :value="el.id">
                     </div>
                     <div class="col-auto">
                       <label class="col-form-label">{{el.name}}</label>
@@ -65,11 +65,11 @@
               <label class="col-form-label">Тип обтяження:</label>
             </div>
             <div class="col-auto ms-3 me-5" v-for="it in item.type_encumbrance.data" v-bind:key="it.id">
-              <div class="row mb-2" v-for="el in it.data" v-bind:key="el.number">
+              <div class="row mb-2" v-for="el in it.data" v-bind:key="el.id">
                 <div class=" col-auto mt-2 form-check" >
                   <input class="form-check-input" type="radio"
                   v-model="item.type_encumbrance.encumbranceTypeId" 
-                  :disabled="editing_status" :value="el.number">
+                  :disabled="editing_status" :value="el.id">
                 </div>
                 <div class="col-auto">
                   <label class="col-form-label">{{el.name}}</label>
@@ -83,7 +83,7 @@
             <div class="col-auto">
               <label class="col-form-label">Опис типу обтяження:</label>
             </div>
-            <div class="col-9" v-if="item.type_encumbrance.encumbranceTypeId == 6">
+            <div class="col-9" v-if="item.type_encumbrance.encumbranceTypeId == '4b0a5256-60da-4d65-a0ce-3f7a50d85184'">
               <textarea class="form-control" rows="1" :disabled="editing_status" :value="item.typeDescription"></textarea>
             </div>
             <div class="col-3" v-else>
@@ -97,10 +97,10 @@
               <label class="col-form-label">Відомості про обмеження щодо відчуження:</label>
             </div>
             <div class="col-auto">
-              <div class="row mb-2" v-for="it in item.information.data" v-bind:key="it.number">
+              <div class="row mb-2" v-for="it in item.information.data" v-bind:key="it.id">
                 <div class=" col-auto mt-2 form-check" >
                   <input class="form-check-input" type="radio" v-model="item.information.alienationLimitId" 
-                  :disabled="editing_status" :value="it.number">
+                  :disabled="editing_status" :value="it.id">
                 </div>
                 <div class="col-auto">
                   <label class="col-form-label">{{it.name}}</label>

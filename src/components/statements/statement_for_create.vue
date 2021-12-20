@@ -39,7 +39,7 @@ export default {
     }
   },
   name:'CreateStatment',
-  props:["editing_status","statement_element"],
+  props:["editing_status","statement_element", "info"],
   components:{
     GeneralInformation,
     WDInformation,
@@ -50,13 +50,16 @@ export default {
   },
   async created(){
     const data = await GetStatement(this.statement_element.id);
-    console.log(data.encumbranceTerm)
+
     this.element = {
       generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
       encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, data.encumbranceTier.isForeigner, data.encumbranceTier.name),
       encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
       basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number, data.basisDocument.issuer, data.basisDocument.issueDate),
-      encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, data.encumbranceInfo.registrationTypeId, data.encumbranceInfo.lastEncumbranceOccurrenceDate, data.encumbranceInfo.encumbranceTypeId, data.encumbranceInfo.alienationLimitId, data.encumbranceInfo.typeDescription),
+      encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, 
+      data.encumbranceInfo.registrationTypeId, data.encumbranceInfo.lastEncumbranceOccurrenceDate, 
+      data.encumbranceInfo.encumbranceTypeId, data.encumbranceInfo.alienationLimitId,
+       data.encumbranceInfo.typeDescription, this.info.encumbranceType, this.info.registrationType, this.info.alienationLimit),
       encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
       encumbranceDescriptionSubject: new DescriptionSubject(),
     }
