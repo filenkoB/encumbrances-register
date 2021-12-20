@@ -95,7 +95,6 @@
 export default {
   data(){
     return {
-      editing_status:false,
       address:{
         country: "Завантаження ...",
         region: null,
@@ -106,7 +105,7 @@ export default {
       },
     }
   },
-  props:["path"],
+  props:["path", "editing_status"],
   name: 'Address',
   methods:{
     get_region(item){

@@ -54,7 +54,7 @@
             </div>
             <div class="col-10" :class="colour(item)" 
               v-if="item.address.visible_status">
-              <Address :path="item.address.path"/>
+              <Address :path="item.address.path" :editing_status="editing_status"/>
             </div>
             <div class="col-4 mt-1" v-else>
               <input type="text" class="col-6 form-control" disabled value="Натисніть кнопку щоб розгорнути">
