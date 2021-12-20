@@ -14,7 +14,7 @@
               <label class="col-form-label">Ідентифікаційний номер / Код ЄДРПОУ:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.idNumber.str" :disabled="editing_status"  :value="item.taxpayerAccountCardNumber">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.idNumber.str" :disabled="editing_status"  v-model="item.taxpayerAccountCardNumber">
             </div>
           </div>
 
@@ -42,7 +42,7 @@
               <label class="col-form-label">ПІБ / Назва:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.name">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.name">
             </div>
           </div>
           

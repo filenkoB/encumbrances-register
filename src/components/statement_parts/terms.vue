@@ -14,7 +14,7 @@
               <label class="col-form-label">Розмір зобов'язання або вимоги:</label>
             </div>
             <div class="col-auto">
-              <input type="text" class="col-6 form-control" required :pattern="patterns.money.str" :disabled="editing_status" :value="item.obligationAmount">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.money.str" :disabled="editing_status" v-model="item.obligationAmount">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Вид валюти:</label>
@@ -35,7 +35,7 @@
               <label class="col-form-label">Строк виконання зобов'язання до:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" required :min="tomorrow" :max="decadeAfter" :disabled="editing_status" :value="item.termTo.split('T')[0]">
+              <input type="date" class="col-6 form-control" required :min="tomorrow" :max="decadeAfter" :disabled="editing_status" v-model="item.termTo.split('T')[0]">
             </div>
           </div>
 
@@ -44,7 +44,7 @@
               <label class="col-form-label">Додаткові умови, у тому числі відомості про особу, на користь якої встановлено публічне обтяження:</label>
             </div>
             <div class="col-9">
-              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.additionalTerms"></textarea>
+              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.additionalTerms"></textarea>
             </div>
           </div>
         </div>

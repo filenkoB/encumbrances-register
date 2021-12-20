@@ -7,6 +7,10 @@
           <i class="fa fa-list-alt" aria-hidden="true"></i>
           Мої заяви
         </button>
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="create_statement">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          Створити заяву
+        </button>
         <button type="button" class="btn btn-outline-light" v-on:click="search">
           <i class="fa fa-search" aria-hidden="true"></i>
           Пошук обтяження
@@ -17,6 +21,10 @@
         <button type="button" class="btn btn-outline-light me-2" v-on:click="statements">
           <i class="fa fa-list-alt" aria-hidden="true"></i>
           Переглянути Заяви
+        </button>
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="create_statement">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          Створити заяву
         </button>
         <button type="button" class="btn btn-outline-light me-2" v-on:click="search">
           <i class="fa fa-search" aria-hidden="true"></i>
@@ -79,6 +87,9 @@ export default {
     },
     statements() {
       this.$router.push({ name: "Statements"}).catch(() => {});
+    },
+    create_statement(){
+      this.$router.push({ name: "CreateStatment"}).catch(() => {});
     },
     search() {
       this.$router.push({ name: "SearchInfo"}).catch(() => {});
