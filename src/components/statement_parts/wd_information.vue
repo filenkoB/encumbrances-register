@@ -14,7 +14,7 @@
               <label class="col-form-label">Ідентифікаційний номер / Код ЄДРПОУ:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" :disabled="editing_status"  :value="item.taxpayerAccountCardNumber">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.idNumber.str" :disabled="editing_status"  :value="item.taxpayerAccountCardNumber">
             </div>
           </div>
 
@@ -42,7 +42,7 @@
               <label class="col-form-label">ПІБ / Назва:</label>
             </div>
             <div class="col-4">
-              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.name">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.name">
             </div>
           </div>
           
@@ -68,7 +68,9 @@
 <script>
 import Address from "./Address.vue"
 import {get_button_colour, get_class_colour, change_item_visible_status} from "../logic";
+import {validation} from "../../data";
 export default {
+  data() { return {} },
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
@@ -80,6 +82,7 @@ export default {
   },
   props:["item", "button_text", "editing_status"],
   components:{ Address },
-  name:'WDInformation',  
+  name:'WDInformation',
+  created() { this.patterns = validation.patterns; }
 }
 </script>

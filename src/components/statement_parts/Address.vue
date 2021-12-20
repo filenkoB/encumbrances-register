@@ -12,9 +12,8 @@
           <label class="col-form-label d-inline">Область:</label>
         </div>
         <div class="col-3">
-          <select class="form-control" @change="clear_address('region')" v-on:change="get_district"
+          <select class="form-control" required @change="clear_address('region')" v-on:change="get_district"
             :disabled="editing_status || path.country == undefined || path.country.length == 0" v-model="path.region">
-            <option selected disabled>Оберіть ...</option>
             <option v-for="item in this.address.region" :key="item.id" :value="item.id">
               {{ item.name }}
             </option>
@@ -24,9 +23,8 @@
           <label class="col-form-label d-inline">Район:</label>
         </div>
         <div class="col-3">
-          <select class="form-control" @change="clear_address('district')" v-on:change="get_city"
-            :disabled="editing_status || path.region == 'Оберіть ...'" v-model="path.district">
-            <option selected disabled>Оберіть ...</option>
+          <select class="form-control" required @change="clear_address('district')" v-on:change="get_city"
+            :disabled="editing_status || path.region == ''" v-model="path.district">
             <option v-for="item in address.district" :key="item.id" :value="item.id">{{ item.name }}</option>
           </select>
         </div>
@@ -36,9 +34,8 @@
           <label class="col-form-label d-inline">Місто:</label>
         </div>
         <div class="col-2">
-          <select class="form-control" @change="clear_address('city')" v-on:change="get_street_index"
-            :disabled="editing_status || path.district == 'Оберіть ...'" v-model="path.city">
-            <option selected disabled>Оберіть ...</option>
+          <select class="form-control" required @change="clear_address('city')" v-on:change="get_street_index"
+            :disabled="editing_status || path.district == ''" v-model="path.city">
             <option v-for="item in address.city" :key="item.id" :value="item.id">{{ item.name }}</option>
           </select>
         </div>
@@ -47,19 +44,17 @@
         </div>
         <div class="col-2">
           <select class="form-control"
-            :disabled="editing_status || path.city == 'Оберіть ...'" v-model="path.index">
-            <option selected disabled>Оберіть ...</option>
+            :disabled="editing_status || path.city == ''" required v-model="path.index">
             <option v-for="item in address.index" :key="item" :value="item">{{ item }}</option>
           </select>
         </div>
         <div class="col-1"></div>
         <div class="col-1 mt-2">
-          <label class="col-form-label d-inline">Вилиця:</label>
+          <label class="col-form-label d-inline">Вулиця:</label>
         </div>
         <div class="col-3">
           <select class="form-control" 
-            :disabled="editing_status || path.city == 'Оберіть ...'" v-model="path.street">
-            <option selected disabled>Оберіть ...</option>
+            :disabled="editing_status || path.city == ''" required v-model="path.street">
             <option v-for="item in address.street" :key="item.id" :value="item.id">{{ item.name }}</option>
           </select>
         </div>
@@ -70,14 +65,14 @@
         </div>
         <div class="col-2">
           <input type="data" class="form-control d-inline" 
-            :disabled="editing_status || path.street == 'Оберіть ...'" v-model="path.build">
+            :disabled="editing_status || path.street == ''" required :pattern="patterns.building.str" v-model="path.build">
         </div>
         <div class="col-1 mt-2">
           <label class="col-form-label d-inline">Корпус:</label>
         </div>
         <div class="col-2">
           <input type="data" class="form-control d-inline" 
-            :disabled="editing_status || path.street == 'Оберіть ...'" v-model="path.corps">
+            :disabled="editing_status || path.street == ''" :pattern="patterns.corps.str" v-model="path.corps">
         </div>
         <div class="col-1"></div>
         <div class="col-1 mt-2">
@@ -85,7 +80,7 @@
         </div>
         <div class="col-2">
           <input type="data" class="form-control d-inline" 
-            :disabled="editing_status || path.street == 'Оберіть ...'" v-model="path.flat">
+            :disabled="editing_status || path.street == ''" required :pattern="patterns.flat.str" v-model="path.flat">
         </div>
       </div>
     </div>
@@ -93,6 +88,7 @@
 </template>
 <script>
 import {GetRegionByCountry, GetDistrictByRegion, GetCityByDistrict, GetStreetByCity, GetIndexByCity} from "../../connect_to_server"
+import {validation} from "../../data";
 export default {
   data(){
     return {
@@ -131,20 +127,20 @@ export default {
     },
     clear_address(key) {
       if(key == "cauntry"){
-        this.path.region = "Оберіть ...",
+        this.path.region = "",
         this.clear_address("region");
       }
       else if(key == "region"){
-        this.path.district = "Оберіть ...",
+        this.path.district = "",
         this.clear_address("district");
       }
       else if(key == "district"){
-        this.path.city = "Оберіть ...";
+        this.path.city = "";
         this.clear_address("city");
       }
       else if(key == "city"){
-        this.path.index = "Оберіть ...";
-        this.path.street = "Оберіть ...";
+        this.path.index = "";
+        this.path.street = "";
         this.path.build = "";
         this.path.corps = "";
         this.path.flat = "";
@@ -152,6 +148,7 @@ export default {
     }
   },
   created(){
+    this.patterns = validation.patterns;
     this.clear_address("cauntry");
     this.address.country = "Завантаження"
     fetch(process.env.VUE_APP_HEROKU_PATH + "/Country")

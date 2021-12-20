@@ -14,7 +14,7 @@
               <label class="col-form-label">Розмір зобов'язання або вимоги:</label>
             </div>
             <div class="col-auto">
-              <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.obligationAmount">
+              <input type="text" class="col-6 form-control" required :pattern="patterns.money.str" :disabled="editing_status" :value="item.obligationAmount">
             </div>
             <div class="col-auto">
               <label class="col-form-label">Вид валюти:</label>
@@ -23,8 +23,7 @@
               <div class="input-group mb-3">
                 <span class="input-group-text" v-if="item.currencyTypeId">{{currency_type.filter(el=>el.id==item.currencyTypeId)[0].sign}}</span>
                 <span class="input-group-text" v-else><i class="fa fa-money"></i></span>
-                <select class="form-control" :disabled="editing_status"  v-model="item.currencyTypeId">
-                  <option selected disabled>Оберіть ...</option>
+                <select class="form-control" required :disabled="editing_status"  v-model="item.currencyTypeId">
                   <option v-for="it in currency_type" :key="it.id" :value="it.id">{{ it.name }}</option>
                 </select>
               </div>
@@ -36,7 +35,7 @@
               <label class="col-form-label">Строк виконання зобов'язання до:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" :disabled="editing_status" :value="item.termTo.split('T')[0]">
+              <input type="date" class="col-6 form-control" required :min="tomorrow" :max="decadeAfter" :disabled="editing_status" :value="item.termTo.split('T')[0]">
             </div>
           </div>
 
@@ -45,7 +44,7 @@
               <label class="col-form-label">Додаткові умови, у тому числі відомості про особу, на користь якої встановлено публічне обтяження:</label>
             </div>
             <div class="col-9">
-              <textarea class="form-control" rows="1" :disabled="editing_status" :value="item.additionalTerms"></textarea>
+              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.additionalTerms"></textarea>
             </div>
           </div>
         </div>
@@ -55,6 +54,7 @@
 </template>
 <script>
 import {get_button_colour, get_class_colour, change_item_visible_status} from "../logic";
+import {validation} from "../../data"
 export default {
   methods:{
     button(){return get_button_colour(this.item)},
@@ -63,6 +63,7 @@ export default {
     change_status(el){change_item_visible_status(el)},
   },
   props:["item", "editing_status", "currency_type"],
-  name:'Terms',  
+  name:'Terms',
+  created() { this.patterns = validation.patterns; this.tomorrow = validation.tomorrow; this.decadeAfter = validation.decadeAfter; }
 }
 </script>

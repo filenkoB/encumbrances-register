@@ -55,7 +55,7 @@
               <label class="col-form-label">Дата виникнення попереднього обтяження:</label>
             </div>
             <div class="col-auto">
-              <input type="date" class="col-6 form-control" :disabled="editing_status" :value="item.lastEncumbranceOccurrenceDate.split('T')[0]">
+              <input type="date" class="col-6 form-control" required :max="today" :disabled="editing_status" :value="item.lastEncumbranceOccurrenceDate.split('T')[0]">
             </div>
           </div>
           
@@ -84,7 +84,7 @@
               <label class="col-form-label">Опис типу обтяження:</label>
             </div>
             <div class="col-9" v-if="item.encumbranceTypeId == '4b0a5256-60da-4d65-a0ce-3f7a50d85184'">
-              <textarea class="form-control" rows="1" :disabled="editing_status" :value="item.typeDescription"></textarea>
+              <textarea class="form-control" rows="1" required :pattern="patterns.text.str" :disabled="editing_status" :value="item.typeDescription"></textarea>
             </div>
             <div class="col-3" v-else>
               <input type="text" class="col-6 form-control" disabled value="Не застосовується">
@@ -115,13 +115,16 @@
 </template>
 <script>
 import {get_button_colour, get_class_colour, change_item_visible_status} from "../logic";
+import {validation} from "../../data";
 export default {
+  data() { return {} },
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){change_item_visible_status(this.item)}
   },
   props:["item", "editing_status", "info"],
-  name:'EncumbranceInformation',  
+  name:'EncumbranceInformation',
+  created() { this.today = validation.today; this.patterns = validation.patterns; }
 }
 </script>

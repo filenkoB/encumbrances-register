@@ -2,13 +2,17 @@
   <div class="row">
     <div id="applications_area">
       <div class="row m-1 border border-2 border-secondary rounded" v-for="item in get_applications()" :key="item.pasNumber">
-        <div class="col-2 text-start border-end border-4">Вихідний номер: </div>
-        <div class="col-2 text-start border-end border-4">Дата заявки: </div>
-        <div class="col-4 text-start border-end border-4"></div>
-        <div class="col-auto m-1 text-start">
-          <button type="button" class="btn btn-outline-info" v-on:click="get_application_info(item)">Переглянути дані заявки</button>
+        <div class="col-3 text-start border-end border-4 pt-3">Вихідний номер: </div>
+        <div class="col-3 text-start border-end border-4 pt-3">Дата заявки: </div>
+        <div class="col-auto m-1 text-right">
+          <button type="button" class="btn btn-outline-info m-1" @click="get_application_info(item)">Переглянути дані заявки</button>
+          <button type="button" class="btn btn-outline-success m-1" :disabled="!item.visible_status" @click="accept()">Підтвердити</button>
+          <button type="button" class="btn btn-outline-danger m-1" :disabled="!item.visible_status" @click="decline()">Відхилити</button>
         </div>
-        <system-reg-application v-if="item.visible_status" :application="item"/>
+        <div v-if="item.visible_status">
+          <card :cards="cards" :success="removeApp"/>
+          <system-reg-application :application="item"/>
+        </div>
       </div>
     </div>
     <div class="row my-3">
@@ -40,6 +44,8 @@
 </template>
 <script>
 import SystemRegApplication from "../../components/SystemRegApplication.vue"
+import Card from "../../components/Card.vue"
+import {sysAppsCards} from  "../../data"
 export default {
   name: 'SystemRegApplications',
   data: function () {
@@ -49,12 +55,14 @@ export default {
         max_items_count:5,
         count_page: 0,
       },
+      cards: null,
       applications: null
     };
   },
   components:
   {
-    SystemRegApplication
+    SystemRegApplication,
+    Card
   },
   methods:{
     pagination_page(item){ this.pagination.active_page = item-1;},
@@ -67,7 +75,26 @@ export default {
       return this.applications.slice(position, position + this.pagination.max_items_count);       
     },
     get_application_info(item){
+      this.closeInfo(item);
       item.visible_status = !item.visible_status;
+    },
+    accept() {
+      this.cards[0].visible_status = true;
+      this.cards[1].visible_status = false;
+    },
+    decline() {
+      this.cards[0].visible_status = false;
+      this.cards[1].visible_status = true;
+    },
+    closeInfo(item) {
+      for(let app of this.applications){
+        if (app !== item) app.visible_status = false;
+      }
+      this.cards[0].visible_status = false;
+      this.cards[1].visible_status = false;
+    },
+    removeApp() {
+      //
     }
   },
   mounted(){
@@ -124,11 +151,12 @@ export default {
         flat: ""} }
       },
     ]
+    this.cards = sysAppsCards;
   }
 }
 </script>
 <style>
 #applications_area{
-  min-height: 430px;
+  min-height: 500px;
 }
 </style>
