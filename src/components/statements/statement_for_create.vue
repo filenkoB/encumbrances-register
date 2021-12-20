@@ -50,7 +50,6 @@ export default {
   },
   async created(){
     const data = await GetStatement(this.statement_element.id);
-
     this.element = {
       generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
       encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, 
@@ -65,8 +64,6 @@ export default {
       encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
       encumbranceDescriptionSubject: new DescriptionSubject(),
     }
-    console.log(this.element.encumbranceTier);
-    
   }
 }
 </script>

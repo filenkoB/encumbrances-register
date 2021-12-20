@@ -49,7 +49,7 @@
           <select class="form-control"
             :disabled="editing_status || path.city == 'Оберіть ...'" v-model="path.index">
             <option selected disabled>Оберіть ...</option>
-            <option v-for="item in address.index" :key="item.id" :value="item.id">{{ item.name }}</option>
+            <option v-for="item in address.index" :key="item" :value="item">{{ item }}</option>
           </select>
         </div>
         <div class="col-1"></div>
@@ -92,6 +92,7 @@
 </div>
 </template>
 <script>
+import {GetRegionByCountry, GetDistrictByRegion, GetCityByDistrict, GetStreetByCity, GetIndexByCity} from "../../connect_to_server"
 export default {
   data(){
     return {
@@ -108,34 +109,25 @@ export default {
   props:["path", "editing_status"],
   name: 'Address',
   methods:{
-    get_region(item){
+    async get_region(item){
       this.path.country = item;
-      this.path.country = item;
-      fetch(process.env.VUE_APP_HEROKU_PATH + "/Region/Country/" + this.path.country)
-        .then(this.clear_address('region'))
-        .then(response => response.json())
-        .then(data => (this.address.region = data));
+      this.clear_address('region');
+      this.address.region = await GetRegionByCountry(this.path.country)
     },
-    get_district(event){
+    async get_district(event){
       this.path.region = event.target.value;
-      fetch(process.env.VUE_APP_HEROKU_PATH + "/District/Region/" + event.target.value)
-        .then(this.clear_address('district'))
-        .then(response => response.json())
-        .then(data => (this.address.district = data))
+      this.clear_address('district');
+      this.address.district = await GetDistrictByRegion(event.target.value);
     },
-    get_city(event){
+    async get_city(event){
       this.path.district = event.target.value;
-      fetch(process.env.VUE_APP_HEROKU_PATH + "/City/District/" + event.target.value)
-        .then(this.clear_address('city'))
-        .then(response => response.json())
-        .then(data => (this.address.city = data));
+      this.clear_address('city');
+      this.address.city = await GetCityByDistrict(event.target.value)
     },
-    get_street_index(event){
+    async get_street_index(event){
       this.path.city = event.target.value;
-      this.address.index = [{id:7, name:"7 n"}, {id:8, name:"8 n"}];
-      fetch(process.env.VUE_APP_HEROKU_PATH + "/Street/City/" + event.target.value)
-        .then(response => response.json())
-        .then(data => (this.address.street = data));
+      this.address.street = await GetStreetByCity(event.target.value);
+      this.address.index = await GetIndexByCity(event.target.value);
     },
     clear_address(key) {
       if(key == "cauntry"){
