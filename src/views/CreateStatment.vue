@@ -1,6 +1,6 @@
 <template>
   <form action="" class="row mt-3 border border-3 border-secondary rounded">
-    <div class="col">{{statement_type}}
+    <div class="col">
       <div class="row border-bottom border-3 border-warning p-2">
         <div class="col-auto mt-2">
           <label class="col-form-label d-inline">Оберіть тип заяви:</label>
@@ -25,7 +25,6 @@
         </div> 
       </div>
     </div>
-    <pre>{{element}}</pre>
   </form>
 </template>
 <script>
