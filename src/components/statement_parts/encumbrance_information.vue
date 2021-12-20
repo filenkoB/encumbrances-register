@@ -16,10 +16,10 @@
                   <label class="col-form-label">Вид обтяження:</label>
                 </div>
                 <div class="col-auto">
-                  <div class="row mb-2" v-for="el in item.encumbrance_type.data" v-bind:key="el.number">
+                  <div class="row mb-2" v-for="el in item.EncumbranceKind" v-bind:key="el.id">
                     <div class=" col-auto mt-2 form-check" >
-                      <input class="form-check-input" type="radio" v-model="item.encumbrance_type.encumbranceKindId" 
-                      :disabled="editing_status" :value="el.number">
+                      <input class="form-check-input" type="radio" v-model="item.encumbranceKindId" 
+                      :disabled="editing_status" :value="el.id">
                     </div>
                     <div class="col-auto">
                       <label class="col-form-label">{{el.name}}</label>

@@ -87,7 +87,7 @@
 </div>
 </template>
 <script>
-import {GetRegionByCountry, GetDistrictByRegion, GetCityByDistrict, GetStreetByCity, GetIndexByCity} from "../../connect_to_server"
+import {GetALLCountry, GetRegionByCountry, GetDistrictByRegion, GetCityByDistrict, GetStreetByCity, GetIndexByCity} from "../../connect_to_server"
 import {validation} from "../../data";
 export default {
   data(){
@@ -126,11 +126,7 @@ export default {
       this.address.index = await GetIndexByCity(event.target.value);
     },
     clear_address(key) {
-      if(key == "cauntry"){
-        this.path.region = "",
-        this.clear_address("region");
-      }
-      else if(key == "region"){
+      if(key == "region"){
         this.path.district = "",
         this.clear_address("district");
       }
@@ -147,22 +143,11 @@ export default {
       }
     }
   },
-  created(){
+  async created(){
     this.patterns = validation.patterns;
-    this.clear_address("cauntry");
     this.address.country = "Завантаження"
-    fetch(process.env.VUE_APP_HEROKU_PATH + "/Country")
-      .then(async response =>{
-        if(response.status == 200){
-          const data = await response.json();
-          this.address.country = data[0];
-          this.get_region(data[0].id)
-        }
-        else if(response.status != 200){
-          console.log(response.status)
-        }
-      }
-    )
+    this.address.country = (await GetALLCountry())[0];
+    this.get_region(this.address.country.id);
   }
 }
 </script>

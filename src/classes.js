@@ -1,4 +1,3 @@
-
 export class StatmentsPageElement{
   visible_status = false;
   constructor(id, number, date, typeName){
@@ -27,6 +26,7 @@ export class GeneralInfoType2{
 
 export class EncumbranceTierDebtor{
   visible_status = false;
+  short_info = false;
   address = {
     visible_status: false,
     path:{
@@ -61,17 +61,9 @@ export class BasisDocument{
 
 export class EncumbranceInfo{
   visible_status = false;
-  encumbrance_type = {
-    data: [
-      {number:1, name:"Публічне обтяження"}, 
-      {number:2, name:"Приватне обтяження"}
-    ],
-    encumbranceKindId: 1
-  }
-
   constructor(encumbranceKindId, registrationTypeId, lastEncumbranceOccurrenceDate, encumbranceTypeId, 
     alienationLimitId, typeDescription) {
-    this.encumbrance_type.encumbranceKindId = encumbranceKindId;
+    this.encumbranceKindId = encumbranceKindId;
     this.registrationTypeId = registrationTypeId;
     this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate;
     this.encumbranceTypeId = encumbranceTypeId;
@@ -89,7 +81,6 @@ export class EncumbranceTerm{
     this.currencyTypeId = currencyTypeId;
   }
 }
-
 
 export class DescriptionSubject{
   name = null;
@@ -111,29 +102,15 @@ export class DescriptionSubject{
 
 export class Changes{
   visible_status = false;
-  changes = {
-    data: [
-      {number: 1, name: "Зареєструвати припинення обтяження"},
-      {number: 2, name: "Зареєструвати звернення стягнення"},
-      {number: 3, name: "Продовжити строк  дії  реєстраційного  запису  на   наступні 5 років"},
-      {number: 4, name: "Виправити дату виникнення"},
-      {number: 5, name: "Дата виникнення"}
-    ],
-    checked: 1
-  }
-  changeType = {
-    data: [
-      {number:1, name: "Замінити  Обтяжувача"},
-      {number:2, name: "Виправити Обтяжувача"},
-      {number:3, name: "Замінити Боржника"},
-      {number:4, name: "Вилучити  Боржника"},
-      {number:5, name: "Додати  Боржника"},
-      {number:6, name: "Виправити Боржника"}
-    ],
-    checked: 1
-  };
+  changes_checked = 1;
+  changeTypechecked = 1
   constructor() {
-    this.changes.checked = 1;
+  }
+}
+export class SubjectChange{
+  visible_status = false;
+  changeTypechecked = 1
+  constructor() {
   }
 }
 /*

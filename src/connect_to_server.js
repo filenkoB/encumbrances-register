@@ -152,6 +152,21 @@ export async function EncumbranceType(){
   }
 }
 
+export async function EncumbranceKind(){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceKind");
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
 export async function RegistrationType(){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/RegistrationType");
   if(responce.status == 200){

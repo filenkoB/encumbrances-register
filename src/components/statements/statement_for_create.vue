@@ -19,7 +19,7 @@
       <Terms :item="element.encumbranceTerm" :editing_status="editing_status" :currency_type="info.currency"/>
 
       <hr class="border-info border border-2">
-      <EncumbranceDescriptionSubject :item="element.encumbranceDescriptionSubject" :editing_status="editing_status"/>
+      <EncumbranceDescriptionSubject :item="element.encumbranceDescriptionSubject" :button_vs="true" :editing_status="editing_status"/>
     </div>
   </div>
 </template>
@@ -68,7 +68,6 @@ export default {
     }
     else{
       const time = new Date();
-      console.log();
       this.element = {
         generalInfo: null,
         encumbranceTier: new EncumbranceTierDebtor(null, false, null),
@@ -80,7 +79,6 @@ export default {
       }
       this.fun(this.element);
     }
-  },
-  updated(){}
+  }
 }
 </script>

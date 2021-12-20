@@ -1,6 +1,6 @@
 <template>
   <form action="" class="row mt-3 border border-3 border-secondary rounded">
-    <div class="col">
+    <div class="col">{{statement_type}}
       <div class="row border-bottom border-3 border-warning p-2">
         <div class="col-auto mt-2">
           <label class="col-form-label d-inline">Оберіть тип заяви:</label>
@@ -13,10 +13,10 @@
         </div>
       </div>
       <div class="row p-2" v-if="statement_type">
-        <Statement :editing_status="false" :statement_element="get_stetement()" :info="info" :fun="get_info"/>
+        <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заява про реєстрацію обтяження рухомого майна'}" :info="info" :fun="get_info"/>
       </div>
-      <div class="row" v-else>
-         registarar
+      <div class="row p-2" v-else>
+        <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заяви про реєстрацію змін обтяження рухомого майна'}" :info="info" :fun="get_info"/>
       </div>
       <div class="row m-2">
         <div class="col text-center">
@@ -37,7 +37,7 @@ export default {
       user_status: null,
       statement_type: true,
       info:[],
-      statement:{},
+      statement:{typeName: null, id: null},
       element:null
     }
   },
@@ -48,12 +48,6 @@ export default {
   methods:{
     get_info(item){
       this.element = item;
-    },
-    get_stetement(){
-      this.statement.typeName = "Заяви про реєстрацію змін обтяження рухомого майна";
-      if(this.statement_type) this.statement.typeName = "Заява про реєстрацію обтяження рухомого майна";
-      this.statement.id = null;
-      return this.statement;
     }
   },
   mounted(){

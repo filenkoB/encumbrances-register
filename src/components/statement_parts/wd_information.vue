@@ -2,11 +2,11 @@
   <div class="row" v-if="item">
     <div class="col">
       <div class="row">
-        <div class="col-auto">
+        <div class="col-auto" v-if="button_text.length != 0">
           <button type="button" :class="button()" v-on:click="change()">{{button_text}}</button>
         </div> 
       </div>
-      <hr class="border-secondary border border-2" v-if="item.visible_status">
+      <hr class="border-secondary border border-2" v-if="item.visible_status && button_text.length != 0">
       <div class="row" v-if="item.visible_status" :class="colour">
         <div class="col">
           <div class="row mb-2">
@@ -46,8 +46,8 @@
             </div>
           </div>
           
-          <hr class="border-secondary border border-2">
-          <div class="row mb-2">
+          <hr class="border-secondary border border-2" v-if="!item.short_info">
+          <div class="row mb-2"  v-if="!item.short_info">
             <div class="col-auto mt-1">
               <button type="button" class="btn btn-primary"  
               v-on:click="change_address(item.address)">Адреса:</button>
@@ -58,6 +58,16 @@
             </div>
             <div class="col-4 mt-1" v-else>
               <input type="text" class="col-6 form-control" disabled value="Натисніть кнопку щоб розгорнути">
+            </div>
+          </div>
+
+          <hr class="border-secondary border border-2"  v-if="!item.short_info">
+          <div class="row mb-2"  v-if="!item.short_info">
+            <div class="col-auto">
+              <label class="col-form-label">Додаткові відомості:</label>
+            </div>
+            <div class="col-9">
+              <textarea class="form-control" rows="1" required :disabled="editing_status" v-model="item.typeDescription"></textarea>
             </div>
           </div>
         </div>
