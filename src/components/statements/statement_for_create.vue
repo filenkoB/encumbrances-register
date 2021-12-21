@@ -35,7 +35,44 @@ import {GeneralInfo, EncumbranceTierDebtor, BasisDocument, EncumbranceInfo, Encu
 export default {
   data(){
     return {
-      element: {},
+      element: {
+        generalInfo: {},
+        encumbranceTier: {
+          address:{
+            path:{
+              country:'',
+              region:'',
+              district:'',
+              city:'',
+              index:'',
+              street:'',
+              build:'',
+              corps:'',
+              flat:''
+            }
+          }
+        },
+        encumbranceDebtor: {
+          address:{
+            path:{
+              country:'',
+              region:'',
+              district:'',
+              city:'',
+              index:'',
+              street:'',
+              build:'',
+              corps:'',
+              flat:''
+            }
+          }
+        },
+        basisDocument: {},
+        encumbranceInfo:{},
+        encumbranceTerm: {},
+        encumbranceDescriptionSubject: {},
+      
+      },
       visible_status: true,
     }
   },

@@ -30,7 +30,7 @@
 </template>
 <script>
 import Statement from "../components/Statement.vue"
-import {EncumbranceType, RegistrationType, AlienationLimit, GetALLCurrency, CreateStatement} from "../connect_to_server"
+import { CreateStatement} from "../connect_to_server"
 export default {
   data(){
     return {
@@ -129,13 +129,6 @@ export default {
       this.$router.push({ name: "Info"}).catch(() => {});
     }
   },
-
-  async created(){
-    this.info.encumbranceType = await EncumbranceType();
-    this.info.registrationType = await RegistrationType();
-    this.info.alienationLimit = await AlienationLimit();
-    this.info.currency = await GetALLCurrency();
-  }
 }
 </script>
 <style>

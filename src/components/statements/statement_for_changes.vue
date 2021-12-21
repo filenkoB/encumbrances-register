@@ -6,14 +6,15 @@
       <hr class="border-info border border-2">
       <OtherChanges :item="element.otherChange" :editing_status="editing_status"/>
 
-
-      
+      <hr class="border-info border border-2">
+      <CreateStatment :editing_status="editing_status" :statement_element="statement_element" :info="info" :fun="fun"/>
     </div>
   </div>
 </template>
 <script>
 
 import GeneralInformation from "../statement_parts/general_information_2.vue"
+import CreateStatment from "./statement_for_create.vue"
 import OtherChanges from "../statement_parts/other_changes.vue"
 import {GetStatement} from "../../connect_to_server"
 import {GeneralInfoType2, Changes} from "../../classes"
@@ -28,6 +29,7 @@ export default {
   components:{
     GeneralInformation,
     OtherChanges,
+    CreateStatment
   },
   async created(){
     if(this.statement_element.id != null){

@@ -128,6 +128,6 @@ export default {
 </script>
 <style>
 #registrars_area{
-  min-height: 430px;
+  min-height: 420px;
 }
 </style>

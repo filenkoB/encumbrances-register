@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div id="applications_area">
+    <div id="applications_area" v-if="applications.length > 0">
       <div class="row m-1 border border-2 border-secondary rounded" v-for="item in applications" :key="item.number">
         <div class="col-auto text-start pt-3">Вихідний номер: </div>
         <div class="col-2 text-start border-end border-4 pt-3">{{item.number}}</div>
@@ -16,7 +16,12 @@
         </div>
       </div>
     </div>
-    <div class="row my-3">
+    <div class="row border border-2 p-3 border-info rounded" v-else>
+      <div class="col text-center fs-5">
+        Наразі в системі відсутні заявки на реєстрацію користувачів.
+      </div>
+    </div>
+    <div class="row my-3" v-if="applications.length > 0">
       <pagination :pagination="pagination" :fun="get_applications"/>
     </div>
   </div>
@@ -35,8 +40,7 @@ export default {
         max_items_count:5,
         count_page: 0,
       },
-      applications: null,
-      statements: null
+      applications: [],
     };
   },
   components:
@@ -83,6 +87,6 @@ export default {
 </script>
 <style>
 #applications_area{
-  min-height: 500px;
+  min-height: 390px;
 }
 </style>

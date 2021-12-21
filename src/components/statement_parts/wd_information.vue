@@ -52,7 +52,7 @@
               <div class="col-auto mb-3">
                 <label>Адреса:</label>
               </div>
-              <Address :path="item.address.path" :editing_status="editing_status"/>
+              <Address :path="item.address.path" :editing_status="editing_status" v-if="item.address.path!=1"/>
             </div>
           </div>
 
