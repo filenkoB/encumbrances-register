@@ -66,7 +66,7 @@ export default {
     },
     isInvalid() {
       if(!this.patterns.money.var.exec(this.item.obligationAmount)) { return true; }
-      if(!this.currencyTypeId) { return true; }
+      if(!this.item.currencyTypeId) { return true; }
       if(!this.patterns.text.var.exec(this.item.additionalTerms)) { return true;}
       return false;
     }

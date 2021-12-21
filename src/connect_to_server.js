@@ -202,9 +202,7 @@ export async function EncumbranceType(){
 }
 
 export async function EncumbranceKind(){
-  console.log("responce.status");
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceKind");
-  console.log(responce.status);
   if(responce.status == 200){
     const data = await responce.json()
     return data;
