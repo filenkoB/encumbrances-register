@@ -30,7 +30,7 @@
 </template>
 <script>
 import Statement from "../components/Statement.vue"
-import { CreateStatement} from "../connect_to_server"
+// import { CreateStatement} from "../connect_to_server"
 export default {
   data(){
     return {
@@ -83,32 +83,6 @@ export default {
           this.isvalid = false;
         }
       }
-<<<<<<< HEAD
-      console.log("Isvalid",this.isvalid);
-      setTimeout(this.click_submit, 100);
-    },
-    click_submit() {
-      document.getElementById('submit').click();
-      
-    },
-    async submit(){
-      if(this.isvalid){
-        let el = {
-          statementTypeId: null,        
-          encumbranceTier: this.element.encumbranceTier.get_info(),
-          encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
-          basisDocument: this.element.basisDocument.get_info(),
-          encumbranceInfo: this.element.encumbranceInfo.get_info(),
-          encumbranceTerm: this.element.encumbranceTerm.get_info(),
-          encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
-        }
-        if(this.statement_type) el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
-        else el.statementTypeId = "3c63d55d-4b8f-4c06-8122-6a1c3ac72699";
-        const info = await CreateStatement(el);
-        console.log("hi",info);
-      }
-    },
-=======
       setTimeout(this.click_submit, time);
     },
     click_submit() {
@@ -130,7 +104,6 @@ export default {
       // }
       // console.log(this.element);
     },
->>>>>>> origin/vue-info-sub
     reset(){
       this.$router.go(0);
     }
