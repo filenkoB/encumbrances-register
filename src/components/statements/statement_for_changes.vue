@@ -11,6 +11,9 @@
 
       <hr class="border-info border border-2">
       <ChangeSubject :item="element.changeSubject" :editing_status="editing_status"/>
+
+      <hr class="border-info border border-2">
+      <ChangeTerms :item="element.encumbranceTerm" :editing_status="editing_status" :info="info"/>
       </div>
   </div>
 </template>
@@ -19,9 +22,10 @@
 import GeneralInformation from "../statement_parts/general_information_2.vue"
 import OtherChanges from "../statement_parts/other_changes.vue"
 import ChangeSubject from "../statement_parts/change_subject.vue"
+import ChangeTerms from "../statement_parts/change_terms.vue"
 import Document from "../statement_parts/document.vue"
 import {GetStatement} from "../../connect_to_server"
-import {GeneralInfoType2, BasisDocument, Changes, SubjectChange} from "../../classes"
+import {GeneralInfoType2, BasisDocument, Changes, SubjectChange, EncumbranceTerm} from "../../classes"
 export default {
   data(){
     return {
@@ -29,12 +33,13 @@ export default {
     }
   },
   name:'CreateStatment',
-  props:["editing_status","statement_element", "fun"],
+  props:["editing_status","statement_element", "fun", "info"],
   components:{
     GeneralInformation,
     Document,
     OtherChanges,
-    ChangeSubject
+    ChangeSubject,
+    ChangeTerms
   },
   async created(){
     if(this.statement_element.id != null){
@@ -45,6 +50,7 @@ export default {
           basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number, data.basisDocument.issuer, data.basisDocument.issueDate),
           otherChange: new Changes(),
           changeSubject: new SubjectChange()
+          
       }
     }
     else{
@@ -53,7 +59,8 @@ export default {
         generalInfo: new GeneralInfoType2(null, time.toISOString()),
         basisDocument: new BasisDocument(null, null, null, time.toISOString()),
         otherChange: new Changes(),
-        changeSubject: new SubjectChange()
+        changeSubject: new SubjectChange(),
+        encumbranceTerm: new EncumbranceTerm( null, time.toISOString(), null, null),
       }
 
       this.fun(this.element)
