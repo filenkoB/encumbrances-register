@@ -59,32 +59,19 @@ export default {
     },
     fake_submit() {
       this.isvalid = true;
+      let time = 100;
       if (this.statement_type) {
-        console.log(this.element.encumbranceTier.invalid);
-        if (this.element.encumbranceTier.invalid) {
-          this.element.encumbranceTier.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceDebtor.invalid) {
-          this.element.encumbranceDebtor.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.basisDocument.invalid) {
-          this.element.basisDocument.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceInfo.invalid) {
-          this.element.encumbranceInfo.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceTerm.invalid) {
-          this.element.encumbranceTerm.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceDescriptionSubject.invalid) {
-          this.element.encumbranceDescriptionSubject.visible_status = true;
-          this.isvalid = false;
-        }
+        Object.keys(this.element).forEach( i => {
+          if (i !== 'generalInfo' && this.isvalid) {
+            if (this.element.encumbranceTier.invalid) {
+              if (!this.element.encumbranceTier.visible_status) {
+                this.element.encumbranceTier.change_visibility();
+                time = 500;
+              }
+              this.isvalid = false;
+            }
+          }
+        });
       }
       else {
         if (this.element.basisDocument.invalid) {
@@ -96,10 +83,12 @@ export default {
           this.isvalid = false;
         }
       }
-      setTimeout(this.click_submit, 100);
+      setTimeout(this.click_submit, time);
     },
     click_submit() {
       document.getElementById('submit').click();
+    },
+    submit(){
       if(this.isvalid){
         console.log("hi",this.element);
         const el = {
@@ -113,9 +102,8 @@ export default {
         }
         console.log(el);
       }
-      console.log(this.element)
+      console.log(this.element);
     },
-    submit(){},
     reset(){
       this.$router.go(0);
     }

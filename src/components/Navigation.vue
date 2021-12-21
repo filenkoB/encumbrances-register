@@ -41,6 +41,12 @@
         </button>
       </div>
     </div>
+    <div class="col-auto text-start" style="width: 325px">
+      <div class="row">
+        <div class="col-2"><img src="../assets/UkrEmblemaW.png" width="45" /></div>
+        <div class="col text-center mt-1"><span class="head-text align-middle"> Державний реєстр обтяження рухомого майна</span></div>
+      </div>
+    </div>
     <div class="col text-end me-3">
       <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-light me-2" disabled>
@@ -108,3 +114,9 @@ export default {
   },
 };
 </script>
+<style>
+ .head-text {
+   font-size: 14pt;
+   color: white;
+ }
+</style>
