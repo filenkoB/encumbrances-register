@@ -7,7 +7,7 @@
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status">
-      <div class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
+      <div id="document" class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
         <div class="col">
           <div class="row mb-2">
             <div class="col-auto">
@@ -56,11 +56,11 @@ export default {
     change(){
       if(!this.item.visible_status) {
         change_item_visible_status(this.item);
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#document');
         this.expandElement(content, 'collapsed', this.item, false);}, 100);
       }
       else {
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#document');
         this.expandElement(content, 'collapsed', this.item, true);}, 100);
       }
     },

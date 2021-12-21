@@ -7,7 +7,7 @@
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status">
-      <div class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
+      <div id="terms" class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
         <div class="col">
           <div class="row mb-2">
             <div class="col-auto">
@@ -62,11 +62,11 @@ export default {
     change(){
       if(!this.item.visible_status) {
         change_item_visible_status(this.item);
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#terms');
         this.expandElement(content, 'collapsed', this.item, false);}, 100);
       }
       else {
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#terms');
         this.expandElement(content, 'collapsed', this.item, true);}, 100);
       }
     },
@@ -100,13 +100,13 @@ export default {
         if (hiding) { change_item_visible_status(item); }
       });
     },
-    change_status(el){change_item_visible_status(el)},
     changed() {
       this.item.invalid = this.isInvalid();
     },
     isInvalid() {
       if(!this.patterns.money.var.exec(this.item.obligationAmount)) { return true; }
       if(!this.item.currencyTypeId) { return true; }
+      if(this.item.termTo == this.today) { return true; }
       if(!this.patterns.text.var.exec(this.item.additionalTerms)) { return true;}
       return false;
     }
@@ -116,6 +116,7 @@ export default {
   created() {
     this.patterns = validation.patterns;
     this.tomorrow = validation.tomorrow;
+    this.today = validation.today;
     this.decadeAfter = validation.decadeAfter;
     this.item.invalid = this.isInvalid();
     this.item.change_visibility = this.change;

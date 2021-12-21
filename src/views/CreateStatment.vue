@@ -61,11 +61,11 @@ export default {
       this.isvalid = true;
       let time = 100;
       if (this.statement_type) {
-        Object.keys(this.element).forEach( i => {
-          if (i !== 'generalInfo' && this.isvalid) {
-            if (this.element.encumbranceTier.invalid) {
-              if (!this.element.encumbranceTier.visible_status) {
-                this.element.encumbranceTier.change_visibility();
+        Object.keys(this.element).forEach( i => { 
+          if ( i !== 'generalInfo' && this.isvalid) {
+            if (this.element[i].invalid) {
+              if (!this.element[i].visible_status) {
+                this.element[i].change_visibility();
                 time = 500;
               }
               this.isvalid = false;
@@ -89,20 +89,20 @@ export default {
       document.getElementById('submit').click();
     },
     submit(){
-      if(this.isvalid){
-        console.log("hi",this.element);
-        const el = {
-          statementTypeId: "00000000-0000-0000-0000-000000000000",        
-          encumbranceTier: this.element.encumbranceTier.get_info(),
-          encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
-          basisDocument: this.element.basisDocument.get_info(),
-          encumbranceInfo: this.element.encumbranceInfo.get_info(),
-          encumbranceTerm: this.element.encumbranceTerm.get_info(),
-          encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
-        }
-        console.log(el);
-      }
-      console.log(this.element);
+      // if(this.isvalid){
+      //   console.log("hi",this.element);
+      //   const el = {
+      //     statementTypeId: "00000000-0000-0000-0000-000000000000",        
+      //     encumbranceTier: this.element.encumbranceTier.get_info(),
+      //     encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
+      //     basisDocument: this.element.basisDocument.get_info(),
+      //     encumbranceInfo: this.element.encumbranceInfo.get_info(),
+      //     encumbranceTerm: this.element.encumbranceTerm.get_info(),
+      //     encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
+      //   }
+      //   console.log(el);
+      // }
+      // console.log(this.element);
     },
     reset(){
       this.$router.go(0);

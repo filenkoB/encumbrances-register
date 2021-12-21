@@ -7,7 +7,7 @@
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status && button_vs">
-      <div class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
+      <div id="encumb-subj" class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
         <div class="col">
           <div class="row m-1">
             <label>Рухоме майно що має серійні номери:</label>
@@ -72,11 +72,11 @@ export default {
     change(){
       if(!this.item.visible_status) {
         change_item_visible_status(this.item);
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#encumb-subj');
         this.expandElement(content, 'collapsed', this.item, false);}, 100);
       }
       else {
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#encumb-subj');
         this.expandElement(content, 'collapsed', this.item, true);}, 100);
       }
     },
@@ -110,7 +110,6 @@ export default {
         if (hiding) { change_item_visible_status(item); }
       });
     },
-    change_status(el){change_item_visible_status(el)},
     changed() {
       this.item.invalid = this.isInvalid();
     },

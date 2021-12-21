@@ -7,7 +7,7 @@
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status && button_text.length != 0">
-      <div class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
+      <div :id="idname + '-info'" class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
         <div class="col">
           <div class="row mb-2">
             <div class="col-auto">
@@ -82,11 +82,11 @@ export default {
     change(){
       if(!this.item.visible_status) {
         change_item_visible_status(this.item);
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#' + this.idname + '-info');
         this.expandElement(content, 'collapsed', this.item, false);}, 100);
       }
       else {
-        setTimeout(() => {const content = document.querySelector('.collapsible');
+        setTimeout(() => {const content = document.querySelector('#' + this.idname + '-info');
         this.expandElement(content, 'collapsed', this.item, true);}, 100);
       }
     },
@@ -134,7 +134,7 @@ export default {
       if(this.item.isForeigner) this.item.isForeigner = false;
       else this.item.isForeigner = true}
   },
-  props:["item", "button_text", "editing_status"],
+  props:["item", "button_text", "editing_status", "idname"],
   components:{ Address },
   name:'WDInformation',
   created() { this.patterns = validation.patterns;
