@@ -55,7 +55,7 @@
             </div>
             <div class="col-auto">
               <select class="form-control" v-model="pasAgency">
-                <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.name}}</option>
+                <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.code}}-{{el.name}}</option>
               </select>
             </div>
           </div>
@@ -68,10 +68,14 @@
             <input class="form-control" required pattern="\d{6}" v-model="pasNumberB">
           </div>
           <div class="row mt-3">
-            <label>Орган, що видав документ:</label>
-            <select  v-model="pasAgencyB" required class="form-select mt-3">
-              <option v-for="pAgency in pasAgencies" :key="pAgency">{{pAgency}}</option>
-            </select>
+            <div class="col-auto mt-2">
+              <label class="ms-2 vertical-center">Орган, що видав документ</label>
+            </div>
+            <div class="col-auto">
+              <select class="form-control" v-model="pasAgencyB">
+                <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.name}}</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="row mt-3">
@@ -143,7 +147,7 @@
 
 <script>
 import {validation} from "../data";
-import {AuthorityPassport, Authority} from "../connect_to_server"
+import {AuthorityPassport, Authority, RegistrationUserStatement} from "../connect_to_server"
 export default {
   name: "registration",
   data() {
@@ -154,13 +158,13 @@ export default {
       registration: true,
       chosenPassType: 'pasType-Id', chosenRole: 'user',
       firstName: "", lastName: "", parentName: "", birthDate: "",
-      pasNumber: "", pasSeriaB: "", pasNumberB: "",
+      pasNumber: "", pasNumberB: "", pasSeriaB: "", 
       email: "", agency: "", idNumber: "",
       pasAgency: "", pasAgencyB: "", pasDate: "", userIsAuthorized: false,
     }
   },
   methods: {
-    regIn() {
+    async regIn() {
       const inputs = document.getElementsByTagName('input');
       let valid = true;
       for (let input of inputs) {
@@ -171,7 +175,23 @@ export default {
 
       if (valid) {
         this.registration = false;
-        
+        let passport = null;
+        if(this.chosenPassType == 'pasType-Id'){
+          passport = {
+              passportNumber: this.pasNumber,
+              SerialNumber: "",
+              AuthorityId: this.pasAgency,
+              date: this.pasDate
+          }
+        }
+        else{
+          passport = {
+              passportNumber: this.pasNumberB,
+              SerialNumber: this.pasSeriaB,
+              AuthorityId: this.pasAgencyB,
+              date: this.pasDate
+          }
+        } 
         
         // fetch запит на відправку заявки
         const final_element = {
@@ -180,18 +200,12 @@ export default {
             patronymic: this.parentName,
             birthDate: this.birthDate,
             email: this.email,
-            passportInfo: {
-                "passportNumber": "06642321223",
-                "SerialNumber": "",
-                "AuthorityId": "2254",
-                date: this.pasDate
-            },
-            taxpayerAccountCardNumber: "001023205340264",
+            passportInfo: passport,
+            taxpayerAccountCardNumber: this.idNumber,
             taxpayerACNAbsenceReason: "",
-            authorityId: ""
+            authorityId: this.authorityId
         }
-        console.log(final_element);
-        //const data = await RegistrationUserStatement(item)
+        await RegistrationUserStatement(final_element)
       }
     },
     clearPasData(type) {
@@ -233,7 +247,6 @@ export default {
                   {id: 'registrar', value: 'Реєстратор'}];
     this.pasTypes = [ {id: 'pasType-Id', text: 'ID-картка'},
                       {id: 'pasType-Book', text: 'Зразка 1994р.(Книжка)'}];
-    this.pasAgencies = ["Якась шарага", "Печінка"];
 
     this.authorityPassport = await AuthorityPassport();
     this.authority = await Authority()
