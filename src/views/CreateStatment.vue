@@ -59,7 +59,8 @@ export default {
     },
     fake_submit() {
       this.isvalid = true;
-      if (this.typeName === "Заява про реєстрацію обтяження рухомого майна") {
+      if (this.statement_type) {
+        console.log(this.element.encumbranceTier.invalid);
         if (this.element.encumbranceTier.invalid) {
           this.element.encumbranceTier.visible_status = true;
           this.isvalid = false;
@@ -88,6 +89,10 @@ export default {
       else {
         if (this.element.basisDocument.invalid) {
           this.element.basisDocument.visible_status = true;
+          this.isvalid = false;
+        }
+        else if (this.element.encumbranceTerm.invalid) {
+          this.element.encumbranceTerm.visible_status = true;
           this.isvalid = false;
         }
       }
