@@ -23,7 +23,7 @@
               <div class="input-group mb-3">
                 <span class="input-group-text" v-if="item.currencyTypeId">{{info.currency.filter(el=>el.id==item.currencyTypeId)[0].sign}}</span>
                 <span class="input-group-text" v-else><i class="fa fa-money"></i></span>
-                <select class="form-control" required :disabled="editing_status"  v-model="item.currencyTypeId">
+                <select class="form-control" required @change="changed" :disabled="editing_status"  v-model="item.currencyTypeId">
                   <option v-for="it in info.currency" :key="it.id" :value="it.id">{{ it.name }}</option>
                 </select>
               </div>

@@ -59,29 +59,42 @@ export default {
     },
     fake_submit() {
       this.isvalid = true;
-      if (this.element.encumbranceTier.invalid) {
-        this.isvalid = false;
-        this.element.encumbranceTier.visible_status = true;
+      if (this.statement_type) {
+        console.log(this.element.encumbranceTier.invalid);
+        if (this.element.encumbranceTier.invalid) {
+          this.element.encumbranceTier.visible_status = true;
+          this.isvalid = false;
+        }
+        else if (this.element.encumbranceDebtor.invalid) {
+          this.element.encumbranceDebtor.visible_status = true;
+          this.isvalid = false;
+        }
+        else if (this.element.basisDocument.invalid) {
+          this.element.basisDocument.visible_status = true;
+          this.isvalid = false;
+        }
+        else if (this.element.encumbranceInfo.invalid) {
+          this.element.encumbranceInfo.visible_status = true;
+          this.isvalid = false;
+        }
+        else if (this.element.encumbranceTerm.invalid) {
+          this.element.encumbranceTerm.visible_status = true;
+          this.isvalid = false;
+        }
+        else if (this.element.encumbranceDescriptionSubject.invalid) {
+          this.element.encumbranceDescriptionSubject.visible_status = true;
+          this.isvalid = false;
+        }
       }
-      else if (this.element.encumbranceDebtor.invalid) {
-        this.isvalid = false;
-        this.element.encumbranceDebtor.visible_status = true;
-      }
-      else if (this.element.basisDocument.invalid) {
-        this.isvalid = false;
-        this.element.basisDocument.visible_status = true;
-      }
-      else if (this.element.encumbranceInfo.invalid) {
-        this.isvalid = false;
-        this.element.encumbranceInfo.visible_status = true;
-      }
-      else if (this.element.encumbranceTerm.invalid) {
-        this.isvalid = false;
-        this.element.encumbranceTerm.visible_status = true;
-      }
-      else if (this.element.encumbranceDescriptionSubject.invalid) {
-        this.isvalid = false;
-        this.element.encumbranceDescriptionSubject.visible_status = true;
+      else {
+        if (this.element.basisDocument.invalid) {
+          this.element.basisDocument.visible_status = true;
+          this.isvalid = false;
+        }
+        else if (this.element.encumbranceTerm.invalid) {
+          this.element.encumbranceTerm.visible_status = true;
+          this.isvalid = false;
+        }
       }
       setTimeout(this.click_submit, 100);
     },

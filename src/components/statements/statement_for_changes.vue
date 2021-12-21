@@ -62,8 +62,7 @@ export default {
         changeSubject: new SubjectChange(),
         encumbranceTerm: new EncumbranceTerm( null, time.toISOString(), null, null),
       }
-
-      this.fun(this.element)
+      this.fun(this.element);
     }
   }
 }

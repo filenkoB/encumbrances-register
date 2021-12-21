@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row" v-show="visible_status">
+    <form @submit.prevent="submit" @reset.prevent="reset" class="row" v-show="visible_status">
       <div class="col-3"></div> 
       <div class="col-7"> 
           <div :class="colour(search_filter.first_item.name == search_filter.checked)">
@@ -21,9 +21,9 @@
                       <label class="col-form-label">{{search_filter.first_item.data[0].name}}</label>
                   </div>
                   <div class="col-5">
-                      <input class="form-control" type="text" 
+                      <input class="form-control" type="text" required :pattern="patterns.number.str" 
                       v-model="search_filter.first_item.data[0].value"
-                      :disabled="search_filter.first_item.name != search_filter.checked">
+                      :disabled="(search_filter.first_item.name != search_filter.checked) || waitingForResponse">
                   </div>
               </div>
           </div>
@@ -46,8 +46,8 @@
                   </div>
                   <div class="col-5">
                       <input class="form-control" type="text" 
-                      v-model="item.value"
-                      :disabled="search_filter.second_item.name != search_filter.checked">
+                      v-model="item.value" required :pattern="item.pattern"
+                      :disabled="(search_filter.second_item.name != search_filter.checked) || waitingForResponse">
                   </div>
               </div>
           </div>
@@ -70,12 +70,12 @@
                   </div>
                   <div class="col-5" v-if="item.name !='Тип особи:'">
                       <input class="form-control" type="text" 
-                      v-model="item.value"
-                      :disabled="search_filter.third_item.name != search_filter.checked">
+                      v-model="item.value" required :pattern="item.pattern"
+                      :disabled="(search_filter.third_item.name != search_filter.checked) || waitingForResponse">
                   </div>
                   <div class="col-5" v-else>
-                      <select class="form-control" v-model="item.value"
-                      :disabled="search_filter.third_item.name != search_filter.checked">
+                      <select class="form-control" v-model="item.value" required @change="typeChanged(item.value)"
+                      :disabled="(search_filter.third_item.name != search_filter.checked) || waitingForResponse">
                           <option v-if="item.value.length != 0" selected disabled>{{item.value}}</option>
                           <option v-else></option>
                           <option v-for="el in item.data" :key="el">{{el}}</option>
@@ -85,18 +85,23 @@
           </div>
           <div class="row mt-4 mb-5">
               <div class="col"></div>
-              <div class="col">
-                  <button type="button" class="btn btn-outline-success me-1" 
-                  v-on:click="submit()">Підтвертити</button>
+              <div v-if="waitingForResponse" class="col">
+                <button class="btn btn-success" type="button" disabled>
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Пошук...
+                </button>
+              </div>
+              <div v-else class="col">
+                  <button type="submit" class="btn btn-outline-success me-1">Підтвертити</button>
               </div>
               <div class="col">
-                  <button type="button" class="btn btn-outline-danger ms-1" >Очистити</button>
+                  <button type="reset" :disabled="waitingForResponse" class="btn btn-outline-danger ms-1">Очистити</button>
               </div>
               <div class="col"></div>
           </div>
       </div>
       <div class="col-2"></div> 
-    </div>
+    </form>
     <div class="row" v-show="!visible_status">
       <div class="col text-start">
         <div :class="colour(!visible_status)">
@@ -110,6 +115,13 @@
             </div>
           </div>
         </div>
+        <div class="row">
+            <div class="col-4"/>
+            <div class="col">
+              <button @click="backToForm" class="btn btn-outline-secondary ms-1">Поверутися до параметрів пошуку</button>
+            </div>
+            <div class="col-4"/>
+          </div>
       </div>
     </div>
   </div>
@@ -117,12 +129,14 @@
 
 
 <script>
+import {validation} from "../data";
 export default {
   name: 'MyStatements',
   data: function () {
     return {
       visible_status: true,
       search_query: "",
+      patterns: validation.patterns,
       search_filter:{
         checked: "Реєстраційний номер запису:",
         first_item:{
@@ -135,17 +149,20 @@ export default {
         second_item:{
             name:"Реєстраційні дані предмета обтяження:",
             data:[
-                {
-                    name:"Реєстраційний номер майна:",
-                    value: ""
-                },
+                // {
+                //     name:"Реєстраційний номер майна:",
+                //     value: "",
+                //     pattern:
+                // },
                 {
                     name:"Серійний номер об'єкта рухомого майна:",
-                    value: ""
+                    value: "",
+                    pattern: validation.patterns.serialNum.str
                 },
                 {
                     name:"Номер державної реєстрацій об'єкта рухомого майна:",
-                    value: ""
+                    value: "",
+                    pattern: validation.patterns.number.str
                 }
             ]
         },
@@ -159,15 +176,19 @@ export default {
                 },
                 {
                     name:"ПІБ / Назва суб'єкту:",
-                    value: ""
+                    value: "",
+                    pattern: validation.patterns.text.str
                 },
                 {
                     name:"РНОКПП / ЄДРПОУ:",
-                    value: ""
+                    value: "",
+                    pattern: validation.patterns.idNumber.str
                 }
             ]
         }
-      }
+      },
+      active_user: null,
+      waitingForResponse: false
     };
   },
   components:{},
@@ -182,27 +203,49 @@ export default {
         this.search_filter.third_item.data.map(el=>el.value = ""); 
       }
       else if(this.search_filter.checked == this.search_filter.second_item.name){
-        this.search_filter.first_item.data.value = ""
+        this.search_filter.first_item.data.value = "";
         this.search_filter.third_item.data.map(el=>el.value = ""); 
       }
       else{
-        this.search_filter.first_item.data.value = ""
+        this.search_filter.first_item.data.value = "";
         this.search_filter.second_item.data.map(el=>el.value = ""); 
       }
     },
     submit(){
-      this.visible_status = false;
-      if(this.search_filter.checked == this.search_filter.first_item.name){
-        this.search_query = this.search_filter.first_item;
-        //this.$router.push({ name: "Home", params:  this.search_filter.first_item}).catch(() => {});
+      this.waitingForResponse = true;
+      setTimeout( () => {
+        this.visible_status = false;
+        if(this.search_filter.checked == this.search_filter.first_item.name){
+          this.search_query = this.search_filter.first_item;
+          //this.$router.push({ name: "Home", params:  this.search_filter.first_item}).catch(() => {});
+        }
+        else if(this.search_filter.checked == this.search_filter.second_item.name){
+          this.search_query = this.search_filter.second_item;
+          //this.$router.push({ name: "Home", params:  this.search_filter.second_item}).catch(() => {});
+        }
+        else{
+          this.search_query = this.search_filter.third_item;
+          //this.$router.push({ name: "Home", params:  this.search_filter.third_item}).catch(() => {});
+        }
+        this.waitingForResponse = false;
+      }, 500);
+    },
+    reset() {
+      this.search_filter.first_item.data.value = "";
+      this.search_filter.second_item.data.map(el=>el.value = ""); 
+      this.search_filter.third_item.data.map(el=>el.value = "");
+    },
+    backToForm() {
+      this.visible_status = true;
+    },
+    typeChanged(type) {
+      console.log(type);
+      if (type === 'Фізична особа') {
+        this.search_filter.third_item.data[1].pattern =
+        validation.patterns.lastName.str + " " + validation.patterns.names.str + " " + validation.patterns.names.str;
       }
-      else if(this.search_filter.checked == this.search_filter.second_item.name){
-        this.search_query = this.search_filter.second_item;
-        //this.$router.push({ name: "Home", params:  this.search_filter.second_item}).catch(() => {});
-      }
-      else{
-        this.search_query = this.search_filter.third_item;
-        //this.$router.push({ name: "Home", params:  this.search_filter.third_item}).catch(() => {});
+      else if (type === 'Юридична особа') {
+        this.search_filter.third_item.data[1].pattern = validation.patterns.text.str;
       }
     }
   },

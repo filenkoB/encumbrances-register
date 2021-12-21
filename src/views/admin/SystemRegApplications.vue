@@ -10,41 +10,18 @@
           <button type="button" class="btn btn-outline-danger m-1" :disabled="!item.visible_status" @click="decline()">Відхилити</button>
         </div>
         <div v-if="item.visible_status">
-          <card :cards="cards" :success="removeApp"/>
           <system-reg-application :application="item"/>
         </div>
       </div>
     </div>
     <div class="row my-3">
-      <div class="col-auto">
-        <label class="col-form-label">Кількісь записів:</label>
-      </div>
-      <div class="col-auto me-5">
-        <input type="number" class="form-control" style="width: 60px" v-model="pagination.max_items_count" 
-        value="pagination.max_items_count" min="1" max="7">
-      </div>
-      <nav class="col-7">
-        <ul class="pagination justify-content-center">
-          <span>
-            <li class="page-item disabled" v-if="pagination.active_page == 0"><a class="page-link">Previous</a></li>
-            <li class="page-item" v-else><a class="page-link" v-on:click="pagination_page(pagination.active_page)">Previous</a></li>
-          </span>
-          <span v-for="item in pagination.count_page" :key="item">
-            <li class="page-item ms-1 me-1 active" v-if="item == pagination.active_page+1"><a class="page-link" v-on:click="pagination_page(item)">{{item}}</a></li>
-            <li class="page-item ms-1 me-1" v-else><a class="page-link" v-on:click="pagination_page(item)">{{item}}</a></li>
-          </span>
-          <span>
-            <li class="page-item disabled" v-if="pagination.active_page+1 == pagination.count_page"><a class="page-link">Next</a></li>
-            <li class="page-item" v-else><a class="page-link" v-on:click="pagination_page(pagination.active_page+2)">Next</a></li>
-          </span> 
-        </ul>
-      </nav>
+      <pagination :pagination="pagination" :fun="get_applications"/>
     </div>
   </div>
 </template>
 <script>
-import SystemRegApplication from "../../components/SystemRegApplication.vue"
-import {sysAppsCards} from  "../../data"
+import Pagination from '../../components/Pagination.vue';
+import SystemRegApplication from "../../components/SystemRegApplication.vue";
 export default {
   name: 'SystemRegApplications',
   data: function () {
@@ -60,6 +37,7 @@ export default {
   components:
   {
     SystemRegApplication,
+    Pagination,
   },
   methods:{
     pagination_page(item){ this.pagination.active_page = item-1;},
@@ -76,23 +54,14 @@ export default {
       item.visible_status = !item.visible_status;
     },
     accept() {
-      this.cards[0].visible_status = true;
-      this.cards[1].visible_status = false;
     },
     decline() {
-      this.cards[0].visible_status = false;
-      this.cards[1].visible_status = true;
     },
     closeInfo(item) {
       for(let app of this.applications){
         if (app !== item) app.visible_status = false;
       }
-      this.cards[0].visible_status = false;
-      this.cards[1].visible_status = false;
     },
-    removeApp() {
-      //
-    }
   },
   mounted(){
     this.user_status = window.sessionStorage.getItem('user_status');
@@ -148,7 +117,6 @@ export default {
         flat: ""} }
       },
     ]
-    this.cards = sysAppsCards;
   }
 }
 </script>
