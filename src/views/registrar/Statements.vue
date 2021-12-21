@@ -29,14 +29,11 @@
                   </span>
                 </button>
                 <button type="button" class="btn btn-outline-success" v-if="item.visible_status"
-                v-on:click="button_1()" :disabled="!item.visible_status">Підтвертити</button>
+                v-on:click="button_1(item.id)" :disabled="!item.visible_status">Підтвертити</button>
                 <button  type="button" class="btn btn-outline-danger" v-if="item.visible_status"
                 v-on:click="button_2()" :disabled="!item.visible_status">Відхилити</button>
               </div>
             </div>
-          </div>
-          <div class="row mb-2" v-if="item.visible_status">
-            <card v-bind:cards="card" :success="remove_statement"/>
           </div>
           <div class="row mb-2" v-if="item.visible_status">
             <Statement :statement_element='item' :editing_status='editing_status' />
@@ -50,9 +47,7 @@
 <script>
 import Pagination from "../../components/Pagination.vue"
 import Statement from '../../components/Statement.vue';
-import Card from '../../components/Card.vue';
-import {card} from "../../data";
-import {GetStatements} from "../../connect_to_server"
+import {GetStatements, AcceptStatementId} from "../../connect_to_server"
 import {StatmentsPageElement} from "../../classes"
 export default {
   name: 'App',
@@ -64,7 +59,6 @@ export default {
         max_items_count:7,
         count_page: 0,
       },
-      card: null ,
       statements: [],
     };
   },
@@ -72,7 +66,6 @@ export default {
   {
     Pagination,
     Statement,
-    Card
   },
   methods:{
     colour(item){
@@ -87,8 +80,6 @@ export default {
       for(let i = 0; i < this.statements.length; i++){
         if(this.statements[i]!=item) this.statements[i].visible_status = false;
       }
-      this.card[0].visible_status = false;
-      this.card[1].visible_status = false;
       if(item.visible_status == false){
         item.visible_status = true;
         //this.getInfo(item)
@@ -100,13 +91,13 @@ export default {
     remove_statement(item){
       item.visible_status = false;
     },
-    button_1(){
-      this.card[0].visible_status = true;
-      if(this.card[1].visible_status) this.card[1].visible_status = false;
+    async button_1(el){
+      console.log("submit");
+      console.log(el);
+      await AcceptStatementId();
     },
     button_2(){
-      this.card[1].visible_status = true;
-      if(this.card[0].visible_status) this.card[0].visible_status = false;
+      console.log("reset");
     },
     async get_statements(){
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
@@ -124,11 +115,9 @@ export default {
     if(!this.user_status || this.user_status != 'registrar'){
         this.$router.push({ name: "Info"}).catch(() => {});
     }
-    
   },
   async created(){
     await this.get_statements();
-    this.card = card;
   }
 }
 </script>

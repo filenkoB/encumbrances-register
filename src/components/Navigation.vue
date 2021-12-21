@@ -45,7 +45,9 @@
       <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-light me-2" disabled>
           <i class="fa fa-user-circle-o"></i>
-          <span v-if="user_status != undefined" class="ms-2">{{ user_status}}</span>
+          <span v-if="user_status != undefined && user_status=='user'" class="ms-2">Користувач</span>
+          <span v-if="user_status != undefined && user_status=='registrar'" class="ms-2">Реєстратор</span>
+          <span v-if="user_status != undefined && user_status=='admin'" class="ms-2">Адміністратор</span>
         </button>
         <button type="button" class="btn btn-outline-light me-2" 
           v-on:click="info" :disabled="!user_status">

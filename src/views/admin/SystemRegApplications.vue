@@ -44,7 +44,6 @@
 </template>
 <script>
 import SystemRegApplication from "../../components/SystemRegApplication.vue"
-import Card from "../../components/Card.vue"
 import {sysAppsCards} from  "../../data"
 export default {
   name: 'SystemRegApplications',
@@ -55,14 +54,12 @@ export default {
         max_items_count:5,
         count_page: 0,
       },
-      cards: null,
       applications: null
     };
   },
   components:
   {
     SystemRegApplication,
-    Card
   },
   methods:{
     pagination_page(item){ this.pagination.active_page = item-1;},

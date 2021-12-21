@@ -89,10 +89,18 @@ export default {
       document.getElementById('submit').click();
       if(this.isvalid){
         console.log("hi",this.element);
+        const el = {
+          statementTypeId: "00000000-0000-0000-0000-000000000000",        
+          encumbranceTier: this.element.encumbranceTier.get_info(),
+          encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
+          basisDocument: this.element.basisDocument.get_info(),
+          encumbranceInfo: this.element.encumbranceInfo.get_info(),
+          encumbranceTerm: this.element.encumbranceTerm.get_info(),
+          encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
+        }
+        console.log(el);
       }
-      else{
-        console.log("fail");
-      }
+      console.log(this.element)
     },
     submit(){},
     reset(){

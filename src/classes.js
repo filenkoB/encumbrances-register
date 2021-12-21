@@ -28,6 +28,7 @@ export class GeneralInfoType2{
 export class EncumbranceTierDebtor{
   visible_status = false;
   short_info = false;
+  additionalInfo = null
   address = {
     visible_status: true,
     path:{
@@ -43,10 +44,30 @@ export class EncumbranceTierDebtor{
     }
   }
   name = null;
-  constructor(taxpayerAccountCardNumber, isForeigner, name) {
+  constructor(taxpayerAccountCardNumber, isForeigner, name, additionalInfo) {
     this.taxpayerAccountCardNumber = taxpayerAccountCardNumber,
     this.isForeigner = isForeigner;
     this.name = name; 
+    this.additionalInfo = additionalInfo;
+  }
+  get_info(){
+    return {
+      taxpayerAccountCardNumber: this.taxpayerAccountCardNumber,
+      isForeigner: this.isForeigner,
+      name: this.name,
+      address: {
+        countryId: this.address.path.country,
+        regionId: this.address.path.region,
+        districtId: this.address.path.district,
+        cityId: this.address.path.city,
+        indexCode: this.address.path.index,
+        streetId: this.address.path.street,
+        building: this.address.path.build,
+        corps: this.address.path.corps,
+        flat: this.address.path.flat
+      },
+      additionalInfo: this.additionalInfo
+    }
   }
 }
 
@@ -57,6 +78,14 @@ export class BasisDocument{
     this.number = number;
     this.issuer = issuer;
     this.issueDate = issueDate.split('T')[0];
+  }
+  get_info(){
+    return {
+      name: this.name,
+      number: this.number,
+      issuer: this.issuer,
+      issueDate: this.issueDate
+    }
   }
 }
 
@@ -71,6 +100,17 @@ export class EncumbranceInfo{
     this.alienationLimitId = alienationLimitId;
     this.typeDescription = typeDescription
   }
+  get_info(){
+    const time = new Date();
+    return {
+      encumbranceKindId : this.encumbranceKindId,
+      registrationTypeId : this.registrationTypeId,
+      lastEncumbranceOccurrenceDate: this.lastEncumbranceOccurrenceDate + time.toISOString().split('T')[1],
+      encumbranceTypeId: this.encumbranceTypeId,
+      alienationLimitId: this.alienationLimitId,
+      typeDescription: this.typeDescription
+    }
+  }
 }
 
 export class EncumbranceTerm{
@@ -81,6 +121,15 @@ export class EncumbranceTerm{
     this.additionalTerms = additionalTerms;
     this.currencyTypeId = currencyTypeId;
   }
+  git_info(){
+    const time = new Date();
+    return {
+      obligationAmount: this.obligationAmount,
+      termTo: this.termTo + time.toISOString().split('T')[1],
+      additionalTerms: this.additionalTerms,
+      currencyTypeId: this.currencyTypeId
+    }
+  }
 }
 
 export class DescriptionSubject{
@@ -89,15 +138,14 @@ export class DescriptionSubject{
   number_2 = null;
   value = null;
   visible_status = false;
-  info={
-    data:[
-      {number: 1, name: "Рухоме майно що має серійні номери:"},
-      {number: 2, name: "Рухоме майно, крім описаного вище за серійними номерами:"},
-    ],
-    checked: null
-  }
-  constructor() {
-    this.info.checked = 2;
+  constructor() {}
+  get_info(){
+    return {
+      description: this.name,
+      serialNumber: this.number,
+      stateRegistrationNumber: this.number_2,
+      value: this.value
+    }
   }
 }
 

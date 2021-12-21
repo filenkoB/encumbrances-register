@@ -108,7 +108,6 @@
               <div class="col"><label class="col-form-label" >{{item.name}}</label></div>
               <div class="col"><input class="form-control" type="text" disabled :value="item.value"></div>
             </div>
-            
           </div>
         </div>
       </div>
@@ -168,8 +167,7 @@ export default {
                 }
             ]
         }
-      },
-      active_user: null
+      }
     };
   },
   components:{},

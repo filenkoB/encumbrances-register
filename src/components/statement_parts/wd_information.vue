@@ -62,7 +62,7 @@
               <label class="col-form-label">Додаткові відомості:</label>
             </div>
             <div class="col-9">
-              <textarea class="form-control" rows="1" required :disabled="editing_status" v-model="item.typeDescription"></textarea>
+              <textarea class="form-control" rows="1" required :disabled="editing_status" v-model="item.additionalInfo"></textarea>
             </div>
           </div>
         </div>

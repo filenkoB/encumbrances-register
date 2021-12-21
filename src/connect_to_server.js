@@ -64,16 +64,15 @@ export async function GetStatements(page, length){
 
 export async function GetStatement(id){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/"+id);
+  console.log("responce", responce);
   if(responce.status == 200){
     const data = await responce.json()
     return data;
   }
   else {
     //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
+    console.log(responce.status);
+    return null;
   }
 }
 
@@ -233,6 +232,21 @@ export async function RegistrationType(){
 
 export async function AlienationLimit(){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/AlienationLimit");
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function AcceptStatementId(statementId){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Accept/"+statementId);
   if(responce.status == 200){
     const data = await responce.json()
     return data;

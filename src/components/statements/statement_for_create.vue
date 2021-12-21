@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col">
+    <div class="col" v-if="visible_status">
       <GeneralInformation :item="element.generalInfo" :editing_status="editing_status"/>
       
       <hr class="border-info border border-2" v-if="element.generalInfo">
@@ -35,7 +35,8 @@ import {GeneralInfo, EncumbranceTierDebtor, BasisDocument, EncumbranceInfo, Encu
 export default {
   data(){
     return {
-      element: {}
+      element: {},
+      visible_status: true,
     }
   },
   name:'CreateStatment',
@@ -51,19 +52,26 @@ export default {
   async created(){
     if(this.statement_element.id != null){
       const data = await GetStatement(this.statement_element.id);
-      this.element = {
-        generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
-        encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, 
-                                                  data.encumbranceTier.isForeigner, data.encumbranceTier.name),
-        encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, 
-                                                  data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
-        basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number,
-                                        data.basisDocument.issuer, data.basisDocument.issueDate),
-        encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, data.encumbranceInfo.registrationTypeId, 
-                        data.encumbranceInfo.lastEncumbranceOccurrenceDate, data.encumbranceInfo.encumbranceTypeId,
-                        data.encumbranceInfo.alienationLimitId, data.encumbranceInfo.typeDescription),
-        encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
-        encumbranceDescriptionSubject: new DescriptionSubject(),
+      console.log("data", data);
+      if(data != null){
+        this.visible_status = true;
+        this.element = {
+          generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
+          encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, 
+                                                    data.encumbranceTier.isForeigner, data.encumbranceTier.name),
+          encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, 
+                                                    data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
+          basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number,
+                                          data.basisDocument.issuer, data.basisDocument.issueDate),
+          encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, data.encumbranceInfo.registrationTypeId, 
+                          data.encumbranceInfo.lastEncumbranceOccurrenceDate, data.encumbranceInfo.encumbranceTypeId,
+                          data.encumbranceInfo.alienationLimitId, data.encumbranceInfo.typeDescription),
+          encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
+          encumbranceDescriptionSubject: new DescriptionSubject(),
+        }
+      }
+      else{
+        this.visible_status = false;
       }
     }
     else{
