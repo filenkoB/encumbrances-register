@@ -59,31 +59,19 @@ export default {
     },
     fake_submit() {
       this.isvalid = true;
+      let time = 100;
       if (this.statement_type) {
-        if (this.element.encumbranceTier.invalid) {
-          this.element.encumbranceTier.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceDebtor.invalid) {
-          this.element.encumbranceDebtor.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.basisDocument.invalid) {
-          this.element.basisDocument.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceInfo.invalid) {
-          this.element.encumbranceInfo.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceTerm.invalid) {
-          this.element.encumbranceTerm.visible_status = true;
-          this.isvalid = false;
-        }
-        else if (this.element.encumbranceDescriptionSubject.invalid) {
-          this.element.encumbranceDescriptionSubject.visible_status = true;
-          this.isvalid = false;
-        }
+        Object.keys(this.element).forEach( i => { 
+          if ( i !== 'generalInfo' && this.isvalid) {
+            if (this.element[i].invalid) {
+              if (!this.element[i].visible_status) {
+                this.element[i].change_visibility();
+                time = 500;
+              }
+              this.isvalid = false;
+            }
+          }
+        });
       }
       else {
         if (this.element.basisDocument.invalid) {
@@ -95,6 +83,7 @@ export default {
           this.isvalid = false;
         }
       }
+<<<<<<< HEAD
       console.log("Isvalid",this.isvalid);
       setTimeout(this.click_submit, 100);
     },
@@ -119,6 +108,29 @@ export default {
         console.log("hi",info);
       }
     },
+=======
+      setTimeout(this.click_submit, time);
+    },
+    click_submit() {
+      document.getElementById('submit').click();
+    },
+    submit(){
+      // if(this.isvalid){
+      //   console.log("hi",this.element);
+      //   const el = {
+      //     statementTypeId: "00000000-0000-0000-0000-000000000000",        
+      //     encumbranceTier: this.element.encumbranceTier.get_info(),
+      //     encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
+      //     basisDocument: this.element.basisDocument.get_info(),
+      //     encumbranceInfo: this.element.encumbranceInfo.get_info(),
+      //     encumbranceTerm: this.element.encumbranceTerm.get_info(),
+      //     encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
+      //   }
+      //   console.log(el);
+      // }
+      // console.log(this.element);
+    },
+>>>>>>> origin/vue-info-sub
     reset(){
       this.$router.go(0);
     }

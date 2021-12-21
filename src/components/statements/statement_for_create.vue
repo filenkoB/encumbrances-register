@@ -4,10 +4,10 @@
       <GeneralInformation :item="element.generalInfo" :editing_status="editing_status"/>
       
       <hr class="border-info border border-2" v-if="element.generalInfo">
-      <WDInformation :item="element.encumbranceTier" button_text="Відомості про Обтяжувача:" :editing_status="editing_status"/>
+      <WDInformation :idname="'tier'" :item="element.encumbranceTier" button_text="Відомості про Обтяжувача:" :editing_status="editing_status"/>
       
       <hr class="border-info border border-2">
-      <WDInformation :item="element.encumbranceDebtor" button_text="Відомості про Боржника:" :editing_status="editing_status"/>
+      <WDInformation :idname="'debtor'" :item="element.encumbranceDebtor" button_text="Відомості про Боржника:" :editing_status="editing_status"/>
       
       <hr class="border-info border border-2">
       <Document :item="element.basisDocument" :editing_status="editing_status"/>

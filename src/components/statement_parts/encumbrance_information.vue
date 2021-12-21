@@ -7,7 +7,7 @@
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status">
-      <div class="row" v-if="item.visible_status" :class="colour">
+      <div id="encumb-inf" class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
         <div class="col">
           <div class="row">
             <div class="col-auto border-end border-3 pe-5">
@@ -121,7 +121,47 @@ export default {
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
-    change(){change_item_visible_status(this.item)},
+    change(){
+      if(!this.item.visible_status) {
+        change_item_visible_status(this.item);
+        setTimeout(() => {const content = document.querySelector('#encumb-inf');
+        this.expandElement(content, 'collapsed', this.item, false);}, 100);
+      }
+      else {
+        setTimeout(() => {const content = document.querySelector('#encumb-inf');
+        this.expandElement(content, 'collapsed', this.item, true);}, 100);
+      }
+    },
+    expandElement(elem, collapseClass, item, hiding) {
+      // debugger;
+      elem.style.height = '';
+      elem.style.transition = 'none';
+      
+      const startHeight = window.getComputedStyle(elem).height;
+      
+      // Remove the collapse class, and force a layout calculation to get the final height
+      elem.classList.toggle(collapseClass);
+      const height = window.getComputedStyle(elem).height;
+      
+      // Set the start height to begin the transition
+      elem.style.height = startHeight;
+      
+      // wait until the next frame so that everything has time to update before starting the transition
+      requestAnimationFrame(() => {
+        elem.style.transition = '';
+        
+        requestAnimationFrame(() => {
+            elem.style.height = height
+        })
+      })
+      
+      // Clear the saved height values after the transition
+      elem.addEventListener('transitionend', () => {
+        elem.style.height = '';
+        elem.removeEventListener('transitionend', () => {});
+        if (hiding) { change_item_visible_status(item); }
+      });
+    },
     changed() {
       this.item.invalid = this.isInvalid();
     },
@@ -132,6 +172,21 @@ export default {
   },
   props:["item", "editing_status", "info"],
   name:'EncumbranceInformation',
-  created() { this.today = validation.today; this.patterns = validation.patterns; this.item.invalid = this.isInvalid(); }
+  created() { this.today = validation.today;
+    this.patterns = validation.patterns;
+    this.item.invalid = this.isInvalid();
+    this.item.change_visibility = this.change;
+  }
 }
 </script>
+<style>
+  .collapsible {
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+    height: auto;
+  }
+
+  .collapsible.collapsed {
+    height: 0;
+  }
+</style>

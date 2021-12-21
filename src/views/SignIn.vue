@@ -3,7 +3,6 @@
     <div class="col"></div>
     <div class="col">
       <div class="row mb-5 text-center" style="margin-top: 100px">
-        <label>Державний реєстр обтяженнь рухомого майна</label>
       </div>
       <div class="row">
         <div class="col-2 mt-2">

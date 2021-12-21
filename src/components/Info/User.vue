@@ -2,7 +2,10 @@
   <div class="row p-2 border border-secondary border-4 rounded">
     <div class="col">
       <div class="row pt-4 tb-4">
-        <div class="text-center fs-2 mb-4">Державний реєстр обтяженнь рухомого майна</div>
+        <div class="text-center fs-2 mb-4">
+          <img src="../../assets/Ukrherb.png" width="35"/>
+          <span> Державний реєстр обтяженнь рухомого майна</span>
+        </div>
         <p class="text-start fs-5">
           Вітаємо, ви успішно авторизовані в системі, як користувач. Нижче зазначено доступний вам функціонал системи.
         </p>
