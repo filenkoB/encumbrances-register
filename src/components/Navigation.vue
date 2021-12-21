@@ -41,6 +41,9 @@
         </button>
       </div>
     </div>
+    <div class="col-1 fs-2 text-center text-white">
+      ДРОРМ
+    </div>
     <div class="col text-end me-3">
       <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-light me-2" disabled>

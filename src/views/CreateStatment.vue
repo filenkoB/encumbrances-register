@@ -60,7 +60,6 @@ export default {
     fake_submit() {
       this.isvalid = true;
       if (this.statement_type) {
-        console.log(this.element.encumbranceTier.invalid);
         if (this.element.encumbranceTier.invalid) {
           this.element.encumbranceTier.visible_status = true;
           this.isvalid = false;
@@ -96,14 +95,18 @@ export default {
           this.isvalid = false;
         }
       }
+      console.log("Isvalid",this.isvalid);
       setTimeout(this.click_submit, 100);
     },
     click_submit() {
       document.getElementById('submit').click();
+      
+    },
+    submit(){
+      console.log("hi");
       if(this.isvalid){
-        console.log("hi",this.element);
-        const el = {
-          statementTypeId: "00000000-0000-0000-0000-000000000000",        
+        let el = {
+          statementTypeId: null,        
           encumbranceTier: this.element.encumbranceTier.get_info(),
           encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
           basisDocument: this.element.basisDocument.get_info(),
@@ -111,11 +114,11 @@ export default {
           encumbranceTerm: this.element.encumbranceTerm.get_info(),
           encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
         }
-        console.log(el);
+        if(this.statement_type) el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
+        else el.statementTypeId = "3c63d55d-4b8f-4c06-8122-6a1c3ac72699";
+        console.log("hi",el);
       }
-      console.log(this.element)
     },
-    submit(){},
     reset(){
       this.$router.go(0);
     }
