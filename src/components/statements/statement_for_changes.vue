@@ -55,8 +55,7 @@ export default {
         otherChange: new Changes(),
         changeSubject: new SubjectChange()
       }
-
-      this.fun(this.element)
+      this.fun(this.element);
     }
   }
 }

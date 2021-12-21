@@ -60,23 +60,30 @@ export default {
       
     },
     fake_submit() {
-      if (this.element.encumbranceTier.invalid) {
-        this.element.encumbranceTier.visible_status = true;
+      if (this.typeName === "Заява про реєстрацію обтяження рухомого майна") {
+        if (this.element.encumbranceTier.invalid) {
+          this.element.encumbranceTier.visible_status = true;
+        }
+        else if (this.element.encumbranceDebtor.invalid) {
+          this.element.encumbranceDebtor.visible_status = true;
+        }
+        else if (this.element.basisDocument.invalid) {
+          this.element.basisDocument.visible_status = true;
+        }
+        else if (this.element.encumbranceInfo.invalid) {
+          this.element.encumbranceInfo.visible_status = true;
+        }
+        else if (this.element.encumbranceTerm.invalid) {
+          this.element.encumbranceTerm.visible_status = true;
+        }
+        else if (this.element.encumbranceDescriptionSubject.invalid) {
+          this.element.encumbranceDescriptionSubject.visible_status = true;
+        }
       }
-      else if (this.element.encumbranceDebtor.invalid) {
-        this.element.encumbranceDebtor.visible_status = true;
-      }
-      else if (this.element.basisDocument.invalid) {
-        this.element.basisDocument.visible_status = true;
-      }
-      else if (this.element.encumbranceInfo.invalid) {
-        this.element.encumbranceInfo.visible_status = true;
-      }
-      else if (this.element.encumbranceTerm.invalid) {
-        this.element.encumbranceTerm.visible_status = true;
-      }
-      else if (this.element.encumbranceDescriptionSubject.invalid) {
-        this.element.encumbranceDescriptionSubject.visible_status = true;
+      else {
+        if (this.element.basisDocument.invalid) {
+          this.element.basisDocument.visible_status = true;
+        }
       }
       setTimeout(this.click_submit, 100);
     },
