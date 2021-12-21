@@ -2,44 +2,32 @@
   <div class="row">
     <div class="col">
       <GeneralInformation :item="element.generalInfo" :editing_status="editing_status"/>
-
-      <hr class="border-info border border-2">
-      <Document :item="element.basisDocument" :editing_status="editing_status"/>
       
       <hr class="border-info border border-2">
-      <OtherChanges :item="element.otherChange" :editing_status="editing_status"/>     
+      <OtherChanges :item="element.otherChange" :editing_status="editing_status"/>
 
-      <hr class="border-info border border-2">
-      <ChangeSubject :item="element.changeSubject" :editing_status="editing_status"/>
 
-      <hr class="border-info border border-2">
-      <ChangeTerms :item="element.encumbranceTerm" :editing_status="editing_status" :info="info"/>
-      </div>
+      
+    </div>
   </div>
 </template>
 <script>
 
 import GeneralInformation from "../statement_parts/general_information_2.vue"
 import OtherChanges from "../statement_parts/other_changes.vue"
-import ChangeSubject from "../statement_parts/change_subject.vue"
-import ChangeTerms from "../statement_parts/change_terms.vue"
-import Document from "../statement_parts/document.vue"
 import {GetStatement} from "../../connect_to_server"
-import {GeneralInfoType2, BasisDocument, Changes, SubjectChange, EncumbranceTerm} from "../../classes"
+import {GeneralInfoType2, Changes} from "../../classes"
 export default {
   data(){
     return {
       element: {}
     }
   },
-  name:'CreateStatment',
+  name:'ChangeStatment',
   props:["editing_status","statement_element", "fun", "info"],
   components:{
     GeneralInformation,
-    Document,
     OtherChanges,
-    ChangeSubject,
-    ChangeTerms
   },
   async created(){
     if(this.statement_element.id != null){
@@ -47,20 +35,14 @@ export default {
       console.log(data.encumbranceTerm)
       this.element = {
           generalInfo: new GeneralInfoType2(data.generalInfo.number, data.generalInfo.registrationDate),
-          basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number, data.basisDocument.issuer, data.basisDocument.issueDate),
           otherChange: new Changes(),
-          changeSubject: new SubjectChange()
-          
       }
     }
     else{
       const time = new Date();
       this.element = {
         generalInfo: new GeneralInfoType2(null, time.toISOString()),
-        basisDocument: new BasisDocument(null, null, null, time.toISOString()),
         otherChange: new Changes(),
-        changeSubject: new SubjectChange(),
-        encumbranceTerm: new EncumbranceTerm( null, time.toISOString(), null, null),
       }
       this.fun(this.element);
     }

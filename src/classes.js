@@ -18,7 +18,6 @@ export class GeneralInfo{
 }
 
 export class GeneralInfoType2{
-  visible_status = false;
   constructor(number, registrationDate) {
     this.number = number;
     this.registrationDate = registrationDate.split('T')[0];
@@ -31,24 +30,24 @@ export class EncumbranceTierDebtor{
   additionalInfo = null
   address = {
     visible_status: true,
-    path:{
-      country: "",
-      region: "",
-      district: "",
-      city: "",
-      index: "",
-      street: "",
-      build: "",
-      corps: "",
-      flat:""
-    }
+    path:{}
   }
   name = null;
-  constructor(taxpayerAccountCardNumber, isForeigner, name, additionalInfo) {
+  constructor(taxpayerAccountCardNumber, isForeigner, name, additionalInfo, address) {
     this.taxpayerAccountCardNumber = taxpayerAccountCardNumber,
     this.isForeigner = isForeigner;
     this.name = name; 
     this.additionalInfo = additionalInfo;
+    console.log(address)
+    this.address.path.country = address.countryId;
+    this.address.path.region = address.regionId;
+    this.address.path.district = address.districtId;
+    this.address.path.city = address.cityId;
+    this.address.path.index = address.indexCode;
+    this.address.path.street = address.streetId;
+    this.address.path.build = address.building;
+    this.address.path.corps = address.corps;
+    this.address.path.flat = address.flat;
   }
   get_info(){
     return {
@@ -80,11 +79,12 @@ export class BasisDocument{
     this.issueDate = issueDate.split('T')[0];
   }
   get_info(){
+    const current_time = new Date();
     return {
       name: this.name,
       number: this.number,
       issuer: this.issuer,
-      issueDate: this.issueDate
+      issueDate: (new Date(this.issueDate+'T'+current_time.toISOString().split('T')[1])).toISOString()
     }
   }
 }
@@ -101,11 +101,11 @@ export class EncumbranceInfo{
     this.typeDescription = typeDescription
   }
   get_info(){
-    const time = new Date();
+    const current_time = new Date();
     return {
       encumbranceKindId : this.encumbranceKindId,
       registrationTypeId : this.registrationTypeId,
-      lastEncumbranceOccurrenceDate: this.lastEncumbranceOccurrenceDate + time.toISOString().split('T')[1],
+      lastEncumbranceOccurrenceDate:(new Date(this.lastEncumbranceOccurrenceDate+'T'+current_time.toISOString().split('T')[1])).toISOString(),
       encumbranceTypeId: this.encumbranceTypeId,
       alienationLimitId: this.alienationLimitId,
       typeDescription: this.typeDescription
@@ -121,11 +121,11 @@ export class EncumbranceTerm{
     this.additionalTerms = additionalTerms;
     this.currencyTypeId = currencyTypeId;
   }
-  git_info(){
-    const time = new Date();
+  get_info(){
+    const current_time = new Date();
     return {
       obligationAmount: this.obligationAmount,
-      termTo: this.termTo + time.toISOString().split('T')[1],
+      termTo:(new Date(this.termTo+'T'+current_time.toISOString().split('T')[1])).toISOString(),
       additionalTerms: this.additionalTerms,
       currencyTypeId: this.currencyTypeId
     }
@@ -150,14 +150,7 @@ export class DescriptionSubject{
 }
 
 export class Changes{
-  visible_status = false;
   changes_checked = 1;
-  changeTypechecked = 1
-  constructor() {
-  }
-}
-export class SubjectChange{
-  visible_status = false;
   changeTypechecked = 1
   constructor() {
   }

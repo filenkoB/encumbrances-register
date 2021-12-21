@@ -1,13 +1,7 @@
 <template>
   <div class="row" v-if="item">
     <div class="col">
-      <div class="row">
-        <div class="col-auto">
-          <button type="button" :class="button()" v-on:click="change()">Загальні інформація:</button>
-        </div> 
-      </div>
-      <hr class="border-secondary border border-2" v-if="item.visible_status">
-      <div class="row" v-if="item.visible_status" :class="colour">
+      <div class="row" :class="colour">
           <div class="col">
               <div class="row">
                 <div class="col-auto">

@@ -30,7 +30,7 @@
 </template>
 <script>
 import Statement from "../components/Statement.vue"
-import {EncumbranceType, RegistrationType, AlienationLimit, GetALLCurrency} from "../connect_to_server"
+import {EncumbranceType, RegistrationType, AlienationLimit, GetALLCurrency, CreateStatement} from "../connect_to_server"
 export default {
   data(){
     return {
@@ -102,8 +102,7 @@ export default {
       document.getElementById('submit').click();
       
     },
-    submit(){
-      console.log("hi");
+    async submit(){
       if(this.isvalid){
         let el = {
           statementTypeId: null,        
@@ -116,7 +115,8 @@ export default {
         }
         if(this.statement_type) el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
         else el.statementTypeId = "3c63d55d-4b8f-4c06-8122-6a1c3ac72699";
-        console.log("hi",el);
+        const info = await CreateStatement(el);
+        console.log("hi",info);
       }
     },
     reset(){

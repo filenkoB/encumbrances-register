@@ -52,15 +52,15 @@ export default {
   async created(){
     if(this.statement_element.id != null){
       const data = await GetStatement(this.statement_element.id);
-      console.log("data", data);
+      console.log(data);
       if(data != null){
         this.visible_status = true;
         this.element = {
           generalInfo: new GeneralInfo(data.generalInfo.number, data.generalInfo.registrationDate),
           encumbranceTier: new EncumbranceTierDebtor(data.encumbranceTier.taxpayerAccountCardNumber, 
-                                                    data.encumbranceTier.isForeigner, data.encumbranceTier.name),
+                                                    data.encumbranceTier.isForeigner, data.encumbranceTier.name, data.encumbranceTier.additionalInfo, data.encumbranceTier.address),
           encumbranceDebtor: new EncumbranceTierDebtor(data.encumbranceDebtor.taxpayerAccountCardNumber, 
-                                                    data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name),
+                                                    data.encumbranceDebtor.isForeigner, data.encumbranceDebtor.name,data.encumbranceDebtor.additionalInfo, data.encumbranceDebtor.address),
           basisDocument: new BasisDocument(data.basisDocument.name, data.basisDocument.number,
                                           data.basisDocument.issuer, data.basisDocument.issueDate),
           encumbranceInfo: new EncumbranceInfo(data.encumbranceInfo.encumbranceKindId, data.encumbranceInfo.registrationTypeId, 
@@ -78,8 +78,8 @@ export default {
       const time = new Date();
       this.element = {
         generalInfo: null,
-        encumbranceTier: new EncumbranceTierDebtor(null, false, null),
-        encumbranceDebtor: new EncumbranceTierDebtor(null, false, null),
+        encumbranceTier: new EncumbranceTierDebtor(null, false, null, ""),
+        encumbranceDebtor: new EncumbranceTierDebtor(null, false, null, ""),
         basisDocument: new BasisDocument(null, null, null, time.toISOString()),
         encumbranceInfo: new EncumbranceInfo( "85ad61fc-82e7-4436-a209-b07d1d7105e4", "159fcd68-1c41-425f-89b5-8a3fb5ee24e1", time.toISOString(), "5f424124-8e67-48f1-b7cc-57c9be5473c5","225e5466-a939-4ab6-8034-af49415bcff5", null),
         encumbranceTerm: new EncumbranceTerm( null, time.toISOString(), null, null),

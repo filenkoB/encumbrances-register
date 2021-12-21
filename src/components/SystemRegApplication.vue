@@ -70,9 +70,18 @@
 </template>
 
 <script>
-
+import {GetUserStatment} from '../connect_to_server'
 export default {
+  data(){
+    return {
+      application: null
+    }
+  },
   name: "SystemRegApplication",
-  props: ["application"],
+  props: ["item"],
+  
+  async beforeCreate(){
+    this.application = await GetUserStatment(this.item.id)
+  }
 }
 </script>

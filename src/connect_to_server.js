@@ -12,6 +12,7 @@ export async function AuthorityPassport(){
     }
   }
 }
+
 export async function Authority(){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Authority");
   if(responce.status == 200){
@@ -64,7 +65,6 @@ export async function GetStatements(page, length){
 
 export async function GetStatement(id){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/"+id);
-  console.log("responce", responce);
   if(responce.status == 200){
     const data = await responce.json()
     return data;
@@ -74,6 +74,55 @@ export async function GetStatement(id){
     console.log(responce.status);
     return null;
   }
+}
+
+export async function CreateStatement(item){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(item)
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Registration/Add", requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function UsersStatementsList(page, length){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Registration/Users?page=" + page + "&length=" + length);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function GetUserStatment(user_id){
+  /*const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "//Statement/Registration/User/"+id);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    console.log(responce.status);
+    return null;
+  }*/
+  return user_id
 }
 
 export async function GetALLCountry(){
