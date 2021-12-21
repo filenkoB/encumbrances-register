@@ -38,7 +38,6 @@ export class EncumbranceTierDebtor{
     this.isForeigner = isForeigner;
     this.name = name; 
     this.additionalInfo = additionalInfo;
-    console.log(address)
     this.address.path.country = address.countryId;
     this.address.path.region = address.regionId;
     this.address.path.district = address.districtId;
