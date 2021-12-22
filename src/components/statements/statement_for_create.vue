@@ -104,7 +104,7 @@ export default {
                           data.encumbranceInfo.lastEncumbranceOccurrenceDate, data.encumbranceInfo.encumbranceTypeId,
                           data.encumbranceInfo.alienationLimitId, data.encumbranceInfo.typeDescription),
           encumbranceTerm: new EncumbranceTerm(data.encumbranceTerm.obligationAmount, data.encumbranceTerm.termTo, data.encumbranceTerm.additionalTerms, data.encumbranceTerm.currencyTypeId),
-          encumbranceDescriptionSubject: new DescriptionSubject(),
+          encumbranceDescriptionSubject: new DescriptionSubject(data.encumbranceObject.objectDescription, data.encumbranceObject.serialNumber, data.encumbranceObject.stateRegistrationNumber, data.encumbranceObject.anotherObjectsDesc),
         }
       }
       else{
@@ -121,7 +121,7 @@ export default {
         basisDocument: new BasisDocument(null, null, null, time.toISOString()),
         encumbranceInfo: new EncumbranceInfo( "85ad61fc-82e7-4436-a209-b07d1d7105e4", "159fcd68-1c41-425f-89b5-8a3fb5ee24e1", time.toISOString(), "5f424124-8e67-48f1-b7cc-57c9be5473c5","225e5466-a939-4ab6-8034-af49415bcff5", null),
         encumbranceTerm: new EncumbranceTerm( null, time.toISOString(), null, null),
-        encumbranceDescriptionSubject: new DescriptionSubject(),
+        encumbranceDescriptionSubject: new DescriptionSubject(null, null, null, null),
       }
       this.fun(this.element);
     }

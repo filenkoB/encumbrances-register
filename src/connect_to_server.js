@@ -72,6 +72,7 @@ export async function RegistrationUserAccept(statementId){
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: null
   };
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Accept/" + statementId, requestOptions);
   if(responce.status == 200){
