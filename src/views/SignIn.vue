@@ -110,6 +110,7 @@ export default {
     if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
     if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
     this.$root.$children[0].$children[0].user_status = null;
+    this.$root.$children[0].$children[0].page = 'signin';
   },
   computed: {
     isInvalidLogin: function() {
