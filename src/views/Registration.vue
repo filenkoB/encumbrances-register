@@ -54,7 +54,7 @@
               <label class="ms-2 vertical-center">Орган, що видав документ</label>
             </div>
             <div class="col-auto">
-              <select class="form-control" v-model="pasAgency">
+              <select class="form-control" required v-model="pasAgency">
                 <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.code}}-{{el.name}}</option>
               </select>
             </div>
@@ -72,7 +72,7 @@
               <label class="ms-2 vertical-center">Орган, що видав документ</label>
             </div>
             <div class="col-auto">
-              <select class="form-control" v-model="pasAgencyB">
+              <select class="form-control" required v-model="pasAgencyB">
                 <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.name}}</option>
               </select>
             </div>

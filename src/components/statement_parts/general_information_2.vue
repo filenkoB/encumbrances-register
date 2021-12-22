@@ -1,12 +1,6 @@
 <template>
   <div class="row" v-if="item">
     <div class="col">
-      <div class="row">
-        <pre>
-          search_type:{{search_type}}
-          search_info:{{search_info}}
-        </pre>
-      </div>
       <div class="row" :class="colour">
           <div class="col">             
               <div class="row">
