@@ -1,12 +1,6 @@
 <template>
   <div class="row" v-if="item">
     <div class="col">
-      <div class="row">
-        <pre>
-          search_type:{{search_type}}
-          search_info:{{search_info}}
-        </pre>
-      </div>
       <div class="row" :class="colour">
           <div class="col">             
               <div class="row">
@@ -39,7 +33,7 @@
                   v-model="search_type" value="2">
                 </div>
                 <div class="col-auto">
-                  <label class="col-form-label">Реєстраційний номер запису в Державному реєстрі обтяжень рухомогомайна:</label>
+                  <label class="col-form-label">Реєстраційний номер запису в Державному реєстрі обтяжень рухомого майна:</label>
                 </div>
                 <div class="col-2">
                   <input type="text" class="form-control" :disabled="search_type!='2'" v-model="search_info.number2">

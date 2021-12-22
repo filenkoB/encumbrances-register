@@ -107,13 +107,15 @@ export default {
   name: 'Address',
   methods:{
     changed() {
-      this.path.invalid = this.isInvalid();
-      this.path.onChanged();
+      if (!this.editing_status) {
+        this.path.invalid = this.isInvalid();
+        this.path.onChanged();
+      }
     },
     isInvalid() {
       if(!this.patterns.building.var.exec(this.path.build)) { return true; }
       if(!this.patterns.text.var.exec(this.path.flat)) { return true; }
-      if((this.path.corps.length > 0) && !this.patterns.corps.var.exec(this.path.corps))  { return true; }
+      if(this.path.corps == null || ((this.path.corps.length > 0) && !this.patterns.corps.var.exec(this.path.corps)))  { return true; }
       return false;
     },
     async get_region(item){
@@ -172,7 +174,7 @@ export default {
           this.address.street = await GetStreetByCity(this.path.city);
           this.address.index = await GetIndexByCity(this.path.city);
           this.justOpened = false;
-          this.path.invalid = this.isInvalid();
+          if(!this.editing_status) this.path.invalid = this.isInvalid();
         }
         else {this.path.invalid = true;}
       }
