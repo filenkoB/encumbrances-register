@@ -1,13 +1,13 @@
 <template>
   <div class="row">
     <div class="col">
-      <GeneralInformation :item="element.generalInfo" :editing_status="editing_status"/>
+      <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info"/>
       
-      <hr class="border-info border border-2">
-      <OtherChanges :item="element.otherChange" :editing_status="editing_status"/>
+      <hr class="border-info border border-2" v-if="visible_status_info">
+      <OtherChanges :item="element.otherChange" :editing_status="editing_status"  v-if="visible_status_info"/>
 
-      <hr class="border-info border border-2">
-      <CreateStatment :editing_status="editing_status" :statement_element="statement_element" :info="info" :fun="fun"/>
+      <hr class="border-info border border-2" v-if="visible_status_info">
+      <CreateStatment :editing_status="editing_status" :statement_element="statement_element" :info="info" :fun="fun"  v-if="visible_status_info"/>
     </div>
   </div>
 </template>
@@ -21,7 +21,8 @@ import {GeneralInfoType2, Changes} from "../../classes"
 export default {
   data(){
     return {
-      element: {}
+      element: {},
+      visible_status_info: false
     }
   },
   name:'ChangeStatment',

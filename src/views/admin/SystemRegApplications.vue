@@ -8,8 +8,8 @@
         <div class="col-2 text-start border-end border-4 pt-3">{{item.date}}</div>
         <div class="col m-1 text-end">
           <button type="button" class="btn btn-outline-info m-1" @click="get_application_info(item)">Переглянути дані заявки</button>
-          <button type="button" class="btn btn-outline-success m-1" :disabled="!item.visible_status" @click="accept()">Підтвердити</button>
-          <button type="button" class="btn btn-outline-danger m-1" :disabled="!item.visible_status" @click="decline()">Відхилити</button>
+          <button type="button" class="btn btn-outline-success m-1" :disabled="!item.visible_status" @click="accept(item)">Підтвердити</button>
+          <button type="button" class="btn btn-outline-danger m-1" :disabled="!item.visible_status" @click="decline(item)">Відхилити</button>
         </div>
         <div v-if="item.visible_status">
           <system-reg-application :item="item"/>
@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import {UsersStatementsList} from '../../connect_to_server'
+import {UsersStatementsList, UserStatementsInfo, RegistrationUserAccept, RegistrationUserDecline, RegistrationRegistratorAccept, RegistrationRegistratorDecline} from '../../connect_to_server'
 import {StatmentsPageElement} from '../../classes'
 import Pagination from '../../components/Pagination.vue';
 import SystemRegApplication from "../../components/SystemRegApplication.vue";
@@ -64,9 +64,18 @@ export default {
       this.closeInfo(item);
       item.visible_status = !item.visible_status;
     },
-    accept() {
+    async accept(item) {
+      const data = await UserStatementsInfo(item.id);
+      if(data.userType == 2 ) await RegistrationUserAccept(item.id);
+      else await RegistrationRegistratorAccept(item.id);
     },
-    decline() {
+    async decline(item) {
+      const data = await UserStatementsInfo(item.id);
+      const decline_info = "Шановний '"+data.lastName+" "+data.firstName+" "+data.patronymic+
+      ". Вам відмовлено в наданні доступу для використання ресурсів Державного реєстру обтяжень рухомого майна."+
+      " Для вирішення непорозуміння перевірте актуальність данних необхідних для реєстрації та повторіть спробу.";
+      if(data.userType == 2 ) await RegistrationUserDecline(item.id, data.email, decline_info);
+      else await RegistrationRegistratorDecline(item.id, data.email, decline_info);
     },
     closeInfo(item) {
       for(let app of this.applications){

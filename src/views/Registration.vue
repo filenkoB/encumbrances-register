@@ -147,7 +147,7 @@
 
 <script>
 import {validation} from "../data";
-import {AuthorityPassport, Authority, RegistrationUserStatement} from "../connect_to_server"
+import {AuthorityPassport, Authority, RegistrationUserStatement, RegistrationRegistratorStatement} from "../connect_to_server"
 export default {
   name: "registration",
   data() {
@@ -205,7 +205,8 @@ export default {
             taxpayerACNAbsenceReason: "",
             authorityId: this.authorityId
         }
-        await RegistrationUserStatement(final_element)
+        if(this.chosenRole == 'user') await RegistrationUserStatement(final_element)
+        else await RegistrationRegistratorStatement(final_element)
       }
     },
     clearPasData(type) {

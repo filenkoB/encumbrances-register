@@ -230,7 +230,6 @@ export async function UserStatementsInfo(userId){
   }
 }
 
-
 export async function GetALLCountry(){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Country");
   if(responce.status == 200){
