@@ -76,6 +76,7 @@ export default {
     if(!this.user_status || this.user_status != 'user'){
         this.$router.push({ name: "Info"}).catch(() => {});
     }
+    this.$root.$children[0].$children[0].page = 'mystatements';
   },
   created(){
     let today = new Date();

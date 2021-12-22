@@ -3,7 +3,7 @@
     <div class="col">
       <div class="row">
         <div class="col-auto" v-if="button_text.length != 0">
-          <button type="button" :class="button()" v-on:click="change()">{{button_text}}</button>
+          <button type="button" :disabled="animating" :class="button()" v-on:click="change()">{{button_text}}</button>
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status && button_text.length != 0">
@@ -75,11 +75,16 @@ import Address from "./Address.vue"
 import {get_button_colour, get_class_colour, change_item_visible_status} from "../logic";
 import {validation} from "../../data";
 export default {
-  data() { return {} },
+  data() {
+    return {
+      animating: false
+    }
+  },
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){
+      this.animating = true;
       if(!this.item.visible_status) {
         change_item_visible_status(this.item);
         setTimeout(() => {const content = document.querySelector('#' + this.idname + '-info');
@@ -118,6 +123,7 @@ export default {
         elem.style.height = '';
         elem.removeEventListener('transitionend', () => {});
         if (hiding) { change_item_visible_status(item); }
+        this.animating = false;
       });
     },
     changed() {

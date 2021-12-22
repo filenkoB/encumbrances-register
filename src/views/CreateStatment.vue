@@ -74,14 +74,22 @@ export default {
         });
       }
       else {
-        if (this.element.basisDocument.invalid) {
-          this.element.basisDocument.visible_status = true;
-          this.isvalid = false;
+        if (this.element.searched) {
+          if (this.element.otherChange.changes_checked === 2) {
+            Object.keys(this.element).forEach( i => { 
+              if ( i !== 'searched' && i !== 'otherChange' && i !== 'generalInfo' && this.isvalid) {
+                if (this.element[i].invalid) {
+                  if (!this.element[i].visible_status) {
+                    this.element[i].change_visibility();
+                    time = 500;
+                  }
+                  this.isvalid = false;
+                }
+              }
+            });
+          }
         }
-        else if (this.element.encumbranceTerm.invalid) {
-          this.element.encumbranceTerm.visible_status = true;
-          this.isvalid = false;
-        }
+        this.isvalid = false;
       }
       setTimeout(this.click_submit, time);
     },
@@ -100,7 +108,7 @@ export default {
           encumbranceTerm: this.element.encumbranceTerm.get_info(),
           encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
         }
-        if(this.statement.typeName =="Заява про реєстрацію обтяження рухомого майна") el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
+        if(this.statement_type) el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
         else el.statementTypeId = "3c63d55d-4b8f-4c06-8122-6a1c3ac72699";
         await CreateStatement(el)
         console.log(el);
@@ -111,10 +119,11 @@ export default {
     }
   },
   mounted(){
-      this.user_status = window.sessionStorage.getItem('user_status');
-      if(!this.user_status || this.user_status != 'registrar' && this.user_status !='user'){
+    this.user_status = window.sessionStorage.getItem('user_status');
+    if(!this.user_status || this.user_status != 'registrar' && this.user_status !='user'){
       this.$router.push({ name: "Info"}).catch(() => {});
     }
+    this.$root.$children[0].$children[0].page = 'create-statement';
   },
 }
 </script>

@@ -187,7 +187,7 @@ export async function CreateStatement(item){
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(item)
   };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Registration/Add", requestOptions);
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Register", requestOptions);
   if(responce.status == 200){
     const data = await responce.json()
     return data;

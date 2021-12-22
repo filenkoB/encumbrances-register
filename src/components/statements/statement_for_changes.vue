@@ -6,8 +6,9 @@
       <hr class="border-info border border-2" v-if="visible_status_info">
       <OtherChanges :item="element.otherChange" :editing_status="editing_status"  v-if="visible_status_info"/>
 
-      <hr class="border-info border border-2" v-if="visible_status_info">
-      <CreateStatment :editing_status="editing_status" :statement_element="statement_element" :info="info" :fun="fun"  v-if="visible_status_info"/>
+      <hr class="border-info border border-2" v-if="visible_status_info && (element.otherChange.changes_checked === 2)">
+      <CreateStatment :editing_status="editing_status" :statement_element="statement_element"
+                      :info="info" :fun="update_element"  v-if="visible_status_info && (element.otherChange.changes_checked === 2)"/>
     </div>
   </div>
 </template>
@@ -35,8 +36,17 @@ export default {
   methods:{
     button_search(item){
       this.visible_status_info = !this.visible_status_info;
+      this.element.searched = this.visible_status_info;
       console.log(item);
     },
+    update_element(item){
+      Object.keys(item).forEach( i => {
+        if (i !== 'generalInfo') {
+          this.element[i] = item[i];
+        }
+      });
+      console.log(this.element);
+    }
   },
   async created(){
     if(this.statement_element.id != null){
@@ -52,6 +62,13 @@ export default {
       this.element = {
         generalInfo: new GeneralInfoType2(null, time.toISOString()),
         otherChange: new Changes(),
+        searched: this.visible_status_info,
+        encumbranceTier: null,
+        encumbranceDebtor: null,
+        basisDocument: null,
+        encumbranceInfo: null,
+        encumbranceTerm: null,
+        encumbranceDescriptionSubject: null,
       }
       this.fun(this.element);
     }

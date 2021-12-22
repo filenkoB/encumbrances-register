@@ -25,6 +25,7 @@ export default {
         if(!this.user_status){
             this.$router.push({ name: "SignIn"}).catch(() => {});
         }
+        this.$root.$children[0].$children[0].page = 'info';
     }
 }
 </script>

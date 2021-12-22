@@ -54,7 +54,7 @@
               <label class="ms-2 vertical-center">Орган, що видав документ</label>
             </div>
             <div class="col-auto">
-              <select class="form-control" v-model="pasAgency">
+              <select class="form-control" required v-model="pasAgency">
                 <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.code}}-{{el.name}}</option>
               </select>
             </div>
@@ -72,7 +72,7 @@
               <label class="ms-2 vertical-center">Орган, що видав документ</label>
             </div>
             <div class="col-auto">
-              <select class="form-control" v-model="pasAgencyB">
+              <select class="form-control" required v-model="pasAgencyB">
                 <option v-for="el in authorityPassport" :key="el.code" :value="el.code">{{el.name}}</option>
               </select>
             </div>
@@ -239,6 +239,7 @@ export default {
     if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
     if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
     this.$root.$children[0].$children[0].user_status = null;
+    this.$root.$children[0].$children[0].page = 'registration';
 
     this.patterns = validation.patterns;
     this.today = validation.today;

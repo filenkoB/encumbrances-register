@@ -3,7 +3,7 @@
     <div class="col">
       <div class="row">
         <div class="col-auto" v-if="button_vs">
-          <button type="button" :class="button()" v-on:click="change()">Опис предмету обтяження:</button>
+          <button type="button" :disabled="animating" :class="button()" v-on:click="change()">Опис предмету обтяження:</button>
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status && button_vs">
@@ -64,12 +64,14 @@ export default {
   data(){
     return{
       currency_type: null,
+      animating: false
     }
   },
   methods:{
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){
+      this.animating = true;
       if(!this.item.visible_status) {
         change_item_visible_status(this.item);
         setTimeout(() => {const content = document.querySelector('#encumb-subj');
@@ -108,6 +110,7 @@ export default {
         elem.style.height = '';
         elem.removeEventListener('transitionend', () => {});
         if (hiding) { change_item_visible_status(item); }
+        this.animating = false;
       });
     },
     changed() {

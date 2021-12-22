@@ -1,6 +1,6 @@
 <template>
   <div id="statements_page">
-    <div>
+    <div v-if="statements.length > 0">
       <div id="statements_area" >
         <div class="row" v-for="item in statements"
         v-bind:key="item.number">
@@ -41,6 +41,11 @@
         </div>
       </div>
       <Pagination :pagination="pagination" :fun="get_statements"/>
+    </div>
+    <div class="row border border-4 p-3 mt-5 rounded" v-else>
+      <div class="col text-center">
+        <label>Наразі в системі відсутні заяви, котрі необхідно зареєструвати</label>
+      </div>
     </div>
   </div>
 </template>
@@ -115,6 +120,8 @@ export default {
     if(!this.user_status || this.user_status != 'registrar'){
         this.$router.push({ name: "Info"}).catch(() => {});
     }
+    this.$root.$children[0].$children[0].page = 'statements';
+    window.sessionStorage.setItem('page', 'statements');
   },
   async created(){
     await this.get_statements();
