@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info"/>
+      <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info" :button_search="button_search"/>
       
       <hr class="border-info border border-2" v-if="visible_status_info">
       <OtherChanges :item="element.otherChange" :editing_status="editing_status"  v-if="visible_status_info"/>
@@ -31,6 +31,12 @@ export default {
     GeneralInformation,
     OtherChanges,
     CreateStatment
+  },
+  methods:{
+    button_search(item){
+      this.visible_status_info = !this.visible_status_info;
+      console.log(item);
+    },
   },
   async created(){
     if(this.statement_element.id != null){
