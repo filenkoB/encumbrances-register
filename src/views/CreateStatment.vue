@@ -73,14 +73,22 @@ export default {
         });
       }
       else {
-        if (this.element.basisDocument.invalid) {
-          this.element.basisDocument.visible_status = true;
-          this.isvalid = false;
+        if (this.element.searched) {
+          if (this.element.otherChange.changes_checked === 2) {
+            Object.keys(this.element).forEach( i => { 
+              if ( i !== 'searched' && i !== 'otherChange' && i !== 'generalInfo' && this.isvalid) {
+                if (this.element[i].invalid) {
+                  if (!this.element[i].visible_status) {
+                    this.element[i].change_visibility();
+                    time = 500;
+                  }
+                  this.isvalid = false;
+                }
+              }
+            });
+          }
         }
-        else if (this.element.encumbranceTerm.invalid) {
-          this.element.encumbranceTerm.visible_status = true;
-          this.isvalid = false;
-        }
+        this.isvalid = false;
       }
       setTimeout(this.click_submit, time);
     },

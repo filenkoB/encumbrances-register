@@ -8,8 +8,7 @@
                 <label class="col-form-label">Інші зміни:</label>
               </div>
               <div class="col-4">
-                <select class="form-control" :disabled="editing_status"  v-model="item.changes_checked">
-                  <option selected disabled>Оберіть ...</option>
+                <select class="form-control" required :disabled="editing_status"  v-model="item.changes_checked">
                   <option v-for="it in changes" :key="it.number" :value="it.number">{{ it.name }}</option>
                 </select>
               </div>
@@ -42,10 +41,9 @@ export default {
   created(){
     this.changes = [
       {number: 1, name: "Зареєструвати припинення обтяження"},
-      {number: 2, name: "Зареєструвати звернення стягнення"},
+      {number: 2, name: "Змінити дані обтяження"},
       {number: 3, name: "Продовжити строк  дії  реєстраційного  запису  на   наступні 5 років"},
-      {number: 4, name: "Виправити дату виникнення"},
-      {number: 5, name: "Дата виникнення"}
+      {number: 4, name: "Виправити дату виникнення"}
     ];
   }
 }
