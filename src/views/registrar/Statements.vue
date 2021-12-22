@@ -115,6 +115,8 @@ export default {
     if(!this.user_status || this.user_status != 'registrar'){
         this.$router.push({ name: "Info"}).catch(() => {});
     }
+    this.$root.$children[0].$children[0].page = 'statements';
+    window.sessionStorage.setItem('page', 'statements');
   },
   async created(){
     await this.get_statements();

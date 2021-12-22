@@ -104,14 +104,16 @@
     </form>
     <div class="row" v-show="!visible_status">
       <div class="col text-start">
-        <div :class="colour(!visible_status)">
-          <div class="col-2 border-end border-secondary border-4">
-            <label class="col-form-label">Параметри запиту:</label>
-          </div>
-          <div class="col-8">
-            <div class="row mb-2" v-for="item in search_query.data" :key="item.name">
-              <div class="col"><label class="col-form-label" >{{item.name}}</label></div>
-              <div class="col"><input class="form-control" type="text" disabled :value="item.value"></div>
+        <div class="statements_area">
+          <div :class="colour(!visible_status)">
+            <div class="col-2 border-end border-secondary border-4">
+              <label class="col-form-label">Параметри запиту:</label>
+            </div>
+            <div class="col-8">
+              <div class="row mb-2" v-for="item in search_query.data" :key="item.name">
+                <div class="col"><label class="col-form-label" >{{item.name}}</label></div>
+                <div class="col"><input class="form-control" type="text" disabled :value="item.value"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -231,7 +233,7 @@ export default {
       }, 500);
     },
     reset() {
-      this.search_filter.first_item.data.value = "";
+      this.search_filter.first_item.data[0].value = "";
       this.search_filter.second_item.data.map(el=>el.value = ""); 
       this.search_filter.third_item.data.map(el=>el.value = "");
     },
@@ -254,6 +256,12 @@ export default {
     if(!this.user_status){
         this.$router.push({ name: "SignIn"}).catch(() => {});
     }
+    this.$root.$children[0].$children[0].page = 'search';
   }
 }
 </script>
+<style>
+.statements_area{
+  min-height: 430px;
+}
+</style>

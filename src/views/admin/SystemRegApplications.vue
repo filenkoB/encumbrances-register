@@ -94,6 +94,7 @@ export default {
     if(!this.user_status || this.user_status != 'admin'){
         this.$router.push({ name: "Info"}).catch(() => {});
     }
+    this.$root.$children[0].$children[0].page = 'applications';
   },
   async created(){
     this.get_applications();
