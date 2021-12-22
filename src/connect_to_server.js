@@ -48,6 +48,110 @@ export async function RegistrationUserStatement(item){
   }
 }
 
+export async function RegistrationRegistratorStatement(item){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(item)
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/Registrator/Statement", requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function RegistrationUserAccept(statementId){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Accept/" + statementId, requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function RegistrationUserDecline(statementId, user_email, decline_reason){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body:JSON.stringify({
+      email: user_email,
+      reason: decline_reason
+    })
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Decline/" + statementId, requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function RegistrationRegistratorAccept(statementId){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/Registrator/Accept/" + statementId, requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function RegistrationRegistratorDecline(statementId, registrator_email, decline_reason){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body:JSON.stringify({
+      email: registrator_email,
+      reason: decline_reason
+    })
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/Registrator/Decline/" + statementId, requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
 export async function GetStatements(page, length){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement?page=" + page + "&length=" + length);
   if(responce.status == 200){
@@ -111,18 +215,19 @@ export async function UsersStatementsList(page, length){
   }
 }
 
-export async function GetUserStatment(user_id){
-  /*const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "//Statement/Registration/User/"+id);
+export async function UserStatementsInfo(userId){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Registration/Users/" + userId);
   if(responce.status == 200){
     const data = await responce.json()
     return data;
   }
   else {
     //some mess
-    console.log(responce.status);
-    return null;
-  }*/
-  return user_id
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
 }
 
 export async function GetALLCountry(){
