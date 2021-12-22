@@ -18,7 +18,7 @@
                 <i class="fa fa-hand-o-right" aria-hidden="true"></i>
               </div>
               <div class="col-auto">
-                <p>Для перегляду списку поданий на реєстрацію "Заяв" скористайтеся розділом "Переглянути Заяви".</p>
+                <p>Для перегляду списку поданих користувачем "Заяв" скористайтеся розділом "Мої заяви".</p>
               </div>
             </div>
             <div class="row ms-5">
@@ -32,83 +32,37 @@
                   </div>
                   <div class="col-auto">
                     <button type="button" class="btn btn-outline-dark" disabled>
-                      Переглянути Заяви
+                      <i class="fa fa-list-alt" aria-hidden="true"></i>
+                      Мої заяви
                     </button>
                   </div>
                 </div>
                 <div class="row ms-4">
                   <div class="col-auto mt-2">
-                    <p>Кожен елемент, що охарактеризовує "Заяву" має свій функціонал, а саме:</p>
-                  </div>
-                </div>
-                <div class="row ms-4">
-                  <div class="col-auto mt-2">
-                    <i class="fa fa-angle-double-right fa-lg" aria-hidden="true"></i>
-                  </div>
-                  <div class="col-auto mt-2">
-                    Для перегляду всіх відомостей "Заяви", натисніть
-                  </div>
-                  <div class="col-auto">
-                    <button type="button" class="btn btn-outline-info" disabled>
-                      Переглянути все
-                    </button>
-                  </div>
-                </div>
-                <div class="row ms-4 mt-2">
-                  <div class="col-auto mt-2">
-                    <i class="fa fa-angle-double-right fa-lg" aria-hidden="true"></i>
-                  </div>
-                  <div class="col-auto mt-2">
-                    Для підтвердження реєстріції відомостей "Заяви", натисніть
-                  </div>
-                  <div class="col-auto">
-                    <button type="button" class="btn btn-outline-success" disabled>
-                      Підтвердити
-                    </button>
-                  </div>
-                  <div class="col-auto mt-2">
-                    та підтвердьте або відхиліть вашу дію в спливаючому вікні.
-                  </div>
-                </div>
-                <div class="row ms-4 mt-2">
-                  <div class="col-auto mt-2">
-                    <i class="fa fa-angle-double-right fa-lg" aria-hidden="true"></i>
-                  </div>
-                  <div class="col-auto mt-2">
-                    Для відхилення реєстріції відомостей "Заяви", натисніть
-                  </div>
-                  <div class="col-auto">
-                    <button type="button" class="btn btn-outline-danger" disabled>
-                      Відхилити
-                    </button>
-                  </div>
-                  <div class="col-auto mt-2">
-                    та підтвердьте або відхиліть вашу дію в спливаючому вікні.
+                    <p>Кожен елемент, що охарактеризовує "Заяву" зазначає стан заяв в системі.</p>
                   </div>
                 </div>
               </div>
             </div>
           </li>
-          <li class="list-group-item">
-            <div>
-              <i class="fa fa-hand-o-right" aria-hidden="true"></i>
-              Для перегляду активності "Реєстраторів" скористайтеся розділом "Перелік Реєстраторів".
-            </div>
-            <div class="ms-3 mt-2">
-              <i class="fa fa-chevron-right" aria-hidden="true"></i>
-              Ви можете знайти даний розділ в верхньому лівому куті головного меню.
-              <button type="button" class="btn btn-outline-dark ms-2" disabled>
-                Перелік Реєстраторів
-              </button>
-            </div>
-          </li>
+          <Create />
+          <Search />
+          <MainInfo />
         </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
+import MainInfo from './maininfo.vue'
+import Create from './create.vue'
+import Search from './search.vue'
 export default {
     name: 'User',
+    components:{
+      Create,
+      MainInfo,
+      Search
+    }
 }
 </script>
