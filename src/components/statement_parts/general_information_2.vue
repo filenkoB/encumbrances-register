@@ -25,7 +25,7 @@
               </div>
               <div class="row mt-2">
                 <div class="col-auto">
-                  <label class="col-form-label">Реєстраційний номер запису в Державному реєстрі обтяжень рухомогомайна:</label>
+                  <label class="col-form-label">Реєстраційний номер запису в Державному реєстрі обтяжень рухомого майна:</label>
                 </div>
                 <div class="col-4">
                   <input type="text" class="col-6 form-control" :disabled="editing_status" :value="item.number">
