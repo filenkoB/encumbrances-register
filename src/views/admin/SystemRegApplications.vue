@@ -66,16 +66,19 @@ export default {
     },
     async accept(item) {
       const data = await UserStatementsInfo(item.id);
-      if(data.userType == 2 ) await RegistrationUserAccept(item.id);
-      else await RegistrationRegistratorAccept(item.id);
+      console.log(data.userType == 2)
+      if(data.userType == 2 ) await RegistrationRegistratorAccept(item.id);
+      else await RegistrationUserAccept(item.id);
+      this.get_applications();
     },
     async decline(item) {
       const data = await UserStatementsInfo(item.id);
       const decline_info = "Шановний '"+data.lastName+" "+data.firstName+" "+data.patronymic+
       ". Вам відмовлено в наданні доступу для використання ресурсів Державного реєстру обтяжень рухомого майна."+
       " Для вирішення непорозуміння перевірте актуальність данних необхідних для реєстрації та повторіть спробу.";
-      if(data.userType == 2 ) await RegistrationUserDecline(item.id, data.email, decline_info);
-      else await RegistrationRegistratorDecline(item.id, data.email, decline_info);
+      if(data.userType == 2 ) await RegistrationRegistratorDecline(item.id, data.email, decline_info);
+      else await RegistrationUserDecline(item.id, data.email, decline_info);
+      this.get_applications();
     },
     closeInfo(item) {
       for(let app of this.applications){

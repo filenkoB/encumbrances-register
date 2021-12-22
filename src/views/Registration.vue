@@ -206,7 +206,7 @@ export default {
             authorityId: this.authorityId
         }
         if(this.chosenRole == 'user') await RegistrationUserStatement(final_element)
-        else await RegistrationRegistratorStatement(final_element)
+        else if(this.chosenRole == 'registrar') await RegistrationRegistratorStatement(final_element)
       }
     },
     clearPasData(type) {
