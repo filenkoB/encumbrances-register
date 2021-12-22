@@ -44,7 +44,7 @@
     <div class="col-auto text-start" style="width: 325px">
       <div class="row">
         <div class="col-2"><img src="../assets/UkrEmblemaW.png" width="45" /></div>
-        <div class="col text-center mt-1"><span class="head-text align-middle"> Державний реєстр обтяження рухомого майна</span></div>
+        <div class="col text-center mt-1"><span class="head-text align-middle"> Державний реєстр обтяжень рухомого майна</span></div>
       </div>
     </div>
     <div class="col text-end me-3">

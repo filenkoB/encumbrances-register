@@ -30,7 +30,6 @@
 </template>
 <script>
 import Statement from "../components/Statement.vue"
-// import { CreateStatement} from "../connect_to_server"
 export default {
   data(){
     return {

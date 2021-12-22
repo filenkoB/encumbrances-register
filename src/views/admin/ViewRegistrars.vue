@@ -2,14 +2,21 @@
   <div class="row">
     <div id="registrars_area">
       <div class="row m-1 border border-2 border-primary rounded" v-for="item in get_registrars()" :key="item.item">
-        <div class="col-2 text-start border-end border-4"></div>
-        <div class="col-2 text-start border-end border-4"></div>
-        <div class="col-1 text-start border-end border-4"></div>
-        <div class="col-auto m-1 text-start">
-          <button type="button" class="btn btn-outline-info" v-on:click="get_registrar_logs(item)">Переглянути активність Реєстратора</button>
+        <div class="col-7 text-start border-end border-4">
+          <div class="row mt-3">
+            <div class="col-auto text-start">ПІБ</div>
+            <div class="col">Федотов Федор Федорович</div>
+          </div>
         </div>
-        <div class="col-auto m-1 text-start">
-          <button type="button" class="btn btn-outline-primary" v-on:click="get_registrar_info(item)">Переглянути інформацію про Реєстратора</button>
+        <div class="col text-end">
+          <div class="row">
+            <div class="col m-1">
+              <button type="button" class="btn btn-outline-info" v-on:click="get_registrar_logs(item)">Переглянути активність</button>
+            </div>
+            <div class="col m-1">
+              <button type="button" class="btn btn-outline-primary" v-on:click="get_registrar_info(item)">Переглянути інформацію</button>
+            </div>
+          </div>
         </div>
         <div v-if="item.logs_visible_status">
           <RegistrarLog :registrar='item'/>

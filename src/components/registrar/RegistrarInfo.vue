@@ -8,7 +8,7 @@
               <label class="col-form-label">Прізвище:</label>
             </div>
             <div class="col-9">
-              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.name">
+              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.lastName">
             </div>
           </div>
           <div class="row mt-2">
@@ -16,7 +16,7 @@
               <label class="col-form-label">Ім'я:</label>
             </div>
             <div class="col-9">
-              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.name">
+              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.firstName">
             </div>
           </div>
           <div class="row mt-2">
@@ -24,7 +24,15 @@
               <label class="col-form-label">По-батькові:</label>
             </div>
             <div class="col-9">
-              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.name">
+              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.parentName">
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-auto mt-1">
+              <label class="col-form-label">Дата реєстрації:</label>
+            </div>
+            <div class="col-auto">
+              <input type="date" class="col-6 form-control" disabled v-model="registrar.date">
             </div>
           </div>
         </div>
@@ -34,7 +42,7 @@
               <label class="col-form-label">Державний орган:</label>
             </div>
             <div class="col-7 mt-1">
-              <select class="form-control" @change="change_byffer(false, 'country')" 
+              <select class="form-control"
               :disabled="!change_status" v-model="registrar.workplace">
                 <option>lsllsl</option>
               </select>
@@ -46,15 +54,18 @@
               <label class="col-form-label">Електронна адреса:</label>
             </div>
             <div class="col-7">
-              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.name">
+              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.email">
             </div>
           </div>
           <div class="row mt-2">
             <div class="col-5 mt-1">
-              <label class="col-form-label">Дата реєстрації:</label>
+              <label class="col-form-label">Статус:</label>
             </div>
             <div class="col-7">
-              <input type="text" class="col-6 form-control" :disabled="!change_status" v-model="registrar.name">
+              <select class="form-control" v-model="registrar.status" :disabled="!change_status">
+                <option value="true">Активований</option>
+                <option value="false">Деактивований</option>
+              </select>
             </div>
           </div>
         </div>
