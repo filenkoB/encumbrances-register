@@ -11,10 +11,16 @@
         <div class="col text-end">
           <div class="row">
             <div class="col m-1">
-              <button type="button" class="btn btn-outline-info" v-on:click="get_registrar_logs(item)">Переглянути активність</button>
+              <button type="button" class="btn btn-outline-info" v-on:click="get_registrar_logs(item)">
+                <i class="fa fa-table" aria-hidden="true"></i>
+                Переглянути активність
+              </button>
             </div>
             <div class="col m-1">
-              <button type="button" class="btn btn-outline-primary" v-on:click="get_registrar_info(item)">Переглянути інформацію</button>
+              <button type="button" class="btn btn-outline-primary" v-on:click="get_registrar_info(item)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                Переглянути інформацію
+              </button>
             </div>
           </div>
         </div>
