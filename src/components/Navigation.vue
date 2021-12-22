@@ -34,9 +34,11 @@
       <div class="btn-group" role="group" aria-label="Basic outlined example"
         v-else-if="user_status != undefined && user_status == 'admin'">
         <button type="button" class="btn btn-outline-light me-2" v-on:click="view_registrars">
+          <i class="fa fa-list-alt" aria-hidden="true"></i>
           Перелік Реєстраторів
         </button>
         <button type="button" class="btn btn-outline-light me-2" v-on:click="view_sras">
+          <i class="fa fa-address-card" aria-hidden="true"></i>
           Заявки на реєстрацію
         </button>
       </div>

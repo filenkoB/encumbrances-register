@@ -7,7 +7,10 @@
         <div class="col-auto text-start pt-3">Дата заявки: </div>
         <div class="col-2 text-start border-end border-4 pt-3">{{item.date}}</div>
         <div class="col m-1 text-end">
-          <button type="button" class="btn btn-outline-info m-1" @click="get_application_info(item)">Переглянути дані заявки</button>
+          <button type="button" class="btn btn-outline-info m-1" @click="get_application_info(item)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            Переглянути дані заявки
+          </button>
           <button type="button" class="btn btn-outline-success m-1" :disabled="!item.visible_status" @click="accept(item)">Підтвердити</button>
           <button type="button" class="btn btn-outline-danger m-1" :disabled="!item.visible_status" @click="decline(item)">Відхилити</button>
         </div>
