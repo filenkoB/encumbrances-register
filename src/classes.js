@@ -137,13 +137,18 @@ export class DescriptionSubject{
   number_2 = null;
   value = null;
   visible_status = false;
-  constructor() {}
+  constructor(objectDescription, serialNumber, stateRegistrationNumber, anotherObjectsDesc) {
+    this.name = objectDescription;
+    this.number = serialNumber;
+    this.number_2 = stateRegistrationNumber;
+    this.value = anotherObjectsDesc;
+  }
   get_info(){
     return {
-      description: this.name,
+      objectDescription: this.name,
       serialNumber: this.number,
       stateRegistrationNumber: this.number_2,
-      value: this.value
+      anotherObjectsDesc: this.value
     }
   }
 }
