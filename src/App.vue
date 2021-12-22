@@ -6,7 +6,7 @@
     </main>
     <footer class="footer p-3 bg-dark">
       <div class="container">
-        <span class="text-muted">Directed by Zverev Kostya. Email: zverevfpm@gmail.com</span>
+        <span class="text-muted">КПІ, ФПМ, КП-93 Звєрєв, Федорчук, Філенко.</span>
       </div>
     </footer>
   </div>

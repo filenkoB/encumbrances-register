@@ -30,6 +30,7 @@
 </template>
 <script>
 import Statement from "../components/Statement.vue"
+import {CreateStatement} from "../connect_to_server"
 export default {
   data(){
     return {
@@ -95,21 +96,23 @@ export default {
     click_submit() {
       document.getElementById('submit').click();
     },
-    submit(){
-      // if(this.isvalid){
-      //   console.log("hi",this.element);
-      //   const el = {
-      //     statementTypeId: "00000000-0000-0000-0000-000000000000",        
-      //     encumbranceTier: this.element.encumbranceTier.get_info(),
-      //     encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
-      //     basisDocument: this.element.basisDocument.get_info(),
-      //     encumbranceInfo: this.element.encumbranceInfo.get_info(),
-      //     encumbranceTerm: this.element.encumbranceTerm.get_info(),
-      //     encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
-      //   }
-      //   console.log(el);
-      // }
-      // console.log(this.element);
+    async submit(){
+      if(this.isvalid){
+        console.log("hi",this.element);
+        let el = {
+          statementTypeId: "00000000-0000-0000-0000-000000000000",        
+          encumbranceTier: this.element.encumbranceTier.get_info(),
+          encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
+          basisDocument: this.element.basisDocument.get_info(),
+          encumbranceInfo: this.element.encumbranceInfo.get_info(),
+          encumbranceTerm: this.element.encumbranceTerm.get_info(),
+          encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
+        }
+        if(this.statement.typeName =="Заява про реєстрацію обтяження рухомого майна") el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
+        else el.statementTypeId = "3c63d55d-4b8f-4c06-8122-6a1c3ac72699";
+        await CreateStatement(el)
+        console.log(el);
+      }
     },
     reset(){
       this.$router.go(0);

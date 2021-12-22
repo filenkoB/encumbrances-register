@@ -37,7 +37,7 @@
               <label class="col-form-label">Дата народження:</label>
             </div>
             <div class="col-7">
-              <label class="col-form-label">{{application.birthDate.split('T')[0]}}</label>
+              <label class="col-form-label" v-if="application.birthDate">{{application.birthDate.split('T')[0]}}</label>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@
               <label class="col-form-label">Паспортні дані</label>
             </div>
           </div>
-          <div class="row border-bottom border-2">
+          <div class="row border-bottom border-2" v-if="application.passportInfo">
             <div class="col-5">
               <label class="col-form-label">Номер документа:</label>
             </div>
@@ -55,7 +55,7 @@
               <label class="col-form-label">{{application.passportInfo.passportNumber}}</label>
             </div>
           </div>
-          <div class="row border-bottom border-2" v-if="application.passportInfo.serialNumber">
+          <div class="row border-bottom border-2" v-if="application.passportInfo && application.passportInfo.serialNumber">
             <div class="col-5">
               <label class="col-form-label">Серія:</label>
             </div>
@@ -63,7 +63,7 @@
               <label class="col-form-label">{{application.passportInfo.serialNumber}}</label>
             </div>
           </div>
-          <div class="row border-bottom border-2">
+          <div class="row border-bottom border-2" v-if="application.passportInfo">
             <div class="col-5">
               <label class="col-form-label">Дата видачі документа:</label>
             </div>
@@ -71,7 +71,7 @@
               <label class="col-form-label">{{application.passportInfo.date.split('T')[0]}}</label>
             </div>
           </div>
-          <div class="row">
+          <div class="row" v-if="application.passportInfo">
             <div class="col-5">
               <label class="col-form-label">Орган, що видав документ:</label>
             </div>
@@ -111,36 +111,38 @@
           <label class="col-form-label">Не працює в уповноваженому органі</label>
         </div>
       </div>
-      <div class="row mt-2" v-if="application.authorityAddress"><p>Адреса уповноваженого органу:</p></div>
-      <Address :path="address.address.path" :editing_status="true" v-if="application.authorityAddress"/>
+      <div class="row mt-2" v-if="application.authorityAddress">
+        <p>Адреса уповноваженого органу:
+          країна: {{application.authorityAddress.country}}, 
+          область: {{application.authorityAddress.region}}, 
+          район: {{application.authorityAddress.district}}, 
+          місто: {{application.authorityAddress.city}},
+          вулиця: {{application.authorityAddress.street}},
+          індекс: {{application.authorityAddress.index}},
+          будинок: {{application.authorityAddress.building}}
+          <span v-if="application.authorityAddress.corps">,</span>         
+          <span v-if="application.authorityAddress.corps">, корпус:{{application.authorityAddress.corps}}</span>
+          <span v-if="application.authorityAddress.flat">, кварира: {{application.authorityAddress.flat}}</span>
+          <span>.</span>
+        </p>
+      </div>    
     </div>
   </div>    
 </template>
 
 <script>
 import {UserStatementsInfo} from '../connect_to_server'
-import Address from './statement_parts/Address.vue'
-import {EncumbranceTierDebtor} from '../classes'
 export default {
   data(){
     return {
-      application: null,
-      address: null
+      application: {},
     }
   },
   name: "SystemRegApplication",
   props: ["item"],
-  components:{
-    Address
-  },
   async created(){
     this.application = await UserStatementsInfo(this.item.id);
     console.log(this.application);
-    if(this.application.authorityAddress != null)
-    {
-      console.log("hi");
-      this.address = new EncumbranceTierDebtor(null, null, null, null, this.application.authorityAddress);
-    }   
   }
 }
 </script>
