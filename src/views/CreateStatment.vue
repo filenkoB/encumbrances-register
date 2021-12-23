@@ -108,7 +108,7 @@ export default {
           encumbranceTerm: this.element.encumbranceTerm.get_info(),
           encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
         }
-        if(this.statement.typeName =="Заява про реєстрацію обтяження рухомого майна") el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
+        if(this.statement_type) el.statementTypeId = "b231d49d-8c34-4efc-bde2-e398d35a5587";
         else el.statementTypeId = "3c63d55d-4b8f-4c06-8122-6a1c3ac72699";
         await CreateStatement(el)
         console.log(el);

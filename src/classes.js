@@ -27,7 +27,7 @@ export class GeneralInfoType2{
 export class EncumbranceTierDebtor{
   visible_status = false;
   short_info = false;
-  additionalInfo = null
+  typeDescription = null
   address = {
     visible_status: true,
     path:{}
@@ -37,7 +37,7 @@ export class EncumbranceTierDebtor{
     this.taxpayerAccountCardNumber = taxpayerAccountCardNumber,
     this.isForeigner = isForeigner;
     this.name = name; 
-    this.additionalInfo = additionalInfo;
+    this.typeDescription = additionalInfo;
     this.address.path.country = address.countryId;
     this.address.path.region = address.regionId;
     this.address.path.district = address.districtId;
@@ -64,7 +64,7 @@ export class EncumbranceTierDebtor{
         corps: this.address.path.corps,
         flat: this.address.path.flat
       },
-      additionalInfo: this.additionalInfo
+      additionalInfo: this.typeDescription
     }
   }
 }
