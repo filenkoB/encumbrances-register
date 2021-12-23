@@ -7,7 +7,7 @@
         </div> 
       </div>
       <hr class="border-secondary border border-2" v-if="item.visible_status">
-      <div id="encumb-inf" class="row collapsible collapsed" v-if="item.visible_status" :class="colour">
+      <div id="encumb-inf" class="row" v-if="item.visible_status" :class="get_collapsed_status()">
         <div class="col">
           <div class="row">
             <div class="col-auto border-end border-3 pe-5">
@@ -126,16 +126,19 @@ export default {
     button(){return get_button_colour(this.item)},
     colour(){return get_class_colour(this.item)},
     change(){
-      this.animating = true;
-      if(!this.item.visible_status) {
-        change_item_visible_status(this.item);
-        setTimeout(() => {const content = document.querySelector('#encumb-inf');
-        this.expandElement(content, 'collapsed', this.item, false);}, 100);
+      if(!this.editing_status) {
+        this.animating = true;
+        if(!this.item.visible_status) {
+          change_item_visible_status(this.item);
+          setTimeout(() => {const content = document.querySelector('#encumb-inf');
+          this.expandElement(content, 'collapsed', this.item, false);}, 100);
+        }
+        else {
+          setTimeout(() => {const content = document.querySelector('#encumb-inf');
+          this.expandElement(content, 'collapsed', this.item, true);}, 100);
+        }
       }
-      else {
-        setTimeout(() => {const content = document.querySelector('#encumb-inf');
-        this.expandElement(content, 'collapsed', this.item, true);}, 100);
-      }
+      else change_item_visible_status(this.item);
     },
     expandElement(elem, collapseClass, item, hiding) {
       // debugger;
@@ -170,6 +173,10 @@ export default {
     },
     changed() {
       this.item.invalid = this.isInvalid();
+    },
+    get_collapsed_status() {
+        if (!this.editing_status) return " collapsible collapsed";
+        else return "";
     },
     isInvalid() {
       if(this.item.encumbranceTypeId == '4b0a5256-60da-4d65-a0ce-3f7a50d85184') { return true; }

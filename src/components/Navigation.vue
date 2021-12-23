@@ -7,11 +7,11 @@
           <i class="fa fa-list-alt" aria-hidden="true"></i>
           Мої заяви
         </button>
-        <button type="button" class="btn btn-outline-light me-2" v-on:click="create_statement" :disabled="page == 'create-statements'">
+        <button type="button" class="btn btn-outline-light me-2" v-on:click="create_statement" :disabled="page == 'create-statement'">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           Створити заяву
         </button>
-        <button type="button" class="btn btn-outline-light" v-on:click="search">
+        <button type="button" class="btn btn-outline-light" v-on:click="search" :disabled="page == 'search'">
           <i class="fa fa-search" aria-hidden="true"></i>
           Пошук обтяження
         </button>
