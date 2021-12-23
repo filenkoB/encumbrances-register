@@ -4,7 +4,7 @@
       <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info" :button_search="button_search"/>
       
       <hr class="border-info border border-2" v-if="visible_status_info">
-      <OtherChanges :item="element.otherChange" :editing_status="editing_status"  v-if="visible_status_info"/>
+      <OtherChanges :item="element.otherChange" :editing_status="editing_status" :fun="get_type" v-if="visible_status_info"/>
 
       <hr class="border-info border border-2" v-if="visible_status_info && (element.otherChange.changes_checked === 2)">
       <CreateStatment :editing_status="editing_status" :statement_element="statement_element"
@@ -18,7 +18,7 @@ import GeneralInformation from "../statement_parts/general_information_2.vue"
 import CreateStatment from "./statement_for_create.vue"
 import OtherChanges from "../statement_parts/other_changes.vue"
 import {GetStatement, RegistrationNumber} from "../../connect_to_server"
-import {GeneralInfoType2, Changes} from "../../classes"
+import {Changes} from "../../classes"
 export default {
   data(){
     return {
@@ -39,13 +39,16 @@ export default {
       this.element.searched = this.visible_status_info;
       const info = await RegistrationNumber(item);
       console.log(info);
-      console.log(item);
+    },
+    get_type(elm){
+      this.element.change_type = elm;
+      //this.fun(this.element);
+      //console.log("hi", this.element)
     },
     reset() {
-      const time = new Date();
       this.element = {
         reset: this.reset,
-        generalInfo: new GeneralInfoType2(null, time.toISOString()),
+        generalInfo: {},
         otherChange: new Changes(),
         searched: this.visible_status_info,
         encumbranceTier: null,
@@ -71,15 +74,8 @@ export default {
       const data = await GetStatement(this.statement_element.id);
       console.log(data.encumbranceTerm)
       this.element = {
-          generalInfo: new GeneralInfoType2(data.generalInfo.number, data.generalInfo.registrationDate),
-          otherChange: new Changes(),
-      }
-    }
-    else{
-      const time = new Date();
-      this.element = {
         reset: this.reset,
-        generalInfo: new GeneralInfoType2(null, time.toISOString()),
+        generalInfo: {},
         otherChange: new Changes(),
         searched: this.visible_status_info,
         encumbranceTier: null,
@@ -89,8 +85,22 @@ export default {
         encumbranceTerm: null,
         encumbranceDescriptionSubject: null,
       }
-      this.fun(this.element);
     }
+    else{
+      this.element = {
+        reset: this.reset,
+        generalInfo: {},
+        otherChange: new Changes(),
+        searched: this.visible_status_info,
+        encumbranceTier: null,
+        encumbranceDebtor: null,
+        basisDocument: null,
+        encumbranceInfo: null,
+        encumbranceTerm: null,
+        encumbranceDescriptionSubject: null,
+      }
+    }
+    this.fun(this.element);
   }
 }
 </script>

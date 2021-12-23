@@ -17,13 +17,6 @@ export class GeneralInfo{
   }
 }
 
-export class GeneralInfoType2{
-  constructor(number, registrationDate) {
-    this.number = number;
-    this.registrationDate = registrationDate.split('T')[0];
-  }
-}
-
 export class EncumbranceTierDebtor{
   visible_status = false;
   short_info = false;
