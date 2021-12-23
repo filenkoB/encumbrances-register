@@ -41,6 +41,22 @@ export default {
       console.log(info);
       console.log(item);
     },
+    reset() {
+      const time = new Date();
+      this.element = {
+        reset: this.reset,
+        generalInfo: new GeneralInfoType2(null, time.toISOString()),
+        otherChange: new Changes(),
+        searched: this.visible_status_info,
+        encumbranceTier: null,
+        encumbranceDebtor: null,
+        basisDocument: null,
+        encumbranceInfo: null,
+        encumbranceTerm: null,
+        encumbranceDescriptionSubject: null,
+      }
+      this.fun(this.element);
+    },
     update_element(item){
       Object.keys(item).forEach( i => {
         if (i !== 'generalInfo') {
@@ -62,6 +78,7 @@ export default {
     else{
       const time = new Date();
       this.element = {
+        reset: this.reset,
         generalInfo: new GeneralInfoType2(null, time.toISOString()),
         otherChange: new Changes(),
         searched: this.visible_status_info,

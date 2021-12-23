@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submit" @reset="reset" id="form" class="row mt-3 border border-3 border-secondary rounded">
+  <form @submit.prevent="submit" @reset.prevent="reset" id="form" class="row mt-3 border border-3 border-secondary rounded">
     <div class="col">
       <div class="row border-bottom border-3 border-warning p-2">
         <div class="col-auto mt-2">
@@ -22,7 +22,7 @@
         <div class="col text-center">
           <button type="submit" id="submit" class="btn btn-outline-success me-5 hidden"></button>
           <button type="button" @click="fake_submit" class="btn btn-outline-success me-5">Підтвердити</button>
-          <button type="reset" @click="reset" class="btn btn-outline-danger ms-5">Очистити</button>
+          <button type="reset" class="btn btn-outline-danger ms-5">Очистити</button>
         </div> 
       </div>
     </div>
@@ -62,7 +62,7 @@ export default {
       let time = 100;
       if (this.statement_type) {
         Object.keys(this.element).forEach( i => { 
-          if ( i !== 'generalInfo' && this.isvalid) {
+          if ( i !== 'generalInfo' && i !=='reset' && this.isvalid) {
             if (this.element[i].invalid) {
               if (!this.element[i].visible_status) {
                 this.element[i].change_visibility();
@@ -115,7 +115,17 @@ export default {
       }
     },
     reset(){
-      this.$router.go(0);
+      if (this.statement_type) {
+        console.log("clearing...")
+        this.element.reset();
+      }
+      else {
+        if (this.element.searched) {
+            console.log("clearing...")
+            this.element.reset();
+            console.log(this.element);
+        }
+      }
     }
   },
   mounted(){
