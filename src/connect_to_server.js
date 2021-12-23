@@ -414,3 +414,18 @@ export async function AcceptStatementId(statementId){
     }
   }
 }
+
+export async function RegistrationNumber(statementId){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/RegistrationNumber/"+statementId);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}

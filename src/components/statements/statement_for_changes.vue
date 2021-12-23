@@ -17,7 +17,7 @@
 import GeneralInformation from "../statement_parts/general_information_2.vue"
 import CreateStatment from "./statement_for_create.vue"
 import OtherChanges from "../statement_parts/other_changes.vue"
-import {GetStatement} from "../../connect_to_server"
+import {GetStatement, RegistrationNumber} from "../../connect_to_server"
 import {GeneralInfoType2, Changes} from "../../classes"
 export default {
   data(){
@@ -34,9 +34,10 @@ export default {
     CreateStatment
   },
   methods:{
-    button_search(item){
+    async button_search(item){
       this.visible_status_info = !this.visible_status_info;
       this.element.searched = this.visible_status_info;
+      console.log(await RegistrationNumber(item));
       console.log(item);
     },
     update_element(item){
