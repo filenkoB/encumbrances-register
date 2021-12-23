@@ -3,45 +3,17 @@
     <div class="col">
       <div class="row" :class="colour">
           <div class="col">             
-              <div class="row">
-                <div class="col-auto">
-                  <input class="form-check-input" type="radio" @change="clear()"
-                  v-model="search_type" value="0">
-                </div>
-                <div class="col-auto">
-                  <label class="col-form-label">Вихідний номер:</label>
-                </div>
-                <div class="col-2">
-                  <input type="text" class="form-control" :disabled="search_type!='0'" v-model="search_info.number">
-                </div>
-              </div>
               <div class="row mt-2">
-                <div class="col-auto">
-                  <input class="form-check-input" type="radio" @change="clear()"
-                  v-model="search_type" value="1">
-                </div>
-                <div class="col-auto">
-                  <label class="col-form-label">Контрольна сума запису:</label>
-                </div>
-                <div class="col-2">
-                  <input type="text" class="form-control" :disabled="search_type!='1'" v-model="search_info.number1">
-                </div>
-              </div>
-              <div class="row mt-2">
-                <div class="col-auto">
-                  <input class="form-check-input" type="radio" @change="clear()" 
-                  v-model="search_type" value="2">
-                </div>
                 <div class="col-auto">
                   <label class="col-form-label">Реєстраційний номер запису в Державному реєстрі обтяжень рухомого майна:</label>
                 </div>
                 <div class="col-2">
-                  <input type="text" class="form-control" :disabled="search_type!='2'" v-model="search_info.number2">
+                  <input type="text" class="form-control" v-model="search_info">
                 </div>
               </div>
               <div class="row mt-4">
                 <div class="col text-center">
-                  <button class="btn btn-success" type="button" @click="button_search({type:search_type, info:search_info})">Пошук</button>
+                  <button class="btn btn-success" type="button" @click="button_search(search_info)">Пошук</button>
                 </div>
               </div>
           </div>
@@ -55,7 +27,7 @@ export default {
   data(){
     return {
       search_type: "1",
-      search_info: {}
+      search_info: null
     }
   },
   methods:{

@@ -37,7 +37,8 @@ export default {
     async button_search(item){
       this.visible_status_info = !this.visible_status_info;
       this.element.searched = this.visible_status_info;
-      console.log(await RegistrationNumber(item));
+      const info = await RegistrationNumber(item);
+      console.log(info);
       console.log(item);
     },
     update_element(item){

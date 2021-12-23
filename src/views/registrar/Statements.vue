@@ -31,7 +31,7 @@
                 <button type="button" class="btn btn-outline-success" v-if="item.visible_status"
                 v-on:click="button_1(item.id)" :disabled="!item.visible_status">Підтвертити</button>
                 <button  type="button" class="btn btn-outline-danger" v-if="item.visible_status"
-                v-on:click="button_2()" :disabled="!item.visible_status">Відхилити</button>
+                v-on:click="button_2(item.id)" :disabled="!item.visible_status">Відхилити</button>
               </div>
             </div>
           </div>
@@ -52,7 +52,7 @@
 <script>
 import Pagination from "../../components/Pagination.vue"
 import Statement from '../../components/Statement.vue';
-import {GetStatements, AcceptStatementId} from "../../connect_to_server"
+import {GetStatements, EncumbranceStatementAccept, EncumbranceStatementDecline} from "../../connect_to_server"
 import {StatmentsPageElement} from "../../classes"
 export default {
   name: 'App',
@@ -87,22 +87,20 @@ export default {
       }
       if(item.visible_status == false){
         item.visible_status = true;
-        //this.getInfo(item)
       }
       else item.visible_status = false;
       for(let el in this.statement) this.statement[el].visible_status=false
       
     },
-    remove_statement(item){
-      item.visible_status = false;
-    },
     async button_1(el){
-      console.log("submit");
-      console.log(el);
-      await AcceptStatementId();
+      await EncumbranceStatementAccept(el);
+      this.pagination.active_page = 0;
+      this.get_statements();
     },
-    button_2(){
-      console.log("reset");
+    async button_2(el){
+      await EncumbranceStatementDecline(el);
+      this.pagination.active_page = 0;
+      await this.get_statements();
     },
     async get_statements(){
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);

@@ -201,6 +201,44 @@ export async function CreateStatement(item){
   }
 }
 
+export async function EncumbranceStatementAccept(statementId){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Encumbrance/Statement/"+statementId+"/Accept", requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
+export async function EncumbranceStatementDecline(statementId){
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  };
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Encumbrance/Statement/"+statementId+"/Decline", requestOptions);
+  if(responce.status == 200){
+    const data = await responce.json()
+    return data;
+  }
+  else {
+    //some mess
+    return {
+      maxStatements:0,
+      statements:[]
+    }
+  }
+}
+
 export async function UsersStatementsList(page, length){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Registration/Users?page=" + page + "&length=" + length);
   if(responce.status == 200){
@@ -400,21 +438,6 @@ export async function AlienationLimit(){
   }
 }
 
-export async function AcceptStatementId(statementId){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Accept/"+statementId);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
-
 export async function RegistrationNumber(statementId){
   const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/RegistrationNumber/"+statementId);
   if(responce.status == 200){
@@ -429,3 +452,4 @@ export async function RegistrationNumber(statementId){
     }
   }
 }
+
