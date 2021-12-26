@@ -13,17 +13,27 @@
         </div>
       </div>
       <div class="row p-2" v-if="statement_type">
-        <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заява про реєстрацію обтяження рухомого майна'}" :info="info" :fun="get_info"/>
+        <Statement :editing_status="waitingForResponse" :statement_element="{id:null, typeName:'Заява про реєстрацію обтяження рухомого майна'}" :info="info" :fun="get_info"/>
       </div>
       <div class="row p-2" v-else>
-        <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заяви про реєстрацію змін обтяження рухомого майна'}" :info="info" :fun="get_info"/>
+        <Statement :editing_status="waitingForResponse" :statement_element="{id:null, typeName:'Заяви про реєстрацію змін обтяження рухомого майна'}" :info="info" :fun="get_info"/>
       </div>
       <div class="row m-2">
-        <div class="col text-center">
           <button type="submit" id="submit" class="btn btn-outline-success me-5 hidden"></button>
-          <button type="button" @click="fake_submit" class="btn btn-outline-success me-5">Підтвердити</button>
-          <button type="reset" class="btn btn-outline-danger ms-5">Очистити</button>
-        </div> 
+          <div class="col"></div>
+          <div v-if="waitingForResponse" class="col">
+            <button class="btn btn-success" type="button" disabled>
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Відправка...
+            </button>
+          </div>
+          <div v-else class="col">
+              <button type="button" @click="fake_submit" class="btn btn-outline-success me-5">Підтвердити</button>
+          </div>
+          <div class="col">
+              <button :disabled="waitingForResponse" type="reset" class="btn btn-outline-danger ms-5">Очистити</button>
+          </div>
+          <div class="col"></div>
       </div>
     </div>
   </form>
@@ -41,6 +51,7 @@ export default {
       statement:{},
       element:null,
       checking: false,
+      waitingForResponse: false
     }
   },
   name:'CreateStatment',
@@ -97,12 +108,15 @@ export default {
       document.getElementById('submit').click();
     },
     async submit(){
+      this.waitingForResponse = true;
       console.log("hi",this.element);
       if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=null){
         if(this.user_status == 'registrar'){
           //await EncumbranceRemoveStatementAccept(this.element.searchedInfo);
           console.log("remove");
+          setTimeout(() => {this.waitingForResponse = false;}, 100);
         }
+        else setTimeout(() => {this.waitingForResponse = false;}, 100);
       }
       if(this.isvalid){
         if(this.statement_type){
@@ -121,6 +135,7 @@ export default {
             console.log("create");
           }
           console.log(el);
+          setTimeout(() => {this.waitingForResponse = false;}, 100);
         }
         else{
           if(this.element.otherChange.changes_checked == 2){
@@ -139,9 +154,11 @@ export default {
               console.log("update");
             }
             console.log(el);
+            setTimeout(() => {this.waitingForResponse = false;}, 100);
           }
         }
       }
+      else setTimeout(() => {this.waitingForResponse = false;}, 100);
     },
     reset(){
       if (this.statement_type) {
