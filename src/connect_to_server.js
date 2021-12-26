@@ -117,3 +117,41 @@ export async function RegistrationType(){ return await create("/RegistrationType
 export async function AlienationLimit(){ return await create("/AlienationLimit", requestOptions) }
 
 export async function RegistrationNumber(statementId){ return await create("/RegistrationNumber/"+statementId, requestOptions) }
+
+function GetRequestOptions(inmethod, item){
+  if(inmethod == "GET") {
+    return {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+      },
+    }
+  }
+  else {
+    return {
+      method: inmethod,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+      },
+      body: JSON.stringify(item)
+    }
+  }
+}
+
+export class Admin{
+  constructor(id){console.log(id)}
+  async GetAllRegistrators(page, length){ 
+    return await create("/Registrator?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
+  }
+  async GetRegistratorById(registrator_id){ 
+    return await create("/Registrator/" + registrator_id, GetRequestOptions("GET", null))
+  }
+  async UpdateRegistrator(item){
+    return await create("/Registrator", GetRequestOptions("PUT", item))
+  }
+  async GetRegistratorActions(registrator_id, page, length){ 
+    return await create("/Registrator/"+registrator_id+"/Actions?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
+  }
+}

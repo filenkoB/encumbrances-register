@@ -1,4 +1,3 @@
-
 export class StatmentsPageElement{
   visible_status = false;
   constructor(id, number, date, typeName){
@@ -6,6 +5,45 @@ export class StatmentsPageElement{
     this.number = number;
     this.date = (new Date(Date.parse(date))).toLocaleDateString('en-GB');
     this.typeName = typeName;
+  }
+}
+
+export class RegistrarsPageElement{
+  info_visible_status = false;
+  logs_visible_status = false;
+  constructor(id, name, email, registeredAt, status){
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.registeredAt = (new Date(Date.parse(registeredAt))).toLocaleDateString('en-GB');
+    this.status = status;
+  }
+}
+
+export class Registrator{
+  constructor(id, firstName, lastName, patronymic, birthDate, email, registeredAt, status,authority){
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.patronymic = patronymic;
+    this.birthDate = birthDate.split('T')[0];
+    this.email = email;
+    this.registeredAt = registeredAt.split('T')[0];
+    this.status = status;
+    this.authority = authority;
+  }
+  get_info(){
+    const current_time = new Date();
+    return {
+      id: this.id,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      patronymic: this.patronymic,
+      birthDate: (new Date(this.birthDate+'T'+current_time.toISOString().split('T')[1])).toISOString(),
+      email: this.email,
+      status: this.status,
+      authorityId: this.authority.id
+    }
   }
 }
 
