@@ -228,11 +228,7 @@ export default {
       this.clearPasData(type);
       if (type === 'pasType-Id') this.minPasDate = validation.minIdPasDate;
       else this.minPasDate = validation.minBookPasDate;
-    },
-    // chosenRole: function (role) {
-    //   this.clearRoleData(role);
-    // }
-    
+    }    
   },
   async created() {
     const sessionStorage = window.sessionStorage;
