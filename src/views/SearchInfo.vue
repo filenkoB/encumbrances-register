@@ -76,20 +76,20 @@
               </div>
           </div>
           <div class="row mt-4 mb-5">
-              <div class="col"></div>
-              <div v-if="waitingForResponse" class="col">
-                <button class="btn btn-success" type="button" disabled>
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  Пошук...
-                </button>
-              </div>
-              <div v-else class="col">
-                  <button type="submit" class="btn btn-outline-success me-1">Підтвертити</button>
-              </div>
-              <div class="col">
-                  <button type="reset" :disabled="waitingForResponse" class="btn btn-outline-danger ms-1">Очистити</button>
-              </div>
-              <div class="col"></div>
+            <div class="col"></div>
+            <div v-if="waitingForResponse" class="col">
+              <button class="btn btn-success" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Пошук...
+              </button>
+            </div>
+            <div v-else class="col">
+                <button type="submit" class="btn btn-outline-success me-1">Підтвертити</button>
+            </div>
+            <div class="col">
+                <button type="reset" :disabled="waitingForResponse" class="btn btn-outline-danger ms-1">Очистити</button>
+            </div>
+            <div class="col"></div>
           </div>
       </div>
       <div class="col-2"></div> 
@@ -259,8 +259,6 @@ export default {
     },
     async get_encumbrances(){
       
-      this.visible_status = false;
-      this.waitingForResponse = false;
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 5) this.pagination.max_items_count = 5;
@@ -270,6 +268,8 @@ export default {
       this.encumbrances = test_data.encumbrances;
       console.log(test_data.encumbrances);
       if(this.encumbrances[0].id) this.extract_element = this.encumbrances[0].id
+      this.waitingForResponse = false;
+      this.visible_status = false;
     },
     reset() {
       this.search_filter.first_item.data[0].value = "";
