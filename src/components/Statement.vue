@@ -8,7 +8,7 @@
 <script>
 import CreateStatment from "./statements/statement_for_create.vue"
 import ChangeStatment from "./statements/statement_for_changes.vue"
-import {EncumbranceType, EncumbranceKind, RegistrationType, AlienationLimit, GetALLCurrency} from "../connect_to_server"
+import {alienationLimit, encumbranceType, registrationType, currency, encumbranceKind} from '../data'
 export default {
   data(){
     return {
@@ -22,11 +22,11 @@ export default {
     ChangeStatment
   },
   async created(){
-    this.info.encumbranceType = await EncumbranceType();
-    this.info.encumbranceKind = await EncumbranceKind();
-    this.info.registrationType = await RegistrationType();
-    this.info.alienationLimit = await AlienationLimit();
-    this.info.currency = await GetALLCurrency();
+    this.info.encumbranceType = encumbranceType;
+    this.info.encumbranceKind = encumbranceKind;
+    this.info.registrationType = registrationType;
+    this.info.alienationLimit = alienationLimit;
+    this.info.currency = currency;
   }
 }
 </script>

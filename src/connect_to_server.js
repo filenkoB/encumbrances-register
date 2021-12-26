@@ -92,30 +92,6 @@ export async function GetIndexByCity(city_id){ return await create("/Index/City/
 
 export async function GetALLCurrency(){ return await create("/CurrencyType", requestOptions) }
 
-export async function EncumbranceType(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceType", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    let info = [];
-    info.push({id:1, data:data.slice(0, 2)});
-    info.push({id:2, data:data.slice(2, 4)})
-    info.push({id:3, data:data.slice(4, 6)})
-    return info;
-  }
-  else {
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
-
-export async function EncumbranceKind(){ return await create("/EncumbranceKind", requestOptions) }
-
-export async function RegistrationType(){ return await create("/RegistrationType", requestOptions) }
-
-export async function AlienationLimit(){ return await create("/AlienationLimit", requestOptions) }
-
 export async function RegistrationNumber(statementId){ return await create("/RegistrationNumber/"+statementId, requestOptions) }
 
 function GetRequestOptions(inmethod, item){
