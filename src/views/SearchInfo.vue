@@ -149,7 +149,7 @@
 
 <script>
 import {validation} from "../data";
-import {Encumbrance} from "../connect_to_server"
+import {Main} from "../connect_to_server"
 import Pagination from "../components/Pagination.vue"
 export default {
   name: 'SearchEncumbrances',
@@ -205,6 +205,7 @@ export default {
       },
       search_element_value:{},
       encumbrances: [],
+      main: null,
       extract_element: null,
       active_user: null,
       waitingForResponse: false
@@ -262,7 +263,7 @@ export default {
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 5) this.pagination.max_items_count = 5;
-      const test_data = await Encumbrance(this.search_element_value, this.pagination.active_page + 1, this.pagination.max_items_count);
+      const test_data = await this.main.Encumbrance(this.search_element_value, this.pagination.active_page + 1, this.pagination.max_items_count);
       if(test_data.length < this.pagination.max_items_count) this.pagination.max_items_count = test_data.length;
       this.pagination.count_page = Math.ceil(test_data.length / this.pagination.max_items_count);
       this.encumbrances = test_data.encumbrances;
@@ -287,7 +288,11 @@ export default {
         this.$router.push({ name: "SignIn"}).catch(() => {});
     }
     this.$root.$children[0].$children[0].page = 'search';
+  },
+  created(){
+    this.main = new Main();
   }
+
 }
 </script>
 <style>

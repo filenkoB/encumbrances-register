@@ -82,7 +82,8 @@
         <div class="col">
           <div class="row mt-2 mb-2">
             <div class="col-1 mt-2">
-              <input class="form-check-input" type="checkbox" v-model="change_status" :value="change_status">
+              <input class="form-check-input" type="checkbox" v-model="change_status" 
+              :value="change_status" @change="start_value">
             </div>
             <div class="col-6">
               <label class="col-form-label">Редагувати відомості</label>
@@ -118,16 +119,22 @@ export default {
       saving: false
     };
   },
-  props:["registrar"],
+  props:["registrar", "fun"],
   methods:{
     pagination_page(item){ this.pagination.active_page = item-1;},
+    async start_value(){
+      const data = await this.admin.GetRegistratorById(this.registrar);
+      this.registrator = new Registrator(data.id, data.firstName, data.lastName, data.patronymic, data.birthDate, data.email, data.registeredAt, data.status, data.authority);
+    },
     async save(){
       if(!this.isInvalid()) {
         this.saving = true
         console.log("valid");
-        setTimeout(() => {this.saving = false; this.change_status = false;}, 300);
-        //this.registrator.authority.id = this.authority.filter(el=>el.name==this.registrator.authority.name)[0].id;
-        //await this.admin.UpdateRegistrator(this.registrator.get_info())
+        this.registrator.authority.id = this.authority.filter(el=>el.name==this.registrator.authority.name)[0].id;
+        await this.admin.UpdateRegistrator(this.registrator.get_info());
+        this.saving = false; 
+        this.change_status = false;
+        this.fun();
       }
       else  console.log("invalid");
     },
@@ -143,10 +150,8 @@ export default {
     this.patterns = validation.patterns;
     this.maxBirthDate = validation.maxBirthDate;
     this.admin = new Admin();
-    const data = await this.admin.GetRegistratorById(this.registrar);
-    this.registrator = new Registrator(data.id, data.firstName, data.lastName, data.patronymic, data.birthDate, data.email, data.registeredAt, data.status, data.authority);
     this.authority = await Authority();
-    console.log(this.registrator);
+    this.start_value();
   }
 }
 </script>

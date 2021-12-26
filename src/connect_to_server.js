@@ -72,7 +72,6 @@ export async function EncumbranceUpdateStatementAccept(statementId){ return awai
 
 export async function EncumbranceRegisterStatementAccept(statementId){ return await create("/Encumbrance/Register/Statement/"+statementId+"/Accept", requestOptionsPostBody(null)) }
 
-export async function Encumbrance(item, page, length){ return await create("/Encumbrance?page=" + page + "&length=" + length, requestOptionsPostBody(item)) }
 
 export async function UsersStatementsList(page, length){ return await create("/Statement/Registration/Users?page=" + page + "&length=" + length, requestOptions) }
 
@@ -117,7 +116,7 @@ function GetRequestOptions(inmethod, item){
 }
 
 export class Admin{
-  constructor(id){console.log(id)}
+  constructor(){}
   async GetAllRegistrators(page, length){ 
     return await create("/Registrator?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
   }
@@ -130,4 +129,16 @@ export class Admin{
   async GetRegistratorActions(registrator_id, page, length){ 
     return await create("/Registrator/"+registrator_id+"/Actions?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
   }
+}
+
+export class User{
+  constructor(){}
+  async GetAllMyStatements(page, length){
+    return await create("/Statement/User?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
+  }
+}
+
+export class Main{
+  constructor(){}
+  async Encumbrance(item, page, length){ return await create("/Encumbrance?page=" + page + "&length=" + length, GetRequestOptions("POST",item)) }
 }

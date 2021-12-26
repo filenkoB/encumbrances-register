@@ -30,13 +30,13 @@
               <div class="col"><RegistrarLog :registrar='item.id'/></div>
             </div>
             <div class="row" v-if="item.info_visible_status">
-              <div class="col"><RegistrarInfo :registrar='item.id'/></div>
+              <div class="col"><RegistrarInfo :registrar='item.id' :fun="get_registrators"/></div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <Pagination :pagination="pagination" :fun="get_registrators"/>
-        </div>
+      </div>
+      <div>
+        <Pagination :pagination="pagination" :fun="get_registrators"/>
       </div>
     </div>
     <div class="row border border-4 p-3 mt-5 rounded" v-else>
@@ -85,7 +85,6 @@ export default {
       data.registrators.forEach(item => this.registrators.push(new RegistrarsPageElement(item.id, item.name, item.email, item.registeredAt, item.status)))
     },
     get_registrar_logs(item){
-      console.log("item",item);
       this.registrator_id = item.id;
       if(!item.logs_visible_status) item.logs_visible_status = true;
       else item.logs_visible_status = false;
@@ -94,7 +93,7 @@ export default {
       this.registrator_id = item.id;
       if(!item.info_visible_status) item.info_visible_status = true;
       else item.info_visible_status = false;
-    }
+    },
   },
   mounted(){
     this.user_status = window.sessionStorage.getItem('user_status');
