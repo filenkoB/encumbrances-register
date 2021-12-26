@@ -8,7 +8,7 @@
                 <label class="col-form-label">Інші зміни:</label>
               </div>
               <div class="col-4">
-                <select class="form-control" required :disabled="editing_status" @change="fun(item.changes_checked)"  v-model="item.changes_checked">
+                <select class="form-control" required :disabled="editing_status" v-model="item.changes_checked">
                   <option v-for="it in changes" :key="it.number" :value="it.number">{{ it.name }}</option>
                 </select>
               </div>
@@ -34,7 +34,7 @@ export default {
     colour(){return get_class_colour(this.item)},
     change(){change_item_visible_status(this.item)}
   },
-  props:["item", "editing_status", "fun"],
+  props:["item", "editing_status"],
   name:'OtherChanges',
   components:{
   },

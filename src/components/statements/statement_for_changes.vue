@@ -4,7 +4,7 @@
       <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info" :button_search="button_search"/>
       
       <hr class="border-info border border-2" v-if="visible_status_info">
-      <OtherChanges :item="element.otherChange" :editing_status="editing_status" :fun="get_type" v-if="visible_status_info"/>
+      <OtherChanges :item="element.otherChange" :editing_status="editing_status" v-if="visible_status_info"/>
 
       <hr class="border-info border border-2" v-if="visible_status_info && (element.otherChange.changes_checked === 2)">
       <CreateStatment :editing_status="editing_status" :statement_element="statement_element"
@@ -35,15 +35,12 @@ export default {
   },
   methods:{
     async button_search(item){
-      this.visible_status_info = !this.visible_status_info;
-      this.element.searched = this.visible_status_info;
       const info = await RegistrationNumber(item);
-      console.log(info);
-    },
-    get_type(elm){
-      this.element.change_type = elm;
-      //this.fun(this.element);
-      //console.log("hi", this.element)
+      if(info!=null){
+        this.visible_status_info = !this.visible_status_info;
+        this.element.searched = this.visible_status_info;
+      }
+      this.element.searchedInfo = info;
     },
     reset() {
       this.element = {

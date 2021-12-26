@@ -97,11 +97,16 @@ export default {
       document.getElementById('submit').click();
     },
     async submit(){
+      console.log("hi",this.element);
+      if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=null){
+        if(this.user_status == 'registrar'){
+          //await EncumbranceRemoveStatementAccept(this.element.searchedInfo);
+          console.log("remove");
+        }
+      }
       if(this.isvalid){
-        let el = {};
-        console.log("hi",this.element, el);
         if(this.statement_type){
-          el = {
+          let el = {
             statementTypeId: "b231d49d-8c34-4efc-bde2-e398d35a5587",        
             encumbranceTier: this.element.encumbranceTier.get_info(),
             encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
@@ -110,15 +115,16 @@ export default {
             encumbranceTerm: this.element.encumbranceTerm.get_info(),
             encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
           };
-          //await CreateStatement(el)
+          //const new_id = await CreateStatement(el)
           if(this.user_status == 'registrar'){
-            //await EncumbranceRegisterStatementAccept(this.element.id);
+            //await EncumbranceRegisterStatementAccept(new_id);
             console.log("create");
           }
+          console.log(el);
         }
         else{
           if(this.element.otherChange.changes_checked == 2){
-            el = {
+            let el = {
               statementTypeId: "3c63d55d-4b8f-4c06-8122-6a1c3ac72699",        
               encumbranceTier: this.element.encumbranceTier.get_info(),
               encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
@@ -127,17 +133,12 @@ export default {
               encumbranceTerm: this.element.encumbranceTerm.get_info(),
               encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
             }
-            //await CreateStatement(el)
+            //const new_id = await CreateStatement(el)
             if(this.user_status == 'registrar'){
-              //await EncumbranceUpdateStatementAccept(this.element.id);
+              //await EncumbranceUpdateStatementAccept(new_id);
               console.log("update");
             }
-          }
-          else{
-            if(this.user_status == 'registrar'){
-              //await EncumbranceRemoveStatementAccept(this.element.id);
-              console.log("remove");
-            }
+            console.log(el);
           }
         }
       }

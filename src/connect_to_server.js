@@ -1,438 +1,99 @@
-export async function AuthorityPassport(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Authority/Passport");
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+const requestOptions = {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+  },
+};
 
-export async function Authority(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Authority");
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
-
-export async function RegistrationUserStatement(item){
-  const requestOptions = {
+function requestOptionsPostBody(item){
+  return {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+    },
     body: JSON.stringify(item)
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Statement", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
   }
+}
+
+async function create(path, option){
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + path, option);
+  if(responce.status == 200) return await responce.json();
   else {
-    //some mess
     return {
       maxStatements:0,
       statements:[]
     }
   }
 }
+export async function AuthorityPassport(){ return await create("/Authority/Passport", requestOptions) }
 
-export async function RegistrationRegistratorStatement(item){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(item)
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/Registrator/Statement", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function Authority(){ return await create("/Authority", requestOptions) }
 
-export async function RegistrationUserAccept(statementId){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: null
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Accept/" + statementId, requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function RegistrationUserStatement(item){ return await create("/Registration/User/Statement", requestOptionsPostBody(item)) }
 
-export async function RegistrationUserDecline(statementId, user_email, decline_reason){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body:JSON.stringify({
+export async function RegistrationRegistratorStatement(item){ return await create("/Registration/Registrator/Statement", requestOptionsPostBody(item)) }
+
+export async function RegistrationUserAccept(statementId){ return await create("/Registration/User/Accept/" + statementId, requestOptionsPostBody(null)) }
+
+export async function RegistrationUserDecline(statementId, user_email, decline_reason){ return await create("/Registration/User/Decline/" + statementId, 
+  requestOptionsPostBody(
+    {
       email: user_email,
       reason: decline_reason
     })
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Decline/" + statementId, requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
+  ) 
 }
 
-export async function RegistrationRegistratorAccept(statementId){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/Registrator/Accept/" + statementId, requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
+export async function RegistrationRegistratorAccept(statementId){ return await create("/Registration/Registrator/Accept/" + statementId, requestOptionsPostBody(null)) }
+
+export async function RegistrationRegistratorDecline(statementId, registrator_email, decline_reason){ return await create("/Registration/Registrator/Decline/" + statementId, 
+  requestOptionsPostBody({
+    email: registrator_email,
+    reason: decline_reason
+  })
+  ) 
 }
 
-export async function RegistrationRegistratorDecline(statementId, registrator_email, decline_reason){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body:JSON.stringify({
-      email: registrator_email,
-      reason: decline_reason
-    })
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/Registrator/Decline/" + statementId, requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetStatements(page, length){ return await create("/Statement?page=" + page + "&length=" + length, requestOptions) }
 
-export async function GetStatements(page, length){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement?page=" + page + "&length=" + length);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetStatement(id){ return await create("/Statement/"+id, requestOptions) }
 
-export async function GetStatement(id){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/"+id);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    console.log(responce.status);
-    return null;
-  }
-}
+export async function CreateStatement(item){ return await create("/Statement/Register", requestOptionsPostBody(item)) }
 
-export async function CreateStatement(item){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(item)
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Register", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function EncumbranceStatementAccept(statementId){ return await create("/Encumbrance/Statement/"+statementId+"/Accept", requestOptionsPostBody(null)) }
 
-export async function EncumbranceStatementAccept(statementId){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Encumbrance/Statement/"+statementId+"/Accept", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function EncumbranceStatementDecline(statementId){ return await create("/Encumbrance/Statement/"+statementId+"/Decline", requestOptionsPostBody(null)) }
 
-export async function EncumbranceStatementDecline(statementId){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Encumbrance/Statement/"+statementId+"/Decline", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function EncumbranceRemoveStatementAccept(statementId){ return await create("/Encumbrance/Remove/Statement/"+statementId+"/Accept", requestOptionsPostBody(null)) }
 
-export async function EncumbranceRemoveStatementAccept(statementId){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Encumbrance/Remove/Statement/"+statementId+"/Accept", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function EncumbranceUpdateStatementAccept(statementId){ return await create("/Encumbrance/Update/Statement/"+statementId+"/Accept", requestOptionsPostBody(null)) }
 
-export async function EncumbranceUpdateStatementAccept(statementId){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Encumbrance/Update/Statement/"+statementId+"/Accept", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function EncumbranceRegisterStatementAccept(statementId){ return await create("/Encumbrance/Register/Statement/"+statementId+"/Accept", requestOptionsPostBody(null)) }
 
-export async function EncumbranceRegisterStatementAccept(statementId){
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  };
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Encumbrance/Register/Statement/"+statementId+"/Accept", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function Encumbrance(item, page, length){ return await create("/Encumbrance?page=" + page + "&length=" + length, requestOptionsPostBody(item)) }
 
-export async function UsersStatementsList(page, length){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Registration/Users?page=" + page + "&length=" + length);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function UsersStatementsList(page, length){ return await create("/Statement/Registration/Users?page=" + page + "&length=" + length, requestOptions) }
 
-export async function UserStatementsInfo(userId){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Statement/Registration/Users/" + userId);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function UserStatementsInfo(userId){ return await create("/Statement/Registration/Users/" + userId, requestOptions) }
 
-export async function GetALLCountry(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Country");
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetALLCountry(){ return await create("/Country", requestOptions) }
 
-export async function GetRegionByCountry(country_id){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Region/Country/" + country_id)
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetRegionByCountry(country_id){ return await create("/Region/Country/" + country_id, requestOptions) }
 
-export async function GetDistrictByRegion(region_id){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/District/Region/" + region_id)
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetDistrictByRegion(region_id){ return await create("/District/Region/" + region_id, requestOptions) }
 
-export async function GetCityByDistrict(district_id){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/City/District/" + district_id)
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetCityByDistrict(district_id){ return await create("/City/District/" + district_id, requestOptions) }
 
-export async function GetStreetByCity(city_id){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Street/City/" + city_id)
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetStreetByCity(city_id){ return await create("/Street/City/" + city_id, requestOptions) }
 
-export async function GetIndexByCity(city_id){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/Index/City/" + city_id)
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetIndexByCity(city_id){ return await create("/Index/City/" + city_id, requestOptions) }
 
-export async function GetALLCurrency(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/CurrencyType");
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function GetALLCurrency(){ return await create("/CurrencyType", requestOptions) }
 
 export async function EncumbranceType(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceType");
+  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceType", requestOptions);
   if(responce.status == 200){
     const data = await responce.json()
     let info = [];
@@ -442,7 +103,6 @@ export async function EncumbranceType(){
     return info;
   }
   else {
-    //some mess
     return {
       maxStatements:0,
       statements:[]
@@ -450,63 +110,10 @@ export async function EncumbranceType(){
   }
 }
 
-export async function EncumbranceKind(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceKind");
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function EncumbranceKind(){ return await create("/EncumbranceKind", requestOptions) }
 
-export async function RegistrationType(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/RegistrationType");
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function RegistrationType(){ return await create("/RegistrationType", requestOptions) }
 
-export async function AlienationLimit(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/AlienationLimit");
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
+export async function AlienationLimit(){ return await create("/AlienationLimit", requestOptions) }
 
-export async function RegistrationNumber(statementId){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/RegistrationNumber/"+statementId);
-  if(responce.status == 200){
-    const data = await responce.json()
-    return data;
-  }
-  else {
-    //some mess
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
-
+export async function RegistrationNumber(statementId){ return await create("/RegistrationNumber/"+statementId, requestOptions) }
