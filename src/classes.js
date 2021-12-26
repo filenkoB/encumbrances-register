@@ -21,7 +21,7 @@ export class RegistrarsPageElement{
 }
 
 export class Registrator{
-  constructor(id, firstName, lastName, patronymic, birthDate, email, registeredAt, status,authority){
+  constructor(id, firstName, lastName, patronymic, birthDate, email, registeredAt, status, authority){
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;

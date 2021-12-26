@@ -72,7 +72,6 @@ export async function EncumbranceUpdateStatementAccept(statementId){ return awai
 
 export async function EncumbranceRegisterStatementAccept(statementId){ return await create("/Encumbrance/Register/Statement/"+statementId+"/Accept", requestOptionsPostBody(null)) }
 
-export async function Encumbrance(item, page, length){ return await create("/Encumbrance?page=" + page + "&length=" + length, requestOptionsPostBody(item)) }
 
 export async function UsersStatementsList(page, length){ return await create("/Statement/Registration/Users?page=" + page + "&length=" + length, requestOptions) }
 
@@ -91,30 +90,6 @@ export async function GetStreetByCity(city_id){ return await create("/Street/Cit
 export async function GetIndexByCity(city_id){ return await create("/Index/City/" + city_id, requestOptions) }
 
 export async function GetALLCurrency(){ return await create("/CurrencyType", requestOptions) }
-
-export async function EncumbranceType(){
-  const responce = await fetch(process.env.VUE_APP_HEROKU_PATH + "/EncumbranceType", requestOptions);
-  if(responce.status == 200){
-    const data = await responce.json()
-    let info = [];
-    info.push({id:1, data:data.slice(0, 2)});
-    info.push({id:2, data:data.slice(2, 4)})
-    info.push({id:3, data:data.slice(4, 6)})
-    return info;
-  }
-  else {
-    return {
-      maxStatements:0,
-      statements:[]
-    }
-  }
-}
-
-export async function EncumbranceKind(){ return await create("/EncumbranceKind", requestOptions) }
-
-export async function RegistrationType(){ return await create("/RegistrationType", requestOptions) }
-
-export async function AlienationLimit(){ return await create("/AlienationLimit", requestOptions) }
 
 export async function RegistrationNumber(statementId){ return await create("/RegistrationNumber/"+statementId, requestOptions) }
 
@@ -141,7 +116,7 @@ function GetRequestOptions(inmethod, item){
 }
 
 export class Admin{
-  constructor(id){console.log(id)}
+  constructor(){}
   async GetAllRegistrators(page, length){ 
     return await create("/Registrator?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
   }
@@ -154,4 +129,16 @@ export class Admin{
   async GetRegistratorActions(registrator_id, page, length){ 
     return await create("/Registrator/"+registrator_id+"/Actions?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
   }
+}
+
+export class User{
+  constructor(){}
+  async GetAllMyStatements(page, length){
+    return await create("/Statement/User?page=" + page + "&length=" + length, GetRequestOptions("GET", null))
+  }
+}
+
+export class Main{
+  constructor(){}
+  async Encumbrance(item, page, length){ return await create("/Encumbrance?page=" + page + "&length=" + length, GetRequestOptions("POST",item)) }
 }
