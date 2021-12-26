@@ -1,90 +1,66 @@
-﻿using Application.Encumbrances.Dtos;
+﻿using Microsoft.AspNetCore.Authorization;
+using Application.Encumbrances.Commands;
 using Application.Encumbrances.Queries;
+using Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [ApiController]
+    [Authorize]
     [Route("/[controller]")]
     public class EncumbranceController : BaseController
     {
-        public EncumbranceController(IMediator mediator)
-            : base(mediator) 
+        public EncumbranceController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
+        #region Encumbrance getting
         [HttpGet]
-        public async Task<IActionResult> GetEncumbrances([FromBody] EncumbrancesFilter filter)
+        [Route("RegistrationNumber/{number}")]
+        public async Task<IActionResult> GetEncumbranceByRegistrationNumber(string number)
         {
-            IEnumerable<ShortEncumbranceDto> encumbrances = await Mediator.Send(new GetEncumbrancesQuery(filter));
-            
-            return encumbrances.Count() == 0
-                ? NotFound()
-                : Ok(encumbrances);
+            return Ok(await Mediator.Send(new GetEncumbranceByRegNumberQuery(number)));
         }
 
-        [HttpGet("/{id}/General")]
-        public async Task<IActionResult> GetEncumbranceGeneralInfo(Guid id)
+        [HttpPost]
+        public async Task<IActionResult> GetFilteredEncumbrances([FromBody] EncumbranceSelectFilter filter)
         {
-            EncumbranceGeneralInfoDto generalInfo = await Mediator.Send(new GetEncumbranceGeneralInfoQuery(id));
-            return generalInfo is null
-                ? NotFound()
-                : Ok(generalInfo);
+            return Ok(await Mediator.Send(new GetFilteredEncumbrancesQuery(filter)));
+        }
+        #endregion
+
+        #region Encumbrance statement accepting/declining
+        [HttpPost]
+        [Route("Register/Statement/{statementId}/Accept")]
+        public async Task<IActionResult> AddEncumbranceByStatement(Guid statementId)
+        {
+            return Ok(await Mediator.Send(new AddEncumbranceCommand(statementId)));
         }
 
-        [HttpGet("id")]
-        [Route("/{id}/Tier")]
-        public async Task<IActionResult> GetEncumbranceTierInfo(Guid id)
+        [HttpPost]
+        [Route("Update/Statement/{statementId}/Accept")]
+        public async Task<IActionResult> UpdateEncumbranceByStatement(Guid statementId)
         {
-            EncumbranceTierInfoDto tierInfo = await Mediator.Send(new GetEncumbranceTierInfoQuery(id));
-            return tierInfo is null
-                ? NotFound()
-                : Ok(tierInfo);
+            return Ok(await Mediator.Send(new UpdateEncumbranceCommand(statementId)));
         }
 
-        [HttpGet("id")]
-        [Route("/{id}/Debtor")]
-        public async Task<IActionResult> GetEncumbranceDebtorInfo(Guid id)
+        [HttpPost]
+        [Route("Remove/Statement/{statementId}/Accept")]
+        public async Task<IActionResult> RemoveEncumbranceByStatement(Guid statementId)
         {
-            EncumbranceDebtorInfoDto debtorInfo = await Mediator.Send(new GetEncumbranceDebtorInfoQuery(id));
-            return debtorInfo is null
-                ? NotFound()
-                : Ok(debtorInfo);
+            return Ok(await Mediator.Send(new RemoveEncumbranceCommand(statementId)));
         }
 
-        [HttpGet("id")]
-        [Route("/{id}/BasisDocument")]
-        public async Task<IActionResult> GetEncumbranceBasisDocumentInfo(Guid id)
+        [HttpPost]
+        [Route("Statement/{statementId}/Decline")]
+        public async Task<IActionResult> DeclineEncumbranceAddingStatement(Guid statementId)
         {
-            EncumbranceBasisDocumentInfoDto basisDocumentInfo = await Mediator.Send(new GetEncumbranceBasisDocumentInfoQuery(id));
-            return basisDocumentInfo is null
-                ? NotFound()
-                : Ok(basisDocumentInfo);
+            return Ok(await Mediator.Send(new DeclineEncumbranceStatementCommand(statementId)));
         }
-
-        [HttpGet("id")]
-        [Route("/{id}/Terms")]
-        public async Task<IActionResult> GetEncumbranceTermsInfo(Guid id)
-        {
-            EncumbranceTermsInfoDto termsInfo = await Mediator.Send(new GetEncumbranceTermsInfoQuery(id));
-            return termsInfo is null
-                ? NotFound()
-                : Ok(termsInfo);
-        }
-
-        [HttpGet("id")]
-        [Route("/{id}/AdditionalInfo")]
-        public async Task<IActionResult> GetEncumbranceAdditionalInfo(Guid id)
-        {
-            EncumbranceAdditionalInfoDto additionalInfo = await Mediator.Send(new GetEncumbranceAdditionalInfoQuery(id));
-            return additionalInfo is null
-                ? NotFound()
-                : Ok(additionalInfo);
-        }
+        #endregion
     }
 }

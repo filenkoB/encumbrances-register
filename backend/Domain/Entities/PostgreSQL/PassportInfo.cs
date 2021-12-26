@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entities.PostgreSQL;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.PostgreSQL.Entities
@@ -14,6 +15,6 @@ namespace Domain.PostgreSQL.Entities
         public User User { get; set; }
         public Registrator Registrator { get; set; }
         public Admin Admin { get; set; }
-        public Authority Authority { get; set; }
+        public PassportAuthority Authority { get; set; }
     }
 }

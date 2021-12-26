@@ -11,25 +11,19 @@ namespace Infrastructure.EF.PostgreSQL.Configuration
             builder.HasOne(a => a.Address)
                 .WithOne(a => a.Authority)
                 .HasForeignKey<Authority>(a => a.AddressId)
-                .HasConstraintName("FK_Authority_Address")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasMany(a => a.PassportInfos)
-                .WithOne(pi => pi.Authority)
-                .HasForeignKey(pi => pi.AuthorityId)
-                .HasConstraintName("FK_Authority_PassportInfos")
+                //.HasConstraintName("FK_Authority_Address")
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(a => a.Registrators)
                 .WithOne(r => r.Authority)
                 .HasForeignKey(r => r.AuthorityId)
-                .HasConstraintName("FK_Authority_Registrators")
+                //.HasConstraintName("FK_Authority_Registrators")
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(a => a.Admins)
                 .WithOne(a => a.Authority)
                 .HasForeignKey(a => a.AuthorityId)
-                .HasConstraintName("FK_Authority_Admins")
+                //.HasConstraintName("FK_Authority_Admins")
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

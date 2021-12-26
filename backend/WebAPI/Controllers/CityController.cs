@@ -1,4 +1,5 @@
 ﻿using Application.Cities.Queries;
+using Domain.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,8 +10,8 @@ namespace WebAPI.Controllers
     [Route("[controller]")]
     public class CityController : BaseController
     {
-        public CityController(IMediator mediator)
-            : base(mediator)
+        public CityController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
         [HttpGet("District/{districtId}")]

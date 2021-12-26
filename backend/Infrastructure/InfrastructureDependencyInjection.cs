@@ -1,8 +1,11 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Entities.PostgreSQL;
+using Domain.Interfaces;
+using Domain.Interfaces.Abstract;
 using Domain.Interfaces.MongoDB;
 using Domain.Interfaces.Read;
 using Domain.Interfaces.Services;
 using Domain.Interfaces.Write;
+using Domain.PostgreSQL.Entities;
 using Infrastructure.Dapper;
 using Infrastructure.EF.PostgreSQL;
 using Infrastructure.MongoDB;
@@ -13,10 +16,6 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -35,35 +34,65 @@ namespace Infrastructure
 
         private static void AddReadRepositories(this IServiceCollection services)
         {
-            services.AddTransient<IAlienationLimitsReadRepository, AlienationLimitsReadRepository>();
-            services.AddTransient<ICityReadRepository, CityReadRepository>();
-            services.AddTransient<ICountryReadRepository, CountryReadRepository>();
-            services.AddTransient<ICurrencyTypeReadRepository, CurrencyTypeReadRepository>();
-            services.AddTransient<IDistrictReadRepository, DistrictReadRepository>();
-            services.AddTransient<IEncumbranceKindReadRepository, EncumbranceKindReadRepository>();
+            services.AddTransient<IReadRepository<AlienationLimit>, ReadRepository<AlienationLimit>>();
+            services.AddTransient<IReadRepository<City>, ReadRepository<City>>();
+            services.AddTransient<IReadRepository<Country>, ReadRepository<Country>>();
+            services.AddTransient<IReadRepository<CurrencyType>, ReadRepository<CurrencyType>>();
+            services.AddTransient<IReadRepository<District>, ReadRepository<District>>();
+            services.AddTransient<IReadRepository<EncumbranceKind>, ReadRepository<EncumbranceKind>>();
             services.AddTransient<IEncumbranceReadRepository, EncumbranceReadRepository>();
-            services.AddTransient<IEncumbranceTypeReadRepository, EncumbranceTypeReadRepository>();
-            services.AddTransient<IIndexReadRepository, IndexReadRepository>();
-            services.AddTransient<IRegionReadRepository, RegionReadRepository>();
-            services.AddTransient<IRegistrationTypeReadRepository, RegistrationTypeReadRepository>();
-            services.AddTransient<IRegistratorActionTypeReadRepository, RegistratorActionTypeReadRepository>();
-            services.AddTransient<IStreetReadRepository, StreetReadRepository>();
+            services.AddTransient<IReadRepository<EncumbranceType>, ReadRepository<EncumbranceType>>();
+            services.AddTransient<IReadRepository<Domain.PostgreSQL.Entities.Index>, ReadRepository<Domain.PostgreSQL.Entities.Index>>();
+            services.AddTransient<IReadRepository<Region>, ReadRepository<Region>>();
+            services.AddTransient<IReadRepository<RegistrationType>, ReadRepository<RegistrationType>>();
+            services.AddTransient<IReadRepository<RegistratorActionType>, ReadRepository<RegistratorActionType>>();
+            services.AddTransient<IReadRepository<Street>, ReadRepository<Street>>();
             services.AddTransient<IUserCommonReadRepository, UserCommonReadRepository>();
-            services.AddTransient<IUserRegistratorReadRepository, UserRegistratorReadRepository>();
+            services.AddTransient<IReadRepository<User>, ReadRepository<User>>();
+            services.AddTransient<IReadRepository<Registrator>, ReadRepository<Registrator>>();
             services.AddTransient<IStatementReadRepository, StatementReadRepository>();
-            services.AddTransient<IStatementTypeReadRepository, StatementTypeReadRepository>();
+            services.AddTransient<IReadRepository<StatementType>, ReadRepository<StatementType>>();
+            services.AddTransient<IUserReadRepository, UserReadRepository>();
+            services.AddTransient<IReadRepository<Authority>, ReadRepository<Authority>>();
+            services.AddTransient<IAddressReadRepository, AddressReadRepository>();
+            services.AddTransient<IReadRepository<EncumbranceParticipant>, ReadRepository<EncumbranceParticipant>>();
+            services.AddTransient<IReadRepository<BasisDocument>, ReadRepository<BasisDocument>>();
+            services.AddTransient<IEncumbranceObjectReadRepository, EncumbranceObjectReadRepository>();
+            services.AddTransient<IReadRepository<EncumbranceTerms>, ReadRepository<EncumbranceTerms>>();
+            services.AddTransient<IReadRepository<PassportAuthority>, ReadRepository<PassportAuthority>>();
+            services.AddTransient<IReadRepository<Address>, ReadRepository<Address>>();
+            services.AddTransient<IReadRepository<Registrator>, ReadRepository<Registrator>>();
+            services.AddTransient<IReadRepository<Identificator>, ReadRepository<Identificator>>();
+            services.AddTransient<IAddressReadRepository, AddressReadRepository>();
+            services.AddTransient<IRegistratorActionReadRepository, RegistratorActionReadRepository>();
         }
 
         private static void AddWriteRepositories(this IServiceCollection services)
         {
-            services.AddTransient<IUserRegistratorWriteRepository, UserRegistratorWriteRepository>();
+            services.AddTransient<IWriteRepository<User>, WriteRepository<User>>();
+            services.AddTransient<IWriteRepository<Registrator>, WriteRepository<Registrator>>();
             services.AddTransient<IUsersCommonWriteRepository, UsersCommonWriteRepository>();
             services.AddTransient<IStatementWriteRepository, StatementWriteRepository>();
+            services.AddTransient<IWriteRepository<PassportInfo>, WriteRepository<PassportInfo>>();
+
+            services.AddTransient<IWriteRepository<Encumbrance>, WriteRepository<Encumbrance>>();
+            services.AddTransient<IWriteRepository<EncumbranceParticipant>, WriteRepository<EncumbranceParticipant>>();
+            services.AddTransient<IWriteRepository<BasisDocument>, WriteRepository<BasisDocument>>();
+            services.AddTransient<IWriteRepository<EncumbranceTerms>, WriteRepository<EncumbranceTerms>>();
+            services.AddTransient<IMongoWriteRepository, EncumbranceObjectWriteRepository>();
+            services.AddTransient<IWriteRepository<Address>, WriteRepository<Address>>();
+
+            services.AddTransient<IEncumbranceObjectWriteRepository, EncumbranceObjectWriteRepository>();
+
+            services.AddTransient<IWriteRepository<Registrator>, WriteRepository<Registrator>>();
+            services.AddTransient<IWriteRepository<Identificator>, WriteRepository<Identificator>>();
         }
 
         private static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<IJwtService, JwtService>();
+            services.AddTransient<ISmtpService, SmtpService>();
+            services.AddTransient<IExtractGeneratorService, ExtractGeneratorService>();
         }
 
         private static void AddPostgresDBContext(this IServiceCollection services)
@@ -82,7 +111,7 @@ namespace Infrastructure
 
         private static void AddMongoDB(this IServiceCollection services)
         {
-            services.AddSingleton<IMongoConnectionFactory, MongoConnectionFactory>();
+            services.AddTransient<IMongoConnectionFactory, MongoConnectionFactory>();
         }
     }
 }

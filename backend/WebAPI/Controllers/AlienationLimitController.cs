@@ -1,4 +1,5 @@
 ﻿using Application.AlienationLimits.Queries;
+using Domain.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,8 +9,8 @@ namespace WebAPI.Controllers
     [Route("[controller]")]
     public class AlienationLimitController : BaseController
     {
-        public AlienationLimitController(IMediator mediator)
-            : base(mediator)
+        public AlienationLimitController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
         [HttpGet]

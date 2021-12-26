@@ -1,6 +1,7 @@
 ﻿using Application.CurrencyTypes.Dtos;
 using AutoMapper;
-using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstract;
+using Domain.PostgreSQL.Entities;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,9 +14,9 @@ namespace Application.CurrencyTypes.Queries
 
     public class GetAllCurrencyTypesQueryHandler : IRequestHandler<GetAllCurrencyTypesQuery, IEnumerable<CurrencyTypeDto>>
     {
-        private readonly ICurrencyTypeReadRepository _currencyTypeReadRepository;
+        private readonly IReadRepository<CurrencyType> _currencyTypeReadRepository;
         private readonly IMapper _mapper;
-        public GetAllCurrencyTypesQueryHandler(ICurrencyTypeReadRepository currencyTypeReadRepository, IMapper mapper)
+        public GetAllCurrencyTypesQueryHandler(IReadRepository<CurrencyType> currencyTypeReadRepository, IMapper mapper)
         {
             _currencyTypeReadRepository = currencyTypeReadRepository;
             _mapper = mapper;
@@ -23,7 +24,7 @@ namespace Application.CurrencyTypes.Queries
 
         public async Task<IEnumerable<CurrencyTypeDto>> Handle(GetAllCurrencyTypesQuery query, CancellationToken token)
         {
-            return _mapper.Map<IEnumerable<CurrencyTypeDto>>(await _currencyTypeReadRepository.GetAllCurrencyTypesAsync());
+            return _mapper.Map<IEnumerable<CurrencyTypeDto>>(await _currencyTypeReadRepository.GetEntitiesAsync("CurrencyTypes"));
         }
     }
 }

@@ -20,6 +20,27 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Domain.Entities.PostgreSQL.PassportAuthority", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Code");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("PassportAuthority");
+                });
+
             modelBuilder.Entity("Domain.Entities.PostgreSQL.StatementType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -88,8 +109,8 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AuthorityId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("AuthorityId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
@@ -144,19 +165,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.PostgreSQL.Entities.Authority", b =>
                 {
-                    b.Property<string>("Code")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
 
                     b.HasIndex("AddressId")
                         .IsUnique();
@@ -357,16 +376,10 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsForeigner")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Patronymic")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -559,8 +572,8 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AuthorityId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("AuthorityId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
@@ -662,23 +675,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Streets");
                 });
 
-            modelBuilder.Entity("Domain.PostgreSQL.Entities.TaxpayerAccountCardNumber", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AbsenceReason")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TaxpayerAccountCardNumbers");
-                });
-
             modelBuilder.Entity("Domain.PostgreSQL.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -688,8 +684,8 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Authorityid")
-                        .HasColumnType("text");
+                    b.Property<Guid>("AuthorityId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
@@ -723,6 +719,12 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Position")
                         .HasColumnType("text");
 
+                    b.Property<string>("TaxpayerACNAbsenceReason")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TaxpayerAccountCardNumber")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("TaxpayerAccountCardNumberId")
                         .HasColumnType("uuid");
 
@@ -731,7 +733,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.HasIndex("Authorityid");
+                    b.HasIndex("AuthorityId");
 
                     b.HasIndex("IdentificatorId")
                         .IsUnique();
@@ -739,10 +741,18 @@ namespace Infrastructure.Migrations
                     b.HasIndex("PassportInfoId")
                         .IsUnique();
 
-                    b.HasIndex("TaxpayerAccountCardNumberId")
-                        .IsUnique();
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PostgreSQL.PassportAuthority", b =>
+                {
+                    b.HasOne("Domain.PostgreSQL.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Domain.PostgreSQL.Entities.Address", b =>
@@ -793,8 +803,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.PostgreSQL.Entities.Authority", "Authority")
                         .WithMany("Admins")
                         .HasForeignKey("AuthorityId")
-                        .HasConstraintName("FK_Authority_Admins")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.PostgreSQL.Entities.Identificator", "Identificator")
                         .WithOne("Admin")
@@ -820,7 +830,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.PostgreSQL.Entities.Address", "Address")
                         .WithOne("Authority")
                         .HasForeignKey("Domain.PostgreSQL.Entities.Authority", "AddressId")
-                        .HasConstraintName("FK_Authority_Address")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -996,10 +1005,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.PostgreSQL.Entities.PassportInfo", b =>
                 {
-                    b.HasOne("Domain.PostgreSQL.Entities.Authority", "Authority")
+                    b.HasOne("Domain.Entities.PostgreSQL.PassportAuthority", "Authority")
                         .WithMany("PassportInfos")
                         .HasForeignKey("AuthorityId")
-                        .HasConstraintName("FK_Authority_PassportInfos")
+                        .HasConstraintName("FK_PassportAuthority_PassportInfos")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Authority");
@@ -1021,8 +1030,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.PostgreSQL.Entities.Authority", "Authority")
                         .WithMany("Registrators")
                         .HasForeignKey("AuthorityId")
-                        .HasConstraintName("FK_Authority_Registrators")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.PostgreSQL.Entities.Identificator", "Identificator")
                         .WithOne("Registrator")
@@ -1086,9 +1095,10 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.PostgreSQL.Entities.Authority", "Authority")
                         .WithMany("Users")
-                        .HasForeignKey("Authorityid")
+                        .HasForeignKey("AuthorityId")
                         .HasConstraintName("FK_Authority_Users")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.PostgreSQL.Entities.Identificator", "Identificator")
                         .WithOne("User")
@@ -1104,11 +1114,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.PostgreSQL.Entities.TaxpayerAccountCardNumber", "TaxpayerAccountCardNumber")
-                        .WithOne("User")
-                        .HasForeignKey("Domain.PostgreSQL.Entities.User", "TaxpayerAccountCardNumberId")
-                        .HasConstraintName("FK_User_TaxpayerAccountCardNumber");
-
                     b.Navigation("Address");
 
                     b.Navigation("Authority");
@@ -1116,8 +1121,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Identificator");
 
                     b.Navigation("PassportInfo");
+                });
 
-                    b.Navigation("TaxpayerAccountCardNumber");
+            modelBuilder.Entity("Domain.Entities.PostgreSQL.PassportAuthority", b =>
+                {
+                    b.Navigation("PassportInfos");
                 });
 
             modelBuilder.Entity("Domain.PostgreSQL.Entities.Address", b =>
@@ -1135,8 +1143,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.PostgreSQL.Entities.Authority", b =>
                 {
                     b.Navigation("Admins");
-
-                    b.Navigation("PassportInfos");
 
                     b.Navigation("Registrators");
 
@@ -1253,11 +1259,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.PostgreSQL.Entities.Street", b =>
                 {
                     b.Navigation("Addresses");
-                });
-
-            modelBuilder.Entity("Domain.PostgreSQL.Entities.TaxpayerAccountCardNumber", b =>
-                {
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.PostgreSQL.Entities.User", b =>

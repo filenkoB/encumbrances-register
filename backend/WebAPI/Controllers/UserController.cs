@@ -3,6 +3,7 @@ using MediatR;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Application.Users.Common.Commands;
+using Domain.Interfaces.Services;
 
 namespace WebAPI.Controllers
 {
@@ -10,8 +11,8 @@ namespace WebAPI.Controllers
     [Route("/[controller]")]
     public class UserController : BaseController
     {
-        public UserController(IMediator mediator)
-            : base(mediator)
+        public UserController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
         [HttpPost("id")]

@@ -6,6 +6,7 @@ namespace Domain.PostgreSQL.Entities
 {
     public class Encumbrance : EntityId
     {
+        public string Number { get; set; }
         public DateTime CreatedOn { get; set; }
         public Guid TierId { get; set; }
         public Guid DebtorId { get; set; }

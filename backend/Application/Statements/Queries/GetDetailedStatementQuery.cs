@@ -1,14 +1,9 @@
-﻿using Application.Common;
-using Application.Statements.Dtos;
+﻿using Application.Statements.Dtos;
 using AutoMapper;
 using Domain.Interfaces.Read;
 using MediatR;
 using MongoDB.Bson;
-using MongoDB.Bson.IO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +35,8 @@ namespace Application.Statements.Queries
             switch (statement["StatementTypeId"].AsGuid.ToString())
             {
                 case "b231d49d-8c34-4efc-bde2-e398d35a5587":
-                    return _mapper.Map<RegistrationStatementDto>(statement);
+                case "3c63d55d-4b8f-4c06-8122-6a1c3ac72699":
+                    return _mapper.Map<StatementRegistrationDto>(statement);
                 default:
                     throw new InvalidOperationException();
             }

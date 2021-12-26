@@ -1,10 +1,10 @@
-﻿using Application.Auth.Dtos;
+﻿using Domain.Interfaces.Services;
 using Application.Enumerations;
-using Domain.Interfaces;
-using Domain.Interfaces.Services;
-using MediatR;
-using System.Threading;
 using System.Threading.Tasks;
+using Application.Auth.Dtos;
+using Domain.Interfaces;
+using System.Threading;
+using MediatR;
 
 namespace Application.Auth.Commands
 {

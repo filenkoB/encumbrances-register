@@ -33,19 +33,20 @@ namespace WebAPI
                 .AddNewtonsoftJson(options =>
                      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
-            
+
+            services.AddSession();
+            services.AddMvc();
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "DevelopmentPolicy",
                     builder =>
                     {
                         builder
-                        //.WithHeaders("Authorization")
-                        .WithHeaders("Content-Type")
-                        .WithMethods("GET", "POST", "PUT", "DELETE")
-                        .AllowAnyOrigin();
-                        //.WithExposedHeaders("Token-Expired")
-                        //.WithOrigins(frontendUrl);
+                            .WithHeaders("Authorization")
+                            .WithHeaders("Content-Type")
+                            .WithMethods("GET", "POST", "PUT", "DELETE")
+                            .AllowAnyOrigin();
                     }
                 );
             });
@@ -79,9 +80,12 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSession();
             app.UseCors("DevelopmentPolicy");
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -4,15 +4,16 @@ using System.Threading.Tasks;
 using Infrastructure.EF.PostgreSQL;
 using System;
 using Infrastructure.Dapper;
-using System.Data;
 using Dapper;
+using Npgsql;
 
 namespace Infrastructure.Repositories
 {
+    /*
     public class UserRegistratorWriteRepository : IUserRegistratorWriteRepository
     {
         private readonly EncumbrancesRegisterDbContext _db;
-        private readonly IDbConnection _dbDapper;
+        private readonly NpgsqlConnection _dbDapper;
 
         public UserRegistratorWriteRepository(EncumbrancesRegisterDbContext db, PostgresConnectionFactory dbDapper)
         {
@@ -49,11 +50,11 @@ namespace Infrastructure.Repositories
         private async Task<Identificator> GetCreatedIdentificatorAsync(Guid userId, string tableName)
         {
             string sqlQuery =
-                "SELECT \"Identificator\".* FROM \"Identificators\" \"i\" " +
+                "SELECT \"i\".* FROM \"Identificators\" \"i\" " +
                 $"INNER JOIN \"{tableName}\" \"t\" ON \"i\".\"Login\" = \"t\".\"IdentificatorId\" " +
                 "WHERE \"t\".\"Id\" = @userId";
 
             return await _dbDapper.QueryFirstAsync<Identificator>(sqlQuery, new { userId = userId });
         }
-    }
+    }*/
 }

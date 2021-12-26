@@ -1,6 +1,8 @@
 ﻿using Application.Districts.Dtos;
 using AutoMapper;
+using Domain.Interfaces.Abstract;
 using Domain.Interfaces.Read;
+using Domain.PostgreSQL.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,9 +22,9 @@ namespace Application.Districts.Queries
 
     public class GetAllRegionDistrictsQueryHandler : IRequestHandler<GetAllRegionDistrictsQuery, IEnumerable<DistrictDto>>
     {
-        private readonly IDistrictReadRepository _districtReadRepository;
+        private readonly IReadRepository<District> _districtReadRepository;
         private readonly IMapper _mapper;
-        public GetAllRegionDistrictsQueryHandler(IDistrictReadRepository districtReadRepository, IMapper mapper)
+        public GetAllRegionDistrictsQueryHandler(IReadRepository<District> districtReadRepository, IMapper mapper)
         {
             _districtReadRepository = districtReadRepository;
             _mapper = mapper;
@@ -30,7 +32,10 @@ namespace Application.Districts.Queries
 
         public async Task<IEnumerable<DistrictDto>> Handle(GetAllRegionDistrictsQuery query, CancellationToken token)
         {
-            return _mapper.Map<IEnumerable<DistrictDto>>(await _districtReadRepository.GetAllRegionDistrictsAsync(query.RegionId));
+            return _mapper.Map<IEnumerable<DistrictDto>>(await _districtReadRepository.GetEntitiesByParamsAsync(
+                "Cities",
+                ("RegionId", query.RegionId)
+            ));
         }
     }
 }

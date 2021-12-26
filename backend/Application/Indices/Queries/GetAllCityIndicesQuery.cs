@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstract;
+using entities = Domain.PostgreSQL.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Application.Indices.Queries
 {
@@ -19,9 +21,9 @@ namespace Application.Indices.Queries
 
     public class GetAllCityIndicesQueryHandler : IRequestHandler<GetAllCityIndicesQuery, IEnumerable<string>>
     {
-        private readonly IIndexReadRepository _indexReadRepository;
+        private readonly IReadRepository<entities.Index> _indexReadRepository;
         private readonly IMapper _mapper;
-        public GetAllCityIndicesQueryHandler(IIndexReadRepository indexReadRepository, IMapper mapper)
+        public GetAllCityIndicesQueryHandler(IReadRepository<entities.Index> indexReadRepository, IMapper mapper)
         {
             _indexReadRepository = indexReadRepository;
             _mapper = mapper;
@@ -29,7 +31,10 @@ namespace Application.Indices.Queries
 
         public async Task<IEnumerable<string>> Handle(GetAllCityIndicesQuery query, CancellationToken token)
         {
-            return await _indexReadRepository.GetAllCityIndicesAsync(query.CityId);
+            return (await _indexReadRepository.GetEntitiesByParamsAsync(
+                "Indices",
+                ("CityId", query.CityId)
+            )).Select(i => i.IndexCode);
         }
     }
 }

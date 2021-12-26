@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.PostgreSQL;
-using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstract;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,14 +12,14 @@ namespace Application.StatementTypes.Queries
 
     public class GetAllStatementTypesQueryHandler : IRequestHandler<GetAllStatementTypesQuery, IEnumerable<StatementType>>
     {
-        private readonly IStatementTypeReadRepository _statementTypeReadRepository;
-        public GetAllStatementTypesQueryHandler(IStatementTypeReadRepository statementTypeReadRepository)
+        private readonly IReadRepository<StatementType> _statementTypeReadRepository;
+        public GetAllStatementTypesQueryHandler(IReadRepository<StatementType> statementTypeReadRepository)
         {
             _statementTypeReadRepository = statementTypeReadRepository;
         }
         public async Task<IEnumerable<StatementType>> Handle(GetAllStatementTypesQuery query, CancellationToken token)
         {
-            return await _statementTypeReadRepository.GetAllStatementTypesAsync();
+            return await _statementTypeReadRepository.GetEntitiesAsync("StatementTypes");
         }
     }
 }

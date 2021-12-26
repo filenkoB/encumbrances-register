@@ -17,13 +17,6 @@ namespace Infrastructure.EF.PostgreSQL.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(u => u.TaxpayerAccountCardNumber)
-                .WithOne(tpan => tpan.User)
-                .HasForeignKey<User>(u => u.TaxpayerAccountCardNumberId)
-                .HasConstraintName("FK_User_TaxpayerAccountCardNumber")
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
             builder.HasOne(u => u.PassportInfo)
                 .WithOne(pi => pi.User)
                 .HasForeignKey<User>(u => u.PassportInfoId)
@@ -46,7 +39,7 @@ namespace Infrastructure.EF.PostgreSQL.Configuration
 
             builder.HasOne(u => u.Authority)
                 .WithMany(a => a.Users)
-                .HasForeignKey(u => u.Authorityid)
+                .HasForeignKey(u => u.AuthorityId)
                 .HasConstraintName("FK_Authority_Users")
                 .OnDelete(DeleteBehavior.Restrict);
         }

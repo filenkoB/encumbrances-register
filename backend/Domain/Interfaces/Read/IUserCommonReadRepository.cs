@@ -8,5 +8,6 @@ namespace Domain.Interfaces
     {
         public Task<UserType> GetUserTypeByIdentificatorAsync(string login);
         public Task<Guid> GetUserByCredentialsAsync(string login, string password);
+        public Task<string> GetUserEmailAsync(Guid userId, UserType userType);
     }
 }

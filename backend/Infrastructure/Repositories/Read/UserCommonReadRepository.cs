@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Npgsql;
 using System;
+using System.Text;
 
 namespace Infrastructure.Repositories
 {
@@ -35,6 +36,28 @@ namespace Infrastructure.Repositories
                 "WHERE \"Password\" = @password ";
             var result = await _db.QueryFirstOrDefaultAsync<Guid>(sqlQuery, new { login = login, password = password });
             await _db.CloseAsync();
+            return result;
+        }
+
+        public async Task<string> GetUserEmailAsync(Guid userId, UserType userType)
+        {
+            StringBuilder sb = new StringBuilder("SELECT \"Email\" FROM [#Table#] WHERE \"Id\" = @userId");
+            switch(userType)
+            {
+                case UserType.Admin:
+                    sb.Replace("[#Table#]", "\"Admins\"");
+                    break;
+                case UserType.Registrator:
+                    sb.Replace("[#Table#]", "\"Registrators\"");
+                    break;
+                case UserType.SimpleUser:
+                    sb.Replace("[#Table#]", "\"Users\"");
+                    break;
+            }
+            _db.Open();
+            var result = await _db.QueryFirstAsync<string>(sb.ToString(), new { userId = userId });
+            await _db.CloseAsync();
+
             return result;
         }
 

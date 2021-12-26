@@ -1,6 +1,8 @@
 ﻿using Application.Statements.Dtos;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.PostgreSQL;
+using Domain.Interfaces.Abstract;
 using Domain.Interfaces.Read;
 using MediatR;
 using System.Collections.Generic;
@@ -24,10 +26,10 @@ namespace Application.Statements.Queries
     public class GetStatementsQueryHandler : IRequestHandler<GetStatementsQuery, StatementsListDto>
     {
         private readonly IStatementReadRepository _statementReadRepository;
-        private readonly IStatementTypeReadRepository _statementTypeReadRepository;
+        private readonly IReadRepository<StatementType> _statementTypeReadRepository;
         private readonly IMapper _mapper;
 
-        public GetStatementsQueryHandler(IStatementReadRepository statementReadRepository, IStatementTypeReadRepository statementTypeReadRepository, IMapper mapper)
+        public GetStatementsQueryHandler(IStatementReadRepository statementReadRepository, IReadRepository<StatementType> statementTypeReadRepository, IMapper mapper)
         {
             _statementReadRepository = statementReadRepository;
             _statementTypeReadRepository = statementTypeReadRepository;
@@ -44,7 +46,7 @@ namespace Application.Statements.Queries
             foreach (var statement in statements)
             {
                 var listingStatement = _mapper.Map<ListStatementInfoDto>(statement);
-                listingStatement.TypeName = await _statementTypeReadRepository.GetTypeNameAsync(statement.StatementTypeId);
+                listingStatement.TypeName = (await _statementTypeReadRepository.GetEntityByIdAsync(statement.StatementTypeId, "StatementTypes")).Name;
                 listingStatements.Add(listingStatement);
             }
 

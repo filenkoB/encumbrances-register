@@ -1,6 +1,8 @@
 ﻿using Application.Streets.Dtos;
 using AutoMapper;
+using Domain.Interfaces.Abstract;
 using Domain.Interfaces.Read;
+using Domain.PostgreSQL.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,9 +22,9 @@ namespace Application.Streets.Queries
 
     public class GetAllCityStreetsQueryHandler : IRequestHandler<GetAllCityStreetsQuery, IEnumerable<StreetDto>>
     {
-        private readonly IStreetReadRepository _streetReadRepository;
+        private readonly IReadRepository<Street> _streetReadRepository;
         private readonly IMapper _mapper;
-        public GetAllCityStreetsQueryHandler(IStreetReadRepository streetReadRepository, IMapper mapper)
+        public GetAllCityStreetsQueryHandler(IReadRepository<Street> streetReadRepository, IMapper mapper)
         {
             _streetReadRepository = streetReadRepository;
             _mapper = mapper;
@@ -30,7 +32,10 @@ namespace Application.Streets.Queries
 
         public async Task<IEnumerable<StreetDto>> Handle(GetAllCityStreetsQuery query, CancellationToken token)
         {
-            return _mapper.Map<IEnumerable<StreetDto>>(await _streetReadRepository.GetAllCityStreetsAsync(query.CityId));
+            return _mapper.Map<IEnumerable<StreetDto>>(await _streetReadRepository.GetEntitiesByParamsAsync(
+                "Streets",
+                ("CityId", query.CityId)    
+            ));
         }
     }
 }

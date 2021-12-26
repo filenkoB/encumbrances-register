@@ -1,9 +1,14 @@
-﻿namespace Application.Statements.Dtos
+﻿using Application.Common;
+using Application.Common.MappingProfiles;
+
+namespace Application.Statements.Dtos
 {
-    public class EncumbranceParticipantDto
+    public class EncumbranceParticipantDto : IdDto
     {
+        public string AdditionalInfo { get; set; }
         public string TaxpayerAccountCardNumber { get; set; }
         public bool IsForeigner { get; set; }
         public string Name { get; set; }
+        public AddressDto Address { get; set; }
     }
 }

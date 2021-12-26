@@ -9,5 +9,6 @@ namespace Application.Common
         public string Patronymic { get; set; }
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
+        public DateTime RegisteredAt { get; set; }
     }
 }

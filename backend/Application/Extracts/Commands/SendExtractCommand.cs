@@ -1,0 +1,81 @@
+﻿using Application.Enumerations;
+using Domain.Entities;
+using Domain.Interfaces;
+using Domain.Interfaces.Read;
+using Domain.Interfaces.Services;
+using MediatR;
+using MongoDB.Bson;
+using System;
+using System.IO;
+using System.Net.Mail;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Application.Extracts.Commands
+{
+    public class SendExtractCommand : IRequest<Unit>
+    {
+        public Guid UserId { get; set; }
+        public Guid StatementId { get; set; }
+        public UserType UserType { get; set; }
+
+        public SendExtractCommand(Guid statementId, UserType userType, Guid userId)
+        {
+            StatementId = statementId;
+            UserType = userType;
+            UserId = userId;
+        }
+    }
+
+    public class SendExtractCommandHandler : IRequestHandler<SendExtractCommand, Unit>
+    {
+        private readonly IExtractGeneratorService _extractGeneratorService;
+        private readonly ISmtpService _smtpService;
+        private readonly IEncumbranceReadRepository _encumbranceReadRepository;
+        private readonly IUserCommonReadRepository _userCommonReadRepository;
+        private readonly IStatementReadRepository _statementReadRepository;
+
+        public SendExtractCommandHandler(
+            IExtractGeneratorService extractGeneratorService,
+            ISmtpService smtpService,
+            IEncumbranceReadRepository encumbranceReadRepository,
+            IUserCommonReadRepository userCommonReadRepository,
+            IStatementReadRepository statementReadRepository)
+        {
+            _encumbranceReadRepository = encumbranceReadRepository;
+            _extractGeneratorService = extractGeneratorService;
+            _userCommonReadRepository = userCommonReadRepository;
+            _statementReadRepository = statementReadRepository;
+            _smtpService = smtpService;
+        }
+
+        public async Task<Unit> Handle(SendExtractCommand command, CancellationToken token)
+        {
+            BsonDocument extractStatement = await _statementReadRepository.GetStatementAsync(command.StatementId);
+
+            ExtractEncumbrance extractEncumbrance = await _encumbranceReadRepository.GetExtractEncumbrance(
+                extractStatement["EncumbranceId"].AsGuid    
+            );
+            MemoryStream mstream = new MemoryStream();
+            _extractGeneratorService.GenerateExtractForEncumbrance(ref mstream, extractEncumbrance);
+
+            Guid userId = command.UserId;
+            UserType userType = command.UserType;
+            var userEmail = await _userCommonReadRepository.GetUserEmailAsync(userId, userType);
+            SendEmailToUser(userEmail, ref mstream);
+
+            return Unit.Value;
+        }
+
+        private void SendEmailToUser(string userEmail, ref MemoryStream mstream)
+        {
+            mstream.Position = 0;
+            MailMessage message = new MailMessage(_smtpService.GetSourceEmail(), userEmail);
+            message.Subject = "Операція отримання витягу з Державного реєстру обтяжень рухомого майна";
+            message.Attachments.Add(new Attachment(mstream, "Витяг з державного реєстру обтяжень рухомого майна.pdf"));
+
+            SmtpClient client = _smtpService.GetSmtpConnection();
+            client.Send(message);
+        }
+    }
+}

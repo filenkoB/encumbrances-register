@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Application.Common;
+using System;
 
 namespace Application.Statements.Dtos
 {
-    public class BasisDocumentDto
+    public class BasisDocumentDto : IdDto
     {
         public string Name { get; set; }
         public string Number { get; set; }

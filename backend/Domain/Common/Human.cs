@@ -13,6 +13,7 @@ namespace Domain.Common
         public string Position { get; set; }
         public string IdentificatorId { get; set; }
         public string PassportInfoId { get; set; }
+        public DateTime RegisteredAt { get; set; }
 
         public Identificator Identificator { get; set; }
         public PassportInfo PassportInfo { get; set; }

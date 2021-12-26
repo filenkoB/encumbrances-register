@@ -17,7 +17,9 @@ namespace Infrastructure.Repositories.Read
         }
         public async Task<IEnumerable<BsonDocument>> GetStatementsWithOffsetAsync(int page, int length)
         {
-            return await _db.Statements.Find(_ => true).Skip((page - 1) * length).Limit(length).ToListAsync();
+            var filter = Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId")) &
+                Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, int>("Status"), 0);
+            return await _db.Statements.Find(filter).Skip((page - 1) * length).Limit(length).ToListAsync();
         }
 
         public async Task<BsonDocument> GetStatementAsync(Guid statementId)
@@ -28,7 +30,32 @@ namespace Infrastructure.Repositories.Read
 
         public async Task<long> GetStatementsNumberAsync()
         {
-            return await _db.Statements.CountDocumentsAsync(new BsonDocument());
+            var filter = Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId")) &
+                Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, int>("Status"), 0);
+            return await _db.Statements.CountDocumentsAsync(filter);
+        }
+
+        public async Task<IEnumerable<BsonDocument>> GetUserRegistrationStatementsAsync(int page, int length)
+        {
+            var filter = Builders<BsonDocument>.Filter
+                .Not(Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId"))) &
+                Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, bool>("IsTouched"), false);
+            return await _db.Statements.Find(filter).Skip((page - 1) * length).Limit(length).ToListAsync();
+        }
+
+        public async Task<long> GetRegistrationStatementsNumberAsync()
+        {
+            var filter = Builders<BsonDocument>.Filter
+                .Not(Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId"))) &
+                Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, bool>("IsTouched"), false);
+            return await _db.Statements.CountDocumentsAsync(filter);
+        }
+
+        public async Task<IEnumerable<BsonDocument>> GetUserStatementsAsync(int page, int length, Guid userId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId")) &
+                Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, Guid>("StatementOwnerId"), userId);
+            return await _db.Statements.Find(filter).Skip((page - 1) * length).Limit(length).ToListAsync();
         }
     }
 }

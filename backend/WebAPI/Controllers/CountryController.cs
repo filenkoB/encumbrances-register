@@ -1,4 +1,5 @@
 ﻿using Application.Countries.Queries;
+using Domain.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,8 +9,8 @@ namespace WebAPI.Controllers
     [Route("[Controller]")]
     public class CountryController : BaseController
     {
-        public CountryController(IMediator mediator)
-            : base(mediator)
+        public CountryController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
         [HttpGet]
