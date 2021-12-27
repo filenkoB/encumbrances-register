@@ -110,9 +110,20 @@
               </div>
               <div class="col-auto text-end">
                 <button @click="backToForm" class="btn btn-outline-secondary ms-1">Параметри пошуку</button>
-                <button @click="backToForm" class="btn btn-outline-secondary ms-1" v-if="extract_element">Отримати витяг</button>
+                <button @click="extract" class="btn btn-outline-secondary ms-1" v-if="extract_element">Отримати витяг</button>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row mt-3 card" v-if="card">
+            <div class="card-header">
+              Вікно, з реквізитами для оплати отримання витягу.
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Дана частана функціоналу відповідає за проведення сплати послуги на отримання витягу.</h5>
+              <p class="card-text">Для виконання успішної або неуспішної "сплати послуг" написніть відповідну кнопку, розташовану нижче.</p>
+              <button type="button" v-on:click="danger" class="btn btn-outline-danger">Невдала оплата</button>
+              <button type="button" v-on:click="success" class="ms-3 btn btn-outline-success">Успішна оплата</button>
           </div>
         </div>
         <div class="row mt-3"  v-if="encumbrances.length > 0">
@@ -149,7 +160,7 @@
 
 <script>
 import {validation} from "../data";
-import {Main} from "../connect_to_server"
+import {Main, Registrator} from "../connect_to_server"
 import Pagination from "../components/Pagination.vue"
 export default {
   name: 'SearchEncumbrances',
@@ -206,9 +217,11 @@ export default {
       search_element_value:{},
       encumbrances: [],
       main: null,
+      registrator: null,
       extract_element: null,
-      active_user: null,
-      waitingForResponse: false
+      user_autority: null,
+      waitingForResponse: false,
+      card: false
     };
   },
   components:{
@@ -259,7 +272,6 @@ export default {
       this.get_encumbrances();
     },
     async get_encumbrances(){
-      
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 5) this.pagination.max_items_count = 5;
@@ -267,8 +279,7 @@ export default {
       if(test_data.length < this.pagination.max_items_count) this.pagination.max_items_count = test_data.length;
       this.pagination.count_page = Math.ceil(test_data.length / this.pagination.max_items_count);
       this.encumbrances = test_data.encumbrances;
-      console.log(test_data.encumbrances);
-      if(this.encumbrances[0].id) this.extract_element = this.encumbrances[0].id
+      if(this.encumbrances[0]) this.extract_element = this.encumbrances[0].id
       this.waitingForResponse = false;
       this.visible_status = false;
     },
@@ -280,7 +291,21 @@ export default {
     backToForm() {
       this.visible_status = true;
       this.encumbrances = [];
-    }
+    },
+    async extract(){
+      this.user_autority = await this.main.UserAuthority();
+      if(this.user_autority) await this.success();
+      else this.card = true;
+    },
+    async success(){
+      this.card = false;
+      if(this.user_autority){
+        const statementId = await this.main.StatementRegisterExtract(this.extract_element);
+        this.registrator.StatementExtractAccept(statementId);
+      }
+      else await this.main.StatementRegisterExtract(this.extract_element)
+    },
+    danger(){ this.card = false; }
   },
   mounted(){
     this.user_status = window.sessionStorage.getItem('user_status');
@@ -291,6 +316,7 @@ export default {
   },
   created(){
     this.main = new Main();
+    this.registrator = new Registrator();
   }
 
 }

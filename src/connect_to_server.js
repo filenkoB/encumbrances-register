@@ -138,7 +138,26 @@ export class User{
   }
 }
 
+export class Registrator{
+  constructor(){}
+  async StatementExtractAccept(statementId){
+    return await create("/Statement/Extract/" + statementId + "/Accept", GetRequestOptions("POST", null))
+  }
+  async StatementExtractDecline(statementId){
+    return await create("/Statement/Extract/" + statementId + "/Decline", GetRequestOptions("POST", null))
+  }
+}
+
 export class Main{
   constructor(){}
-  async Encumbrance(item, page, length){ return await create("/Encumbrance?page=" + page + "&length=" + length, GetRequestOptions("POST",item)) }
+
+  async Encumbrance(item, page, length){
+    return await create("/Encumbrance?page=" + page + "&length=" + length, GetRequestOptions("POST",item))
+  }
+  async StatementRegisterExtract(encumbranceId){
+    return await create("/Statement/Register/Extract/" + encumbranceId, GetRequestOptions("POST", null))
+  }
+  async UserAuthority(){
+    return await create("/User/Authority", GetRequestOptions("GET", null))
+  }
 }
