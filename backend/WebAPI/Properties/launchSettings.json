@@ -1,0 +1,38 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:43186",
+      "sslPort": 44364
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRESQL_CONNECTION_STRING": "Host=ec2-3-248-87-6.eu-west-1.compute.amazonaws.com;Port=5432;Database=d99eufmq97gniv;Username=tgmkclnueetwkj;Password=d5b69e55a15eaad84381845329ff8493fa3977c7aa06fa68fa2971ae30414a18;Trust Server Certificate=true;sslmode=Require",
+        "JWT_ISSUER": "encumbrance-register-backend-server",
+        "JWT_AUDIENCE": "encumbrance-register-frontend-client",
+        "JWT_LIFETIME": "10000",
+        "JWT_KEY": "SuperPuperDuperSECURITYJWTkey932022&$^",
+        "MONGO_DATABASE": "encumbrance-register",
+        "SMTP_ADDRESS": "encumbrances.register@gmail.com",
+        "SMTP_PASSWORD": "SuperEncumbrancePassword228%",
+        "MONGODB_CONNECTION_STRING": "mongodb+srv://encumbrance-mongo:SuperPuperMongoPass228@encumbrance-register.7vcfx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+      }
+    },
+    "WebAPI": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRESQL_CONNECTION_STRING": "Host=ec2-3-248-87-6.eu-west-1.compute.amazonaws.com;Port=5432;Database=d99eufmq97gniv;Username=tgmkclnueetwkj;Password=d5b69e55a15eaad84381845329ff8493fa3977c7aa06fa68fa2971ae30414a18;Trust Server Certificate=true;sslmode=Require"
+      }
+    }
+  }
+}
