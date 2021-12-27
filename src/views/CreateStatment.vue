@@ -90,7 +90,7 @@ export default {
             if (this.element[i].invalid) {
               if (!this.element[i].visible_status) {
                 this.element[i].change_visibility();
-                time = 500;
+                time = 700;
               }
               this.isvalid = false;
             }
@@ -105,7 +105,7 @@ export default {
                 if (this.element[i].invalid) {
                   if (!this.element[i].visible_status) {
                     this.element[i].change_visibility();
-                    time = 500;
+                    time = 700;
                   }
                   this.isvalid = false;
                 }

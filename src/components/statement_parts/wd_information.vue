@@ -62,7 +62,7 @@
               <label class="col-form-label">Додаткові відомості:</label>
             </div>
             <div class="col-9">
-              <textarea class="form-control" rows="1" @change="changed" required :pattern="patterns.text.str" :disabled="editing_status" v-model="item.typeDescription"></textarea>
+              <input class="form-control" rows="1" @change="changed" :pattern="patterns.text.str" :disabled="editing_status" v-model="item.typeDescription">
             </div>
           </div>
         </div>
@@ -131,16 +131,17 @@ export default {
     },
     changed() {
       this.item.invalid = this.isInvalid();
+      console.log(this.item.invalid);
     },
     get_collapsed_status() {
         if (!this.editing_status) return " collapsible collapsed";
         else return "";
     },
     isInvalid() {
-      if(!this.patterns.idNumber.var.exec(this.item.taxpayerAccountCardNumber)) { return true; }
-      if(!this.item.name || !this.patterns.text.var.exec(this.item.name)) { return true; }
+      if(!this.patterns.idNumber.var.test(this.item.taxpayerAccountCardNumber)) { return true; }
+      if(!this.item.name || !this.patterns.text.var.test(this.item.name)) { return true; }
       if(this.item.address.path.invalid) { return true; }
-      if(!this.item.typeDescription || !this.patterns.text.var.exec(this.item.typeDescription)) { return true; }
+      if((this.item.typeDescription.length > 0) && !this.patterns.text.var.test(this.item.typeDescription)) { return true; }
       return false;
     },
     foreigner(){
