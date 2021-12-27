@@ -1,13 +1,13 @@
 <template>
   <div class="row">
     <div class="col">
-      <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info" :button_search="button_search"/>
+      <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info" :text="text" :button_search="button_search"/>
       
       <hr class="border-info border border-2" v-if="visible_status_info">
       <OtherChanges :item="element.otherChange" :editing_status="editing_status" v-if="visible_status_info"/>
 
       <hr class="border-info border border-2" v-if="visible_status_info && (element.otherChange.changes_checked === 2)">
-      <CreateStatment :editing_status="editing_status" :statement_element="statement_element"
+      <CreateStatment :editing_status="editing_status" :statement_element="element"
                       :info="info" :fun="update_element"  v-if="visible_status_info && (element.otherChange.changes_checked === 2)"/>
     </div>
   </div>
@@ -22,6 +22,7 @@ import {Changes} from "../../classes"
 export default {
   data(){
     return {
+      text: null,
       registrator: null,
       element: {},
       visible_status_info: false
@@ -36,13 +37,29 @@ export default {
   },
   methods:{
     async button_search(item){
+      this.visible_status_info = false;
+      this.text = null;
+      this.element.searched = false;
       const encumbrance = new Encumbrance();
-      const info = await encumbrance.RegistrationNumber(item);
-      if(info!=null){
-        this.visible_status_info = !this.visible_status_info;
+      const info = await encumbrance.EncumbranceRegistrationNumber(item);
+      if(info.maxStatements!=0){
+        this.visible_status_info = true;
         this.element.searched = this.visible_status_info;
+        this.element.searchedInfo = item;
+        this.element.encumbranceTier = info.encumbranceTier;
+        this.element.encumbranceDebtor = info.encumbranceDebtor;
+        this.element.basisDocument = info.basisDocument;
+        this.element.encumbranceInfo = info.encumbranceInfo;
+        this.element.encumbranceTerm = info.encumbranceTerm;
+        this.element.encumbranceDescriptionSubject = info.encumbranceObject;
+        this.element.id = null;
+        console.log("Info", info);
       }
-      this.element.searchedInfo = info;
+      else{
+        this.text = "За вашим запитом не було знайдено обтяження з номером " + item;
+        this.element.searchedInfo = undefined;
+      }
+      
     },
     reset() {
       this.element = {
@@ -60,12 +77,12 @@ export default {
       this.fun(this.element);
     },
     update_element(item){
-      Object.keys(item).forEach( i => {
-        if (i !== 'generalInfo') {
-          this.element[i] = item[i];
-        }
-      });
-      console.log(this.element);
+      this.element.encumbranceTier = item.encumbranceTier;
+      this.element.encumbranceDebtor = item.encumbranceDebtor;
+      this.element.basisDocument = item.basisDocument;
+      this.element.encumbranceitem = item.encumbranceitem;
+      this.element.encumbranceTerm = item.encumbranceTerm;
+      this.element.encumbranceDescriptionSubject = item.encumbranceDescriptionSubject;
     }
   },
   async created(){

@@ -141,7 +141,7 @@
               </div>
               <div class="col border-end border-4 p-3">{{item.tier}}</div>
               <div class="col-auto p-3">
-                Дата реєстрації обтяження:
+                Дата реєстрації:
               </div>
               <div class="col-1 p-3">{{item.date.split("T")[0]}}</div>
             </div>

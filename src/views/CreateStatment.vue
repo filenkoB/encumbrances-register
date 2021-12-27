@@ -49,10 +49,12 @@
 </template>
 <script>
 import Statement from "../components/Statement.vue"
-//import {CreateStatement, EncumbranceRemoveStatementAccept, EncumbranceUpdateStatementAccept, EncumbranceRegisterStatementAccept} from "../connect_to_server"
+import {Registrator, Main} from "../connect_to_server"
 export default {
   data(){
     return {
+      registrator: null,
+      main: null,
       isvalid: true,
       user_status: null,
       statement_type: true,
@@ -119,12 +121,12 @@ export default {
       document.getElementById('submit').click();
     },
     async submit(){
+      console.log("Сабміт",this.element);
       this.waitingForResponse = true;
-      console.log("hi",this.element);
       if (!this.statement_type) {
-        if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=null){
+        if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=undefined){
           if(this.user_status == 'registrar'){
-            //await EncumbranceRemoveStatementAccept(this.element.searchedInfo);
+            await this.registrator.EncumbranceRemoveStatementAccept(this.element.searchedInfo);
             console.log("remove");
             this.message.title ="Заява про припинення обтяження була успішно зареєстрована!";
             this.message.text ="Заява про реєстрацію змін обтяження рухомого майна (припинення обтяження) була успішно зареєстрована у Реєстрі.";
@@ -138,6 +140,9 @@ export default {
             this.succeeded = true;
           }
         }
+        else{
+          this.waitingForResponse = false
+        }
       }
       if(this.isvalid){
         if(this.statement_type){
@@ -150,9 +155,9 @@ export default {
             encumbranceTerm: this.element.encumbranceTerm.get_info(),
             encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
           };
-          //const new_id = await CreateStatement(el)
+          const new_id = await this.main.CreateStatement(el)
           if(this.user_status == 'registrar'){
-            //await EncumbranceRegisterStatementAccept(new_id);
+            await this.registrator.EncumbranceRegisterStatementAccept(new_id.id);
             console.log("cr");
             this.message.title ="Заява про реєстрацію обтяження була успішно зареєстрована!";
             this.message.text ="Заява про реєстрацію обтяження рухомого майна була успішно зареєстрована у Реєстрі.";
@@ -165,8 +170,6 @@ export default {
             this.waitingForResponse = false;
             this.succeeded = true;
           }
-          console.log(el);
-          
         }
         else{
           if(this.element.otherChange.changes_checked == 2){
@@ -179,9 +182,9 @@ export default {
               encumbranceTerm: this.element.encumbranceTerm.get_info(),
               encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
             }
-            //const new_id = await CreateStatement(el)
+            const new_id = await this.main.CreateStatement(el)
             if(this.user_status == 'registrar'){
-              //await EncumbranceUpdateStatementAccept(new_id);
+              await this.registrator.EncumbranceUpdateStatementAccept(new_id.id);
               console.log("update");
               this.message.title ="Заява про реєстрацію змін обтяження була успішно зареєстрована!";
               this.message.text ="Заява про реєстрацію змін обтяження рухомого майна була успішно зареєстрована у Реєстрі.";
@@ -226,6 +229,10 @@ export default {
     this.$root.$children[0].$children[0].page = 'create-statement';
     this.user_message =  "Тепер ця заява буде відображатися у розділі \"Мої заяви\", де після розгляду її реєстраторами її статус зміниться на \"Прийнято\" або \"Відхилено\"."
   },
+  created(){
+    this.registrator = new Registrator();
+    this.main = new Main();
+  }
 }
 </script>
 <style>

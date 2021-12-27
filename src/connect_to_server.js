@@ -46,6 +46,7 @@ export class Registration{
   async RegistrationUserStatement(item){ return await create("/Registration/User/Statement", GetRequestOptions("POST",item)) }
   async RegistrationRegistratorStatement(item){ return await create("/Registration/Registrator/Statement", GetRequestOptions("POST",item)) }
 }
+
 export class Address{
   constructor(){}
   async GetALLCountry(){ return await create("/Country", GetRequestOptions("GET", null)) }

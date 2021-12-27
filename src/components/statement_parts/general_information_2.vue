@@ -16,6 +16,11 @@
                   <button class="btn btn-success" type="button" @click="button_search(search_info)">Пошук</button>
                 </div>
               </div>
+              <div class="row border border-4 p-3 mt-2 rounded" v-if="text!=null">
+                <div class="col text-center">
+                  <label>{{text}}</label>
+                </div>
+              </div>
           </div>
       </div>
     </div>
@@ -37,7 +42,7 @@ export default {
     
     clear(){this.search_info = {}}
   },
-  props:["item", "visible_status", "button_search"],
+  props:["item", "visible_status", "button_search", "text"],
   name:'GeneralInformation',  
 }
 </script>
