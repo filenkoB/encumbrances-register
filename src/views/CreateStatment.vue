@@ -82,6 +82,7 @@ export default {
       return this.statement;
     },
     fake_submit() {
+      console.log("Fake sybmit", this.element);
       this.isvalid = true;
       let time = 100;
       if (this.statement_type) {
