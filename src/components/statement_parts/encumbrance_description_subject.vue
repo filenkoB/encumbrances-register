@@ -127,7 +127,7 @@ export default {
       if(!this.patterns.text.var.exec(this.item.name)) { return true; }
       if(!this.patterns.serialNum.var.exec(this.item.number)) {  return true; }
       if(!this.patterns.number.var.exec(this.item.number_2)) { return true; }
-      if((this.item.value.length > 0) && !this.patterns.text.var.exec(this.item.value)) { return true;}
+      if(this.item.value != null && (this.item.value.length > 0) && !this.patterns.text.var.exec(this.item.value)) { return true;}
       return false;
     }
   },
