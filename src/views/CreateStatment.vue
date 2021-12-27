@@ -9,7 +9,7 @@
           <div class="col-auto">
             <select class="form-control" v-model="statement_type">
               <option :value="true">Заява про реєстрацію обтяження рухомого майна</option>
-              <option :value="false">Заяви про реєстрацію змін обтяження рухомого майна</option>
+              <option :value="false">Заява про реєстрацію змін обтяження рухомого майна</option>
             </select>
           </div>
         </div>
@@ -17,7 +17,7 @@
           <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заява про реєстрацію обтяження рухомого майна'}" :info="info" :fun="get_info"/>
         </div>
         <div class="row p-2" v-else>
-          <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заяви про реєстрацію змін обтяження рухомого майна'}" :info="info" :fun="get_info"/>
+          <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заява про реєстрацію змін обтяження рухомого майна'}" :info="info" :fun="get_info"/>
         </div>
         <div class="row m-2">
             <button type="submit" id="submit" class="btn btn-outline-success me-5 hidden"></button>
@@ -49,10 +49,12 @@
 </template>
 <script>
 import Statement from "../components/Statement.vue"
-//import {CreateStatement, EncumbranceRemoveStatementAccept, EncumbranceUpdateStatementAccept, EncumbranceRegisterStatementAccept} from "../connect_to_server"
+import {Registrator, Main} from "../connect_to_server"
 export default {
   data(){
     return {
+      registrator: null,
+      main: null,
       isvalid: true,
       user_status: null,
       statement_type: true,
@@ -74,7 +76,7 @@ export default {
       this.element = item;
     },
     get_stetement(){
-      this.statement.typeName = "Заяви про реєстрацію змін обтяження рухомого майна";
+      this.statement.typeName = "Заява про реєстрацію змін обтяження рухомого майна";
       if(this.statement_type) this.statement.typeName = "Заява про реєстрацію обтяження рухомого майна";
       this.statement.id = null;
       return this.statement;
@@ -111,7 +113,7 @@ export default {
             });
           }
         }
-        this.isvalid = false;
+        else this.isvalid = false;
       }
       setTimeout(this.click_submit, time);
     },
@@ -120,12 +122,21 @@ export default {
     },
     async submit(){
       this.waitingForResponse = true;
-      console.log("hi",this.element);
       if (!this.statement_type) {
-        if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=null){
+        if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=undefined){
+          let el = {
+            statementTypeId: "beca126e-1e23-4db3-865a-a4645baf0428",        
+            encumbranceTier: this.element.encumbranceTier.get_info(),
+            encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
+            basisDocument: this.element.basisDocument.get_info(),
+            encumbranceInfo: this.element.encumbranceInfo.get_info(),
+            encumbranceTerm: this.element.encumbranceTerm.get_info(),
+            encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
+          }
+          console.log(el)
+          const new_id = await this.main.CreateStatement(el);
           if(this.user_status == 'registrar'){
-            //await EncumbranceRemoveStatementAccept(this.element.searchedInfo);
-            console.log("remove");
+            await this.registrator.EncumbranceRemoveStatementAccept(new_id.id);
             this.message.title ="Заява про припинення обтяження була успішно зареєстрована!";
             this.message.text ="Заява про реєстрацію змін обтяження рухомого майна (припинення обтяження) була успішно зареєстрована у Реєстрі.";
             this.waitingForResponse = false;
@@ -137,6 +148,9 @@ export default {
             this.waitingForResponse = false;
             this.succeeded = true;
           }
+        }
+        else{
+          this.waitingForResponse = false
         }
       }
       if(this.isvalid){
@@ -150,10 +164,9 @@ export default {
             encumbranceTerm: this.element.encumbranceTerm.get_info(),
             encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
           };
-          //const new_id = await CreateStatement(el)
+          const new_id = await this.main.CreateStatement(el)
           if(this.user_status == 'registrar'){
-            //await EncumbranceRegisterStatementAccept(new_id);
-            console.log("cr");
+            await this.registrator.EncumbranceRegisterStatementAccept(new_id.id);
             this.message.title ="Заява про реєстрацію обтяження була успішно зареєстрована!";
             this.message.text ="Заява про реєстрацію обтяження рухомого майна була успішно зареєстрована у Реєстрі.";
             this.waitingForResponse = false;
@@ -165,11 +178,9 @@ export default {
             this.waitingForResponse = false;
             this.succeeded = true;
           }
-          console.log(el);
-          
         }
         else{
-          if(this.element.otherChange.changes_checked == 2){
+          if(this.element.otherChange.changes_checked == 2 && this.element.encumbranceTier!=null){
             let el = {
               statementTypeId: "3c63d55d-4b8f-4c06-8122-6a1c3ac72699",        
               encumbranceTier: this.element.encumbranceTier.get_info(),
@@ -179,10 +190,9 @@ export default {
               encumbranceTerm: this.element.encumbranceTerm.get_info(),
               encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
             }
-            //const new_id = await CreateStatement(el)
+            const new_id = await this.main.CreateStatement(el);
             if(this.user_status == 'registrar'){
-              //await EncumbranceUpdateStatementAccept(new_id);
-              console.log("update");
+              await this.registrator.EncumbranceUpdateStatementAccept(new_id.id);
               this.message.title ="Заява про реєстрацію змін обтяження була успішно зареєстрована!";
               this.message.text ="Заява про реєстрацію змін обтяження рухомого майна була успішно зареєстрована у Реєстрі.";
               this.waitingForResponse = false;
@@ -194,7 +204,6 @@ export default {
               this.waitingForResponse = false;
               this.succeeded = true;
             }
-            console.log(el);
           }
         }
       }
@@ -202,14 +211,11 @@ export default {
     },
     reset(){
       if (this.statement_type) {
-        console.log("clearing...")
         this.element.reset();
       }
       else {
         if (this.element.searched) {
-            console.log("clearing...")
-            this.element.reset();
-            console.log(this.element);
+          this.element.reset();
         }
       }
     },
@@ -226,6 +232,10 @@ export default {
     this.$root.$children[0].$children[0].page = 'create-statement';
     this.user_message =  "Тепер ця заява буде відображатися у розділі \"Мої заяви\", де після розгляду її реєстраторами її статус зміниться на \"Прийнято\" або \"Відхилено\"."
   },
+  created(){
+    this.registrator = new Registrator();
+    this.main = new Main();
+  }
 }
 </script>
 <style>

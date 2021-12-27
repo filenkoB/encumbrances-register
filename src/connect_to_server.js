@@ -46,6 +46,7 @@ export class Registration{
   async RegistrationUserStatement(item){ return await create("/Registration/User/Statement", GetRequestOptions("POST",item)) }
   async RegistrationRegistratorStatement(item){ return await create("/Registration/Registrator/Statement", GetRequestOptions("POST",item)) }
 }
+
 export class Address{
   constructor(){}
   async GetALLCountry(){ return await create("/Country", GetRequestOptions("GET", null)) }
@@ -110,5 +111,9 @@ export class Main{
 
   //Створення заяв на обтяження
   async CreateStatement(item){ return await create("/Statement/Register", GetRequestOptions("POST", item)) }
-  async StatementRegisterExtract(encumbranceId){ return await create("/Statement/Register/Extract/" + encumbranceId, GetRequestOptions("POST", null)) }
+  async StatementRegisterExtract(encumbranceId){ 
+    return await create("/Statement/Register/Extract/" + encumbranceId, GetRequestOptions("POST", null)) }
+  async GetExtract(statement_id, status){
+    return await create("/Extract/" + statement_id + "?payed=" + status, GetRequestOptions("POST", null))
+  }
 }

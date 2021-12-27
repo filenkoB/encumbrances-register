@@ -49,8 +49,8 @@
             </div>
           </div>
           
-          <hr class="border-secondary border border-2">
-          <div class="row">
+          <hr class="border-secondary border border-2" v-if="item.registrationTypeId == 'a976a960-3b48-4218-9d58-a12c4b96b94f'">
+          <div class="row" v-if="item.registrationTypeId == 'a976a960-3b48-4218-9d58-a12c4b96b94f'">
             <div class="col-auto">
               <label class="col-form-label">Дата виникнення попереднього обтяження:</label>
             </div>
