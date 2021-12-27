@@ -295,7 +295,7 @@ export default {
     },
     async extract(){
       this.user_autority = await this.main.UserAuthority();
-      if(this.user_autority){
+      if(this.user_autority || this.user_status == 'registrar'){
         const statementId = await this.success();
         this.registrator.StatementExtractAccept(statementId);
         await this.main.GetExtract(statementId, false)
