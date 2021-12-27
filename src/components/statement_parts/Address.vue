@@ -87,11 +87,12 @@
 </div>
 </template>
 <script>
-import {GetALLCountry, GetRegionByCountry, GetDistrictByRegion, GetCityByDistrict, GetStreetByCity, GetIndexByCity} from "../../connect_to_server"
+import {Address} from "../../connect_to_server"
 import {validation} from "../../data";
 export default {
   data(){
     return {
+      address_sevre: null,
       address:{
         country: {},
         region: null,
@@ -121,22 +122,22 @@ export default {
     async get_region(item){
       this.path.country = item;
       this.clear_address('region');
-      this.address.region = await GetRegionByCountry(this.path.country)
+      this.address.region = await this.address_sevre.GetRegionByCountry(this.path.country)
     },
     async get_district(event){
       this.path.region = event.target.value;
       this.clear_address('district');
-      this.address.district = await GetDistrictByRegion(event.target.value);
+      this.address.district = await this.address_sevre.GetDistrictByRegion(event.target.value);
     },
     async get_city(event){
       this.path.district = event.target.value;
       this.clear_address('city');
-      this.address.city = await GetCityByDistrict(event.target.value);
+      this.address.city = await this.address_sevre.GetCityByDistrict(event.target.value);
     },
     async get_street_index(event){
       this.path.city = event.target.value;
-      this.address.street = await GetStreetByCity(event.target.value);
-      this.address.index = await GetIndexByCity(event.target.value);
+      this.address.street = await this.address_sevre.GetStreetByCity(event.target.value);
+      this.address.index = await this.address_sevre.GetIndexByCity(event.target.value);
     },
     clear_address(key) {
       if (this.justOpened) return;
@@ -162,17 +163,18 @@ export default {
     }
   },
   async created(){
+    this.address_sevre = new Address();
     this.patterns = validation.patterns;
     this.address.country.name = "Завантаження...";
-    this.address.country = (await GetALLCountry())[0];
+    this.address.country = (await this.address_sevre.GetALLCountry())[0];
     this.get_region(this.address.country.id);
     if (this.path.region !== "") {
-      this.address.district = await GetDistrictByRegion(this.path.region);
+      this.address.district = await this.address_sevre.GetDistrictByRegion(this.path.region);
       if (this.path.district !== "") {
-        this.address.city = await GetCityByDistrict(this.path.district);
+        this.address.city = await this.address_sevre.GetCityByDistrict(this.path.district);
         if (this.path.city !== "") {
-          this.address.street = await GetStreetByCity(this.path.city);
-          this.address.index = await GetIndexByCity(this.path.city);
+          this.address.street = await this.address_sevre.GetStreetByCity(this.path.city);
+          this.address.index = await this.address_sevre.GetIndexByCity(this.path.city);
           this.justOpened = false;
           if(!this.editing_status) this.path.invalid = this.isInvalid();
         }

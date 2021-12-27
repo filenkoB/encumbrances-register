@@ -17,11 +17,12 @@
 import GeneralInformation from "../statement_parts/general_information_2.vue"
 import CreateStatment from "./statement_for_create.vue"
 import OtherChanges from "../statement_parts/other_changes.vue"
-import {GetStatement, RegistrationNumber} from "../../connect_to_server"
+import {Registrator, Encumbrance} from "../../connect_to_server"
 import {Changes} from "../../classes"
 export default {
   data(){
     return {
+      registrator: null,
       element: {},
       visible_status_info: false
     }
@@ -35,7 +36,8 @@ export default {
   },
   methods:{
     async button_search(item){
-      const info = await RegistrationNumber(item);
+      const encumbrance = new Encumbrance();
+      const info = await encumbrance.RegistrationNumber(item);
       if(info!=null){
         this.visible_status_info = !this.visible_status_info;
         this.element.searched = this.visible_status_info;
@@ -67,8 +69,9 @@ export default {
     }
   },
   async created(){
+    this.registrator = new Registrator();
     if(this.statement_element.id != null){
-      const data = await GetStatement(this.statement_element.id);
+      const data = await this.registrator.GetStatement(this.statement_element.id);
       console.log(data.encumbranceTerm)
       this.element = {
         reset: this.reset,

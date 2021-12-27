@@ -30,8 +30,8 @@
   </div>
 </template>
 <script>
-import {UsersStatementsList, UserStatementsInfo, RegistrationUserAccept, RegistrationUserDecline, RegistrationRegistratorAccept, RegistrationRegistratorDecline} from '../../connect_to_server'
 import {StatmentsPageElement} from '../../classes'
+import {Admin} from '../../connect_to_server'
 import Pagination from '../../components/Pagination.vue';
 import SystemRegApplication from "../../components/SystemRegApplication.vue";
 export default {
@@ -44,6 +44,7 @@ export default {
         count_page: 0,
       },
       applications: [],
+      admin: null
     };
   },
   components:
@@ -57,7 +58,7 @@ export default {
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 7) this.pagination.max_items_count = 7;
-      const data = await UsersStatementsList(this.pagination.active_page + 1, this.pagination.max_items_count);
+      const data = await this.admin.UsersStatementsList(this.pagination.active_page + 1, this.pagination.max_items_count);
       if(data.maxStatements < this.pagination.max_items_count) this.pagination.max_items_count = data.maxStatements
       this.pagination.count_page = Math.ceil(data.maxStatements / this.pagination.max_items_count);
       this.applications = [];
@@ -68,19 +69,19 @@ export default {
       item.visible_status = !item.visible_status;
     },
     async accept(item) {
-      const data = await UserStatementsInfo(item.id);
+      const data = await this.admin.UserStatementsInfo(item.id);
       console.log(data.userType == 2)
-      if(data.userType == 2 ) await RegistrationRegistratorAccept(item.id);
-      else await RegistrationUserAccept(item.id);
+      if(data.userType == 2 ) await this.admin.RegistrationRegistratorAccept(item.id);
+      else await this.admin.RegistrationUserAccept(item.id);
       this.get_applications();
     },
     async decline(item) {
-      const data = await UserStatementsInfo(item.id);
+      const data = await this.admin.UserStatementsInfo(item.id);
       const decline_info = "Шановний '"+data.lastName+" "+data.firstName+" "+data.patronymic+
       ". Вам відмовлено в наданні доступу для використання ресурсів Державного реєстру обтяжень рухомого майна."+
       " Для вирішення непорозуміння перевірте актуальність данних необхідних для реєстрації та повторіть спробу.";
-      if(data.userType == 2 ) await RegistrationRegistratorDecline(item.id, data.email, decline_info);
-      else await RegistrationUserDecline(item.id, data.email, decline_info);
+      if(data.userType == 2 ) await this.admin.RegistrationRegistratorDecline(item.id, data.email, decline_info);
+      else await this.admin.RegistrationUserDecline(item.id, data.email, decline_info);
       this.get_applications();
     },
     closeInfo(item) {
@@ -97,6 +98,7 @@ export default {
     this.$root.$children[0].$children[0].page = 'applications';
   },
   async created(){
+    this.admin = new Admin();
     this.get_applications();
   }
 }

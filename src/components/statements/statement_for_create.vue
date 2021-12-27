@@ -30,7 +30,7 @@ import GeneralInformation from "../statement_parts/general_information.vue"
 import WDInformation from "../statement_parts/wd_information.vue"
 import Document from "../statement_parts/document.vue"
 import Terms from "../statement_parts/terms.vue"
-import {GetStatement} from "../../connect_to_server"
+import {Registrator} from "../../connect_to_server"
 import {GeneralInfo, EncumbranceTierDebtor, BasisDocument, EncumbranceInfo, EncumbranceTerm, DescriptionSubject} from "../../classes"
 export default {
   data(){
@@ -104,8 +104,8 @@ export default {
   },
   async created(){
     if(this.statement_element.id != null){
-      const data = await GetStatement(this.statement_element.id);
-      console.log(data);
+      const registrator = new Registrator();
+      const data = await registrator.GetStatementById(this.statement_element.id);
       if(data != null){
         this.visible_status = true;
         this.element = {

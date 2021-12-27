@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import {UserStatementsInfo} from '../connect_to_server'
+import {Admin} from '../connect_to_server'
 export default {
   data(){
     return {
@@ -141,7 +141,8 @@ export default {
   name: "SystemRegApplication",
   props: ["item"],
   async created(){
-    this.application = await UserStatementsInfo(this.item.id);
+    const admin = new Admin();
+    this.application = await admin.UserStatementsInfo(this.item.id);
     console.log(this.application);
   }
 }

@@ -105,7 +105,7 @@
   </form>
 </template>s
 <script>
-import {Admin, Authority} from "../../connect_to_server"
+import {Admin, Main} from "../../connect_to_server"
 import {Registrator} from "../../classes"
 import {validation} from "../../data"
 export default {
@@ -150,7 +150,8 @@ export default {
     this.patterns = validation.patterns;
     this.maxBirthDate = validation.maxBirthDate;
     this.admin = new Admin();
-    this.authority = await Authority();
+    const main = new Main();
+    this.authority = await main.Authority();
     this.start_value();
   }
 }

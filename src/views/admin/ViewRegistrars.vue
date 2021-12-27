@@ -78,7 +78,6 @@ export default {
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 7) this.pagination.max_items_count = 7;
       const data = await this.admin.GetAllRegistrators(this.pagination.active_page + 1, this.pagination.max_items_count);
-      console.log(data);
       if(data.length < this.pagination.max_items_count) this.pagination.max_items_count = data.length
       this.pagination.count_page = Math.ceil(data.length / this.pagination.max_items_count);
       this.registrators = [];

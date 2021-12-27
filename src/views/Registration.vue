@@ -147,11 +147,13 @@
 
 <script>
 import {validation} from "../data";
-import {AuthorityPassport, Authority, RegistrationUserStatement, RegistrationRegistratorStatement} from "../connect_to_server"
+import {Main, Registration} from "../connect_to_server"
 export default {
   name: "registration",
   data() {
     return {
+      main: null,
+      registration_serve: null,
       authorityPassport: null,
       authority: null,
       authorityId: null,
@@ -205,8 +207,8 @@ export default {
             taxpayerACNAbsenceReason: "",
             authorityId: this.authorityId
         }
-        if(this.chosenRole == 'user') await RegistrationUserStatement(final_element)
-        else if(this.chosenRole == 'registrar') await RegistrationRegistratorStatement(final_element)
+        if(this.chosenRole == 'user') await this.registration_serve.RegistrationUserStatement(final_element)
+        else if(this.chosenRole == 'registrar') await this.registration_serve.RegistrationRegistratorStatement(final_element)
       }
     },
     clearPasData(type) {
@@ -231,6 +233,8 @@ export default {
     }    
   },
   async created() {
+    this.main = new Main();
+    this.registration_serve = new Registration();
     const sessionStorage = window.sessionStorage;
     if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
     if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
@@ -246,8 +250,8 @@ export default {
     this.pasTypes = [ {id: 'pasType-Id', text: 'ID-картка'},
                       {id: 'pasType-Book', text: 'Зразка 1994р.(Книжка)'}];
 
-    this.authorityPassport = await AuthorityPassport();
-    this.authority = await Authority()
+    this.authorityPassport = await this.main.AuthorityPassport();
+    this.authority = await this.main.Authority()
   }
 };
 </script>

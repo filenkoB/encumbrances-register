@@ -52,7 +52,7 @@
 <script>
 import Pagination from "../../components/Pagination.vue"
 import Statement from '../../components/Statement.vue';
-import {GetStatements, EncumbranceStatementAccept, EncumbranceStatementDecline} from "../../connect_to_server"
+import {Registrator} from "../../connect_to_server"
 import {StatmentsPageElement} from "../../classes"
 export default {
   name: 'App',
@@ -65,6 +65,7 @@ export default {
         count_page: 0,
       },
       statements: [],
+      registrator: null
     };
   },
   components:
@@ -93,12 +94,14 @@ export default {
       
     },
     async button_1(el){
-      await EncumbranceStatementAccept(el);
+      //await this.registrator.EncumbranceStatementAccept(el);
+      console.log(el);
       this.pagination.active_page = 0;
       this.get_statements();
     },
     async button_2(el){
-      await EncumbranceStatementDecline(el);
+      //await this.registrator.EncumbranceStatementDecline(el);
+      console.log(el);
       this.pagination.active_page = 0;
       await this.get_statements();
     },
@@ -106,7 +109,7 @@ export default {
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 7) this.pagination.max_items_count = 7;
-      const data = await GetStatements(this.pagination.active_page + 1, this.pagination.max_items_count);
+      const data = await this.registrator.GetAllStatements(this.pagination.active_page + 1, this.pagination.max_items_count);
       if(data.maxStatements < this.pagination.max_items_count) this.pagination.max_items_count = data.maxStatements
       this.pagination.count_page = Math.ceil(data.maxStatements / this.pagination.max_items_count);
       this.statements = [];
@@ -122,6 +125,7 @@ export default {
     window.sessionStorage.setItem('page', 'statements');
   },
   async created(){
+    this.registrator = new Registrator();
     await this.get_statements();
   }
 }

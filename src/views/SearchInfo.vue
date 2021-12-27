@@ -160,7 +160,7 @@
 
 <script>
 import {validation} from "../data";
-import {Main, Registrator} from "../connect_to_server"
+import {Main, Registrator, Encumbrance} from "../connect_to_server"
 import Pagination from "../components/Pagination.vue"
 export default {
   name: 'SearchEncumbrances',
@@ -218,6 +218,7 @@ export default {
       encumbrances: [],
       main: null,
       registrator: null,
+      encumbrance: null,
       extract_element: null,
       user_autority: null,
       waitingForResponse: false,
@@ -275,7 +276,7 @@ export default {
       this.pagination.max_items_count = parseInt(this.pagination.max_items_count);
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 5) this.pagination.max_items_count = 5;
-      const test_data = await this.main.Encumbrance(this.search_element_value, this.pagination.active_page + 1, this.pagination.max_items_count);
+      const test_data = await this.encumbrance.Encumbrance(this.search_element_value, this.pagination.active_page + 1, this.pagination.max_items_count);
       if(test_data.length < this.pagination.max_items_count) this.pagination.max_items_count = test_data.length;
       this.pagination.count_page = Math.ceil(test_data.length / this.pagination.max_items_count);
       this.encumbrances = test_data.encumbrances;
@@ -294,16 +295,15 @@ export default {
     },
     async extract(){
       this.user_autority = await this.main.UserAuthority();
-      if(this.user_autority) await this.success();
+      if(this.user_autority){
+        const statementId = await this.success();
+        this.registrator.StatementExtractAccept(statementId);
+      }
       else this.card = true;
     },
     async success(){
       this.card = false;
-      if(this.user_autority){
-        const statementId = await this.main.StatementRegisterExtract(this.extract_element);
-        this.registrator.StatementExtractAccept(statementId);
-      }
-      else await this.main.StatementRegisterExtract(this.extract_element)
+      return await this.main.StatementRegisterExtract(this.extract_element);
     },
     danger(){ this.card = false; }
   },
@@ -317,6 +317,7 @@ export default {
   created(){
     this.main = new Main();
     this.registrator = new Registrator();
+    this.encumbrance = new Encumbrance();
   }
 
 }
