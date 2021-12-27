@@ -141,7 +141,7 @@
               </div>
               <div class="col border-end border-4 p-3">{{item.tier}}</div>
               <div class="col-auto p-3">
-                Дата реєстрації обтяження:
+                Дата реєстрації:
               </div>
               <div class="col-1 p-3">{{item.date.split("T")[0]}}</div>
             </div>
@@ -295,9 +295,10 @@ export default {
     },
     async extract(){
       this.user_autority = await this.main.UserAuthority();
-      if(this.user_autority){
+      if(this.user_autority || this.user_status == 'registrar'){
         const statementId = await this.success();
         this.registrator.StatementExtractAccept(statementId);
+        await this.main.GetExtract(statementId, false)
       }
       else this.card = true;
     },

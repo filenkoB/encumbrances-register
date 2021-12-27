@@ -13,7 +13,7 @@
           </thead>
           <tbody class="text-start" >
             <tr v-for="item in actions" :key="item.date">
-              <td>{{item.date}}</td>
+              <td>{{item.date.split('T')[0]}} | {{item.date.split('T')[1]}}</td>
               <td>{{item.ipAddress}}</td>
               <td>{{item.objectId}}</td>
               <td>{{item.description}}</td>
