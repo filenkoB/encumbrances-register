@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Common;
+using Application.Enumerations;
+using System;
 
 namespace Application.Users.Users.Dtos
 {
-    public class CreateUserDto
+    public class CreateUserDto : HumanDto
     {
+        public PassportInfoDto PassportInfo { get; set; }
+        public string TaxpayerAccountCardNumber { get; set; }
+        public string TaxpayerACNAbsenceReason { get; set; }
+        public Guid? AuthorityId { get; set; }
     }
 }

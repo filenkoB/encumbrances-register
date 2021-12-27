@@ -6,12 +6,12 @@ namespace Domain.PostgreSQL.Entities
 {
     public class User : Human
     {
-        public Guid TaxpayerAccountCardNumberId { get; set; }
-        public string Authorityid { get; set; }
-        public Guid AddressId { get; set; }
+        public Guid? AuthorityId { get; set; }
+        public Guid? AddressId { get; set; }
         public bool IsForeigner { get; set; }
 
-        public TaxpayerAccountCardNumber TaxpayerAccountCardNumber { get; set; }
+        public string TaxpayerAccountCardNumber { get; set; }
+        public string TaxpayerACNAbsenceReason { get; set; }
         public Authority Authority { get; set; }
         public Address Address { get; set; }
         public ICollection<Encumbrance> Encumbrances { get; set; }

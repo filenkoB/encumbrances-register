@@ -1,14 +1,15 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Linq;
 
 namespace Domain.Interfaces.MongoDB
 {
     public interface IMongoEntitiesIniter<TEntity, TClass>
     {
-        public void InitCollection(IMongoCollection<TEntity> collection, IMongoDatabase db)
+        public IMongoCollection<BsonDocument> InitCollection(IMongoDatabase db)
         {
-            collection = db.GetCollection<TEntity>(
-               string.Join("", typeof(TClass).Name.Except("IMongo"))
+            return db.GetCollection<BsonDocument>(
+               string.Join("", typeof(TClass).Name.Split("IMongo"))
             );
         }
     }

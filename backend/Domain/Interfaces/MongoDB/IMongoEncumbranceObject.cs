@@ -9,7 +9,7 @@ namespace Domain.Interfaces.MongoDB
 
         public void InitCurrentCollection(IMongoDatabase db)
         {
-            InitCollection(EncumbranceObjects, db);
+            EncumbranceObjects = InitCollection(db);
         }
     }
 }

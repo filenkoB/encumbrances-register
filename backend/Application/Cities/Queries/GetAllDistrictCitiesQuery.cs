@@ -1,6 +1,7 @@
 ﻿using Application.Cities.Dtos;
 using AutoMapper;
-using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstract;
+using Domain.PostgreSQL.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace Application.Cities.Queries
 
     public class GetAllDistrictCitiesQueryHandler : IRequestHandler<GetAllDistrictCitiesQuery, IEnumerable<CityDto>>
     {
-        private readonly ICityReadRepository _cityReadRepository;
+        private readonly IReadRepository<City> _cityReadRepository;
         private readonly IMapper _mapper;
-        public GetAllDistrictCitiesQueryHandler(ICityReadRepository cityReadRepository, IMapper mapper)
+        public GetAllDistrictCitiesQueryHandler(IReadRepository<City> cityReadRepository, IMapper mapper)
         {
             _cityReadRepository = cityReadRepository;
             _mapper = mapper;
@@ -30,7 +31,10 @@ namespace Application.Cities.Queries
 
         public async Task<IEnumerable<CityDto>> Handle(GetAllDistrictCitiesQuery query, CancellationToken token)
         {
-            return _mapper.Map<IEnumerable<CityDto>>(await _cityReadRepository.GetAllDistrictCitiesAsync(query.DistrictId));
+            return _mapper.Map<IEnumerable<CityDto>>(await _cityReadRepository.GetEntitiesByParamsAsync(
+                "Cities",
+                ("DistrictId", query.DistrictId)
+            ));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Regions.Queries;
+using Domain.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,8 +10,8 @@ namespace WebAPI.Controllers
     [Route("[Controller]")]
     public class RegionController : BaseController
     {
-        public RegionController(IMediator mediator)
-            : base(mediator)
+        public RegionController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
         [HttpGet("Country/{countryId}")]

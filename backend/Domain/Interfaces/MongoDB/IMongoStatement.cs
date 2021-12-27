@@ -8,7 +8,7 @@ namespace Domain.Interfaces.MongoDB
         IMongoCollection<BsonDocument> Statements { get; set; }
         public void InitCurrentCollection(IMongoDatabase db)
         {
-            InitCollection(Statements, db);
+            Statements = InitCollection(db);
         }
     }
 }

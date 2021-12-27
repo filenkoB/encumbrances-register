@@ -1,14 +1,11 @@
-﻿using Application.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Authorities.Dtos;
+using Application.Common;
 
 namespace Application.Users.Registrators.Dtos
 {
     public class RegistratorDto : HumanDto
     {
-        public string Position { get; set; }
+        public int Status { get; set; }
+        public ShortAuthorityDto Authority { get; set; }
     }
 }

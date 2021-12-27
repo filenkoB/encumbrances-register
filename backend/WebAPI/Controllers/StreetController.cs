@@ -1,4 +1,5 @@
 ﻿using Application.Streets.Queries;
+using Domain.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,8 +10,8 @@ namespace WebAPI.Controllers
     [Route("[controller]")]
     public class StreetController : BaseController
     {
-        public StreetController(IMediator mediator)
-            : base(mediator)
+        public StreetController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
         [HttpGet("City/{cityId}")]

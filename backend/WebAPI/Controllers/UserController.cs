@@ -2,24 +2,29 @@
 using MediatR;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Application.Users.Common.Commands;
+using Domain.Interfaces.Services;
+using Application.Users.Users.Queries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
-    [ApiController]
-    [Route("/[controller]")]
+    [Authorize]
+    [Route("[controller]")]
     public class UserController : BaseController
     {
-        public UserController(IMediator mediator)
-            : base(mediator)
+        public UserController(IMediator mediator, IJwtService jwtService)
+            : base(mediator, jwtService)
         { }
 
-        [HttpPost("id")]
-        [Route("{id}/Status")]
-        public async Task<IActionResult> ChangeUserStatus(Guid id, [FromBody] bool isActive)
+        [HttpGet("Authority")]
+        public async Task<IActionResult> GetIsUserHasAuthority()
         {
-            await Mediator.Send(new ChangeUserStatusCommand(id, isActive));
-            return Ok();
+            Guid? userId = ValidateUserToken(HttpContext);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(await Mediator.Send(new GetIsUserHasAuthorityQuery((Guid)userId)));
         }
     }
 }

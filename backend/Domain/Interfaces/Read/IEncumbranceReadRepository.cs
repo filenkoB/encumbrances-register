@@ -1,16 +1,17 @@
-﻿using Domain.Entities;
-using Domain.PostgreSQL.Entities;
-using System;
+﻿using Domain.PostgreSQL.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
+using System;
 
 namespace Domain.Interfaces
 {
     public interface IEncumbranceReadRepository
     {
-        Task<IEnumerable<ShortEncumbrance>> GetEncumbrancesByFilterAsync(EncumbrancesFilter filter);
-        Task<Encumbrance> GetEncumbranceByIdAsync(Guid encumbranceId);
+        Task<IEnumerable<Encumbrance>> GetEncumbranesAsync();
+        Task<IEnumerable<Encumbrance>> GetEncumbrancesByFilterAsync(EncumbranceSelectFilter filter);
+        Task<ExtractEncumbrance> GetExtractEncumbrance(Guid encumbranceId);
+        Task<long> GetNextEncumbranceNumberAsync();
+        Task<Encumbrance> GetEncumbranceByRegNumber(string regNumber);
     }
 }

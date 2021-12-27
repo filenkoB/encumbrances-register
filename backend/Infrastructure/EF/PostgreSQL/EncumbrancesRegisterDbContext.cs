@@ -2,6 +2,7 @@
 using Domain.PostgreSQL.Entities;
 using PostgresEntities = Domain.PostgreSQL.Entities;
 using System.Reflection;
+using Domain.Entities.PostgreSQL;
 
 namespace Infrastructure.EF.PostgreSQL
 {
@@ -25,15 +26,14 @@ namespace Infrastructure.EF.PostgreSQL
         public DbSet<Identificator> Identificators { get; set; }
         public DbSet<PostgresEntities.Index> Indices { get; set; }
         public DbSet<PassportInfo> PassportInfos { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<RegistrationType> RegistrationTypes { get; set; }
         public DbSet<Registrator> Registrators { get; set; }
         public DbSet<RegistratorActionType> RegistratorActionTypes { get; set; }
         public DbSet<RegistratorEncumbranceActionsHistory> RegistratorEncumbranceActionsHistory { get; set; }
         public DbSet<Street> Streets { get; set; }
-        public DbSet<TaxpayerAccountCardNumber> TaxpayerAccountCardNumbers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<StatementType> StatementTypes { get; set; }
 
         public EncumbrancesRegisterDbContext(DbContextOptions<EncumbrancesRegisterDbContext> options)
             : base(options)

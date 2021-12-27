@@ -1,6 +1,7 @@
 ﻿using Application.Regions.Dtos;
 using AutoMapper;
-using Domain.Interfaces.Read;
+using Domain.Interfaces.Abstract;
+using Domain.PostgreSQL.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace Application.Regions.Queries
 
     public class GetAllCountryRegionsQueryHandler : IRequestHandler<GetAllCountryRegionsQuery, IEnumerable<RegionDto>>
     {
-        private readonly IRegionReadRepository _regionReadRepository;
+        private readonly IReadRepository<Region> _regionReadRepository;
         private readonly IMapper _mapper;
-        public GetAllCountryRegionsQueryHandler(IRegionReadRepository regionReadRepository, IMapper mapper)
+        public GetAllCountryRegionsQueryHandler(IReadRepository<Region> regionReadRepository, IMapper mapper)
         {
             _regionReadRepository = regionReadRepository;
             _mapper = mapper;
@@ -30,7 +31,10 @@ namespace Application.Regions.Queries
 
         public async Task<IEnumerable<RegionDto>> Handle(GetAllCountryRegionsQuery query, CancellationToken token)
         {
-            return _mapper.Map<IEnumerable<RegionDto>>(await _regionReadRepository.GetAllCountryRegionsAsync(query.CountryId));
+            return _mapper.Map<IEnumerable<RegionDto>>(await _regionReadRepository.GetEntitiesByParamsAsync(
+                "Regions",
+                ("CountryId", query.CountryId))
+            );
         }
     }
 }

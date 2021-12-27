@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Infrastructure.EF.PostgreSQL;
 using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using MediatR;
-using System.Reflection;
 using Infrastructure;
 using Application;
+using WebAPI.Extensions;
+using Microsoft.OpenApi.Models;
+using WebAPI.Middlewares;
 
 namespace WebAPI
 {
@@ -28,17 +25,37 @@ namespace WebAPI
         {
             services.AddInfrastructure();
             services.AddApplication();
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+
+            services.AddSession();
+            services.AddMvc();
+
+            services.ConfigureCors();
+            services.ConfigureAuthorization(Configuration);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIøêà!", Version = "v1" });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseExceptionMiddleware();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
 
+            app.UseCors("DevelopmentPolicy");
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

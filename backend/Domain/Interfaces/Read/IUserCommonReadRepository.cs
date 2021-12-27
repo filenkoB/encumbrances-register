@@ -1,8 +1,5 @@
 ﻿using Application.Enumerations;
-using Domain.Entities;
-using Domain.PostgreSQL.Entities;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Domain.Interfaces
@@ -10,5 +7,7 @@ namespace Domain.Interfaces
     public interface IUserCommonReadRepository
     {
         public Task<UserType> GetUserTypeByIdentificatorAsync(string login);
+        public Task<Guid> GetUserByCredentialsAsync(string login, string password);
+        public Task<string> GetUserEmailAsync(Guid userId, UserType userType);
     }
 }
