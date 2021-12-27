@@ -132,6 +132,7 @@ export default {
       const address = {countryId:'', regionId:'', districtId:'', cityId:'', indexCode:'', streetId:'', building:'', corps:'',flat:''};
       if(this.statement_element.encumbranceTier && this.statement_element.encumbranceTier!=null)
       {
+        console.log(this.statement_element);
         this.element = {
           reset: this.reset,
           generalInfo: null,
