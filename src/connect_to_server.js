@@ -9,7 +9,7 @@ async function create(path, option){
   }
 }
 
-function GetRequestOptions(inmethod, item){
+export function GetRequestOptions(inmethod, item){
   if(inmethod == "GET") {
     return {
       method: "GET",
