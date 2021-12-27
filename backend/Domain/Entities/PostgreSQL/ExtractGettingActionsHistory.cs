@@ -10,6 +10,7 @@ namespace Domain.PostgreSQL.Entities
         public Guid? PaymentCertificateId { get; set; }
         public Guid IssuerId { get; set; }
         public Guid? StatementId { get; set; }
+        public string IpAddress { get; set; }
 
         public Registrator IssuerRegistrator { get; set; }
         public User IssuerUser { get; set; }

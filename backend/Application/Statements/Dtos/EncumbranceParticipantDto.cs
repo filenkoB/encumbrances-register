@@ -1,5 +1,4 @@
 ﻿using Application.Common;
-using Application.Common.MappingProfiles;
 
 namespace Application.Statements.Dtos
 {

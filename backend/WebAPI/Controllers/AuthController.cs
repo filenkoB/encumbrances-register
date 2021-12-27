@@ -19,10 +19,7 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AuthorizeUser([FromBody] AuthUserDto authUserDto)
         {
-            var authorizationResult = await Mediator.Send(new AuthorizeUserCommand(authUserDto));
-            return authorizationResult is null
-                ? BadRequest()
-                : Ok(authorizationResult);
+            return Ok(await Mediator.Send(new AuthorizeUserCommand(authUserDto)));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories.Read
         {
             var filter = Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId")) &
                 Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, int>("Status"), 0);
-            return await _db.Statements.Find(filter).Skip((page - 1) * length).Limit(length).ToListAsync();
+            return await _db.Statements.Find(filter).Skip((page - 1) * length).Limit(length).ToListAsync(); ;
         }
 
         public async Task<BsonDocument> GetStatementAsync(Guid statementId)
@@ -56,6 +56,13 @@ namespace Infrastructure.Repositories.Read
             var filter = Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId")) &
                 Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, Guid>("StatementOwnerId"), userId);
             return await _db.Statements.Find(filter).Skip((page - 1) * length).Limit(length).ToListAsync();
+        }
+
+        public async Task<long> GetUserStatementsNumberAsync(Guid userId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Exists(new StringFieldDefinition<BsonDocument, Guid>("StatementTypeId")) &
+                Builders<BsonDocument>.Filter.Eq(new StringFieldDefinition<BsonDocument, Guid>("StatementOwnerId"), userId);
+            return await _db.Statements.CountDocumentsAsync(filter);
         }
     }
 }

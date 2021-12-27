@@ -6,6 +6,7 @@ using Dapper;
 using Npgsql;
 using System;
 using System.Text;
+using Domain.Exceptions;
 
 namespace Infrastructure.Repositories
 {
@@ -20,23 +21,29 @@ namespace Infrastructure.Repositories
         public async Task<Guid> GetUserByCredentialsAsync(string login, string password)
         {
             _db.Open();
-            string sqlQuery = "SELECT \"u\".\"Id\" " +
+            string sqlQuery = "SELECT \"u\".\"Id\", \"i\".\"Status\" " +
                 "FROM \"Identificators\" \"i\" " +
                 "INNER JOIN \"Users\" \"u\" ON \"u\".\"IdentificatorId\" = @login " +
                 "WHERE \"Password\" = @password " +
                 "UNION ALL " +
-                "SELECT \"r\".\"Id\" " +
+                "SELECT \"r\".\"Id\", \"i\".\"Status\" " +
                 "FROM \"Identificators\" \"i\" " +
                 "INNER JOIN \"Registrators\" \"r\" ON \"r\".\"IdentificatorId\" = @login " +
                 "WHERE \"Password\" = @password " +
                 "UNION ALL " +
-                "SELECT \"a\".\"Id\" " +
+                "SELECT \"a\".\"Id\", \"i\".\"Status\" " +
                 "FROM \"Identificators\" \"i\" " +
                 "INNER JOIN \"Admins\" \"a\" ON \"a\".\"IdentificatorId\" = @login " +
                 "WHERE \"Password\" = @password ";
-            var result = await _db.QueryFirstOrDefaultAsync<Guid>(sqlQuery, new { login = login, password = password });
+            var result = await _db.QueryFirstOrDefaultAsync<(Guid, int)>(sqlQuery, new { login = login, password = password });
             await _db.CloseAsync();
-            return result;
+
+            if (result != default && result.Item2 == 0)
+            {
+                throw new AuthorizationException("Ваш акаунт було деактивовано. Зверніться до адміністратора для уточнення причин.");
+            }
+
+            return result.Item1;
         }
 
         public async Task<string> GetUserEmailAsync(Guid userId, UserType userType)

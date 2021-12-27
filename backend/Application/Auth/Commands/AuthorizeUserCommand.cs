@@ -5,6 +5,7 @@ using Application.Auth.Dtos;
 using Domain.Interfaces;
 using System.Threading;
 using MediatR;
+using Domain.Exceptions;
 
 namespace Application.Auth.Commands
 {
@@ -35,11 +36,10 @@ namespace Application.Auth.Commands
             var jwtToken = await _jwtService.GetJwtToken(login, password);
             if (jwtToken is null)
             {
-                return null;
+                throw new AuthorizationException("Неправильний логін або пароль.");
             }
-
             UserType userType = await _userCommonReadRepository.GetUserTypeByIdentificatorAsync(login);
-
+            
             return new UserTokenDto(jwtToken, userType, login);
         }
     }

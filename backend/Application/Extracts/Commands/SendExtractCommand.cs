@@ -18,12 +18,14 @@ namespace Application.Extracts.Commands
         public Guid UserId { get; set; }
         public Guid StatementId { get; set; }
         public UserType UserType { get; set; }
+        public string IpAddress { get; set; }
 
-        public SendExtractCommand(Guid statementId, UserType userType, Guid userId)
+        public SendExtractCommand(Guid statementId, UserType userType, Guid userId, string ipAddress)
         {
             StatementId = statementId;
             UserType = userType;
             UserId = userId;
+            IpAddress = ipAddress;
         }
     }
 
@@ -34,19 +36,22 @@ namespace Application.Extracts.Commands
         private readonly IEncumbranceReadRepository _encumbranceReadRepository;
         private readonly IUserCommonReadRepository _userCommonReadRepository;
         private readonly IStatementReadRepository _statementReadRepository;
+        private readonly IRegistratorLogService _registratorLogService;
 
         public SendExtractCommandHandler(
             IExtractGeneratorService extractGeneratorService,
             ISmtpService smtpService,
             IEncumbranceReadRepository encumbranceReadRepository,
             IUserCommonReadRepository userCommonReadRepository,
-            IStatementReadRepository statementReadRepository)
+            IStatementReadRepository statementReadRepository,
+            IRegistratorLogService registratorLogService)
         {
             _encumbranceReadRepository = encumbranceReadRepository;
             _extractGeneratorService = extractGeneratorService;
             _userCommonReadRepository = userCommonReadRepository;
             _statementReadRepository = statementReadRepository;
             _smtpService = smtpService;
+            _registratorLogService = registratorLogService;
         }
 
         public async Task<Unit> Handle(SendExtractCommand command, CancellationToken token)
@@ -63,6 +68,13 @@ namespace Application.Extracts.Commands
             UserType userType = command.UserType;
             var userEmail = await _userCommonReadRepository.GetUserEmailAsync(userId, userType);
             SendEmailToUser(userEmail, ref mstream);
+
+            await _registratorLogService.LogExtractGettingOperation(
+                extractStatement["EncumbranceId"].AsGuid,
+                command.StatementId,
+                command.UserId,
+                command.IpAddress
+            );
 
             return Unit.Value;
         }

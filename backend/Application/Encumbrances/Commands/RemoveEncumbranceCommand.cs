@@ -3,6 +3,7 @@ using AutoMapper;
 using Domain.Interfaces;
 using Domain.Interfaces.Abstract;
 using Domain.Interfaces.Read;
+using Domain.Interfaces.Services;
 using Domain.Interfaces.Write;
 using Domain.PostgreSQL.Entities;
 using Infrastructure.Repositories.Write;
@@ -17,9 +18,13 @@ namespace Application.Encumbrances.Commands
     public class RemoveEncumbranceCommand : IRequest<Unit>
     {
         public Guid StatementId { get; set; }
+        public Guid RegistratorId { get; set; }
+        public string IpAddress { get; set; }
 
-        public RemoveEncumbranceCommand(Guid statementId)
+        public RemoveEncumbranceCommand(Guid statementId, Guid registratorId, string ipAddress)
         {
+            RegistratorId = registratorId;
+            IpAddress = ipAddress;
             StatementId = statementId;
         }
     }
@@ -33,6 +38,8 @@ namespace Application.Encumbrances.Commands
         private readonly IEncumbranceObjectWriteRepository _encumbranceObjectWriteRepository;
         private readonly IWriteRepository<Address> _addressWriteRepository;
         private readonly IStatementReadRepository _statementReadRepository;
+        private readonly IRegistratorLogService _registratorLogService;
+        private readonly IStatementWriteRepository _statementWriteRepository;
         private readonly IMapper _mapper;
 
         public RemoveEncumbranceCommandHandler(
@@ -42,7 +49,9 @@ namespace Application.Encumbrances.Commands
             IWriteRepository<BasisDocument> basisDocumentWriteRepository,
             IWriteRepository<EncumbranceTerms> encumbranceTermsWriteRepository,
             IEncumbranceObjectWriteRepository encumbranceObjectWriteRepository,
+            IStatementWriteRepository statementWriteRepository,
             IWriteRepository<Address> addressWriteRepository,
+            IRegistratorLogService registratorLogService,
             IMapper mapper)
         {
             _encumbranceWriteRepository = encumbranceWriteRepository;
@@ -52,6 +61,8 @@ namespace Application.Encumbrances.Commands
             _encumbranceTermsWriteRepository = encumbranceTermsWriteRepository;
             _basisDocumentWriteRepository = basisDocumentWriteRepository;
             _statementReadRepository = statementReadRepository;
+            _statementWriteRepository = statementWriteRepository;
+            _registratorLogService = registratorLogService;
             _mapper = mapper;
         }
         public async Task<Unit> Handle(RemoveEncumbranceCommand command, CancellationToken cancellationToken)
@@ -76,6 +87,14 @@ namespace Application.Encumbrances.Commands
 
             var encumbranceTerms = _mapper.Map<EncumbranceTermDto, EncumbranceTerms>(statement.EncumbranceTerm);
             await _encumbranceTermsWriteRepository.DeleteAsync(encumbranceTerms.Id);
+            await _statementWriteRepository.UpdateEncumbranceStatementStatus(statement.Id, 1);
+
+            await _registratorLogService.LogStatementPerformOperation(
+                statement.Id,
+                command.RegistratorId,
+                new Guid("45836c7d-81bc-4c61-950a-a6f1d9bea828"),
+                command.IpAddress
+            );
 
             return Unit.Value;
         }

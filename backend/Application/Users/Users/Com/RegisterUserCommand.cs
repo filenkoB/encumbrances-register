@@ -1,6 +1,5 @@
 ﻿using Application.Users.Users.Dtos;
 using AutoMapper;
-using Domain.Interfaces;
 using Domain.Interfaces.Read;
 using Domain.Interfaces.Services;
 using Domain.Interfaces.Write;
@@ -26,20 +25,20 @@ namespace Application.Users.Users.Commmands
 
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Unit>
     {
-        //private readonly IUserRegistratorWriteRepository _userRegistratorWriteRepository;
+        private readonly IUserRegistratorWriteRepository _userRegistratorWriteRepository;
         private readonly IStatementReadRepository _statementReadRepository;
         private readonly IStatementWriteRepository _statementWriteRepository;
         private readonly IMapper _mapper;
         private readonly ISmtpService _smtpService;
 
         public RegisterUserCommandHandler(
-            //IUserRegistratorWriteRepository userRegistratorWriteRepository,
+            IUserRegistratorWriteRepository userRegistratorWriteRepository,
             IStatementReadRepository statementReadRepository,
             IStatementWriteRepository statementWriteRepository,
             ISmtpService smtpService,
             IMapper mapper)
         {
-            //_userRegistratorWriteRepository = userRegistratorWriteRepository;
+            _userRegistratorWriteRepository = userRegistratorWriteRepository;
             _statementReadRepository = statementReadRepository;
             _statementWriteRepository = statementWriteRepository;
             _mapper = mapper;
@@ -53,12 +52,13 @@ namespace Application.Users.Users.Commmands
             PassportInfo passportInfo = _mapper.Map<PassportInfo>(statementInfo.PassportInfo);
 
             var newUser = _mapper.Map<User>(statementInfo);
+            newUser.RegisteredAt = DateTime.Now;
             newUser.PassportInfo = passportInfo;
             newUser.PassportInfoId = passportInfo.PassportNumber;
 
-           // Identificator identificator = await _userRegistratorWriteRepository.InsertUserAsync(newUser);
+            Identificator identificator = await _userRegistratorWriteRepository.InsertUserAsync(newUser);
             await _statementWriteRepository.UpdateStatementTouchedStatusAsync(command.StatementId);
-            //SendIdentificatorViaEmail(newUser.Email, identificator);
+            SendIdentificatorViaEmail(newUser.Email, identificator);
             return Unit.Value;
         }
 

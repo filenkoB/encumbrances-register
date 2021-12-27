@@ -36,6 +36,8 @@ namespace Application.Statements.Queries
             {
                 case "b231d49d-8c34-4efc-bde2-e398d35a5587":
                 case "3c63d55d-4b8f-4c06-8122-6a1c3ac72699":
+                case "beca126e-1e23-4db3-865a-a4645baf0428":
+                case "41b2c7aa-7af6-4221-9afa-3d54e70b8470":
                     return _mapper.Map<StatementRegistrationDto>(statement);
                 default:
                     throw new InvalidOperationException();

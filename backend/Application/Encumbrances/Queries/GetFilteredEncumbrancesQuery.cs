@@ -17,10 +17,14 @@ namespace Application.Encumbrances.Queries
     public class GetFilteredEncumbrancesQuery : IRequest<EncumbranceList>
     {
         public EncumbranceSelectFilter Filter { get; set; }
+        public int Page { get; set; }
+        public int Length { get; set; }
 
-        public GetFilteredEncumbrancesQuery(EncumbranceSelectFilter filter)
+        public GetFilteredEncumbrancesQuery(EncumbranceSelectFilter filter, int page, int length)
         {
             Filter = filter;
+            Page = page;
+            Length = length;
         }
     }
 
@@ -54,7 +58,7 @@ namespace Application.Encumbrances.Queries
             }
 
             var resultList = new List<ShortEncumbrance>();
-            foreach (var encumbrance in encumbrances)
+            foreach (var encumbrance in encumbrances.Skip((query.Page - 1) * query.Length).Take(query.Length))
             {
                 var encumbranceObject = await _encumbranceObjectReadRepository.GetEncumbranceObjectById(encumbrance.ObjectId);
                 var serialNumber = encumbranceObject["SerialNumber"].IsBsonNull ? null : encumbranceObject["SerialNumber"].AsString;
@@ -66,7 +70,7 @@ namespace Application.Encumbrances.Queries
                     continue;
                 }
 
-                var tierName = (await _encumbranceParticipantReadRepository.GetEntityByIdAsync(encumbrance.TierId, "EncumbranceParticipants")).Name;
+                var debtorName = (await _encumbranceParticipantReadRepository.GetEntityByIdAsync(encumbrance.DebtorId, "EncumbranceParticipants")).Name;
                 resultList.Add(new ShortEncumbrance()
                 {
                     Id = encumbrance.Id,
@@ -75,14 +79,14 @@ namespace Application.Encumbrances.Queries
                     ObjectType = encumbranceObject == null 
                         ? "Невизначене рухоме майно"
                         : "Рухоме майно, що має серійні номери",
-                    Tier = tierName
+                    Tier = debtorName
                 });
             }
 
             return new EncumbranceList()
             {
                 Encumbrances = resultList.ToArray(),
-                Length = resultList.Count
+                Length = encumbrances.Count()
             };
         }
     }

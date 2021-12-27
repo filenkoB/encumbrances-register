@@ -12,6 +12,7 @@ namespace Domain.Interfaces.Read
         public Task<BsonDocument> GetStatementAsync(Guid statementId);
         public Task<long> GetStatementsNumberAsync();
         public Task<long> GetRegistrationStatementsNumberAsync();
+        public Task<long> GetUserStatementsNumberAsync(Guid userId);
         public Task<IEnumerable<BsonDocument>> GetUserStatementsAsync(int page, int length, Guid userId);
     }
 }

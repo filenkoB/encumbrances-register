@@ -7,8 +7,8 @@ using Application.Users.Users.Com;
 using Application.Users.Users.Commmands;
 using Application.Users.Registrators.Dtos;
 using Application.Users.Registrators.Commands;
-using Application.Users.Common.Dtos;
 using Domain.Interfaces.Services;
+using Application.Users.Common;
 
 namespace WebAPI.Controllers
 {

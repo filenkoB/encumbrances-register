@@ -1,5 +1,4 @@
 ﻿using Application.Common;
-using Application.Common.MappingProfiles;
 using Application.Enumerations;
 using Application.Statements.Dtos;
 using AutoMapper;

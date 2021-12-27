@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Common.MappingProfiles
+namespace Application.Common
 {
     public class AddressDto : IdDto
     {

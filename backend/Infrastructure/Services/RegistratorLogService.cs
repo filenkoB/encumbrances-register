@@ -18,13 +18,15 @@ namespace Infrastructure.Services
             _egahWriteRepository = egahWriteRepository;
             _reahWriteRepository = reahWriteRepository;
         }
-        public async Task LogExtractGettingOperation(Guid encumbranceId, Guid issuerId)
+        public async Task LogExtractGettingOperation(Guid encumbranceId, Guid statementId, Guid issuerId, string ipAddress)
         {
             var egah = new ExtractGettingActionsHistory()
             {
                 Date = DateTime.Now,
                 EncumbranceId = encumbranceId,
-                IssuerId = issuerId
+                IssuerId = issuerId,
+                StatementId = statementId,
+                IpAddress = ipAddress
             };
             await _egahWriteRepository.InsertAsync(egah);
 

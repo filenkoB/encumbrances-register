@@ -1,14 +1,16 @@
-﻿using Domain.Entities;
+﻿using Application.Users.Registrators.Dtos;
+using Domain.Entities;
 using Domain.Interfaces.Read;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Users.Registrators.Queries
 {
-    public class GetRegistratorActionsQuery : IRequest<IEnumerable<RegistratorAction>>
+    public class GetRegistratorActionsQuery : IRequest<RegistratorActionList>
     {
         public Guid RegistratorId { get; set; }
         
@@ -18,7 +20,7 @@ namespace Application.Users.Registrators.Queries
         }
     }
 
-    public class GetRegistratorActionsQueryHandler : IRequestHandler<GetRegistratorActionsQuery, IEnumerable<RegistratorAction>>
+    public class GetRegistratorActionsQueryHandler : IRequestHandler<GetRegistratorActionsQuery, RegistratorActionList>
     {
         private readonly IRegistratorActionReadRepository _registratorActionReadRepository;
 
@@ -26,9 +28,14 @@ namespace Application.Users.Registrators.Queries
         {
             _registratorActionReadRepository = registratorActionReadRepository;
         }
-        public async Task<IEnumerable<RegistratorAction>> Handle(GetRegistratorActionsQuery query, CancellationToken cancellationToken)
+        public async Task<RegistratorActionList> Handle(GetRegistratorActionsQuery query, CancellationToken cancellationToken)
         {
-            return await _registratorActionReadRepository.GetRegistratorActionsAsync(query.RegistratorId);
+            IEnumerable<RegistratorAction> actions = await _registratorActionReadRepository.GetRegistratorActionsAsync(query.RegistratorId);
+            return new RegistratorActionList()
+            {
+                Actions = actions.ToArray(),
+                Length = actions.Count()
+            };
         }
     }
 }

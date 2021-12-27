@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Registrators.Queries
 {
-    public class GetRegistratorsQuery : IRequest<IEnumerable<ShortRegistratorDto>>
+    public class GetRegistratorsQuery : IRequest<ShortRegistratorList>
     {
         public int Page { get; set; }
         public int Length { get; set; }
@@ -22,7 +22,7 @@ namespace Application.Users.Registrators.Queries
         }
     }
 
-    public class GetRegistratorsQueryHandler : IRequestHandler<GetRegistratorsQuery, IEnumerable<ShortRegistratorDto>>
+    public class GetRegistratorsQueryHandler : IRequestHandler<GetRegistratorsQuery, ShortRegistratorList>
     {
         private readonly IReadRepository<Registrator> _registratorReadRepository;
         private readonly IReadRepository<Identificator> _identificatorReadRepository;
@@ -37,15 +37,14 @@ namespace Application.Users.Registrators.Queries
             _registratorReadRepository = registratorReadRepository;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<ShortRegistratorDto>> Handle(GetRegistratorsQuery query, CancellationToken cancellationToken)
+        public async Task<ShortRegistratorList> Handle(GetRegistratorsQuery query, CancellationToken cancellationToken)
         {
             int page = query.Page;
             int length = query.Length;
-            IEnumerable<Registrator> registrators = (await _registratorReadRepository.GetEntitiesAsync("Registrators"))
-                .Skip((page - 1) * length).Take(length);
+            IEnumerable<Registrator> registrators = await _registratorReadRepository.GetEntitiesAsync("Registrators");
 
-            var registratorDtos = new List<ShortRegistratorDto>(); _mapper.Map<IEnumerable<ShortRegistratorDto>>(registrators);
-            foreach (var registrator in registrators)
+            var registratorDtos = new List<ShortRegistratorDto>();
+            foreach (var registrator in registrators.Skip((page - 1) * length).Take(length))
             {
                 var registratorDto = _mapper.Map<ShortRegistratorDto>(registrator);
                 registratorDto.Status = (await _identificatorReadRepository.GetEntitiesByParamsAsync("Identificators",
@@ -54,7 +53,11 @@ namespace Application.Users.Registrators.Queries
 
                 registratorDtos.Add(registratorDto);
             }
-            return registratorDtos;
+            return new ShortRegistratorList()
+            {
+                Registrators = registratorDtos.ToArray(),
+                Length = registrators.Count()
+            };
         }
     }
 }

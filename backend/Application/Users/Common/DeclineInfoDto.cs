@@ -1,4 +1,4 @@
-﻿namespace Application.Users.Common.Dtos
+﻿namespace Application.Users.Common
 {
     public class DeclineInfoDto
     {

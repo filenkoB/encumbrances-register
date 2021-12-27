@@ -1,16 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Infrastructure;
 using Application;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Infrastructure.Services;
-using Infrastructure.EF.PostgreSQL;
-using Microsoft.EntityFrameworkCore;
-using System;
+using WebAPI.Extensions;
+using Microsoft.OpenApi.Models;
+using WebAPI.Middlewares;
 
 namespace WebAPI
 {
@@ -37,50 +33,24 @@ namespace WebAPI
             services.AddSession();
             services.AddMvc();
 
-            services.AddCors(options =>
+            services.ConfigureCors();
+            services.ConfigureAuthorization(Configuration);
+
+            services.AddSwaggerGen(c =>
             {
-                options.AddPolicy(name: "DevelopmentPolicy",
-                    builder =>
-                    {
-                        builder
-                            .WithHeaders("Authorization")
-                            .WithHeaders("Content-Type")
-                            .WithMethods("GET", "POST", "PUT", "DELETE")
-                            .AllowAnyOrigin();
-                    }
-                );
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIøêà!", Version = "v1" });
             });
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = Configuration["JWT_ISSUER"],
-
-                        ValidateAudience = true,
-                        ValidAudience = Configuration["JWT_AUDIENCE"],
-
-                        ValidateLifetime = true,
-
-                        IssuerSigningKey = JwtService.GetSymmetricSecurityKey(),
-                        ValidateIssuerSigningKey = true,
-                    };
-                }
-            );
-
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseExceptionMiddleware();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-            app.UseSession();
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
+
             app.UseCors("DevelopmentPolicy");
             app.UseRouting();
 

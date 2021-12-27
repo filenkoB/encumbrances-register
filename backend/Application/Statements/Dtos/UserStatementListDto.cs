@@ -3,6 +3,6 @@
     public class UserStatementListDto
     {
         public ListUserStatementDto[] Statements { get; set; }
-        public int Length { get; set; }
+        public long Length { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Application.Common.MappingProfiles;
+﻿using Application.Common;
 using Application.Encumbrances.Dtos;
 using Application.Statements.Dtos;
 using AutoMapper;

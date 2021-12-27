@@ -1,7 +1,6 @@
 ﻿using Application.Countries.Dtos;
 using AutoMapper;
 using Domain.Interfaces.Abstract;
-using Domain.Interfaces.Read;
 using Domain.PostgreSQL.Entities;
 using MediatR;
 using System.Collections.Generic;

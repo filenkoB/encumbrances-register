@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
         { }
 
         [HttpPost("{statementId}")]
-        public async Task<IActionResult> SendExtract(Guid statementId)
+        public async Task<IActionResult> SendExtract(Guid statementId, [FromQuery] bool payed = false)
         {
             Guid? userId = ValidateUserToken(HttpContext);
             if (userId is null)
@@ -30,7 +30,14 @@ namespace WebAPI.Controllers
             string token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ")[1];
             string userTypeName = JwtService.GetTokenClaims(token).FindFirst(ClaimsIdentity.DefaultRoleClaimType).Value;
             UserType userType = (UserType)Enum.Parse(typeof(UserType), userTypeName);
-            return Ok(await Mediator.Send(new SendExtractCommand(statementId, userType, (Guid)userId)));
+            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            await Mediator.Send(new SendExtractCommand(statementId, userType, (Guid)userId, ipAddress));
+            
+            if (!payed)
+            {
+                return Ok();
+            }
+            return Ok(await Mediator.Send(new SendPayementSertificateCommand(statementId, (Guid)userId, userType)));
         }
     }
 }

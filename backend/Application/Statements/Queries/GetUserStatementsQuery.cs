@@ -55,7 +55,7 @@ namespace Application.Statements.Queries
             return new UserStatementListDto()
             {
                 Statements = statements.ToArray(),
-                Length = statements.Count()
+                Length = await _statementReadRepository.GetUserStatementsNumberAsync(query.UserId)
             };
         }
     }

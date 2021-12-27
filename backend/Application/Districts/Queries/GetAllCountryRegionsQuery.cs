@@ -33,7 +33,7 @@ namespace Application.Districts.Queries
         public async Task<IEnumerable<DistrictDto>> Handle(GetAllRegionDistrictsQuery query, CancellationToken token)
         {
             return _mapper.Map<IEnumerable<DistrictDto>>(await _districtReadRepository.GetEntitiesByParamsAsync(
-                "Cities",
+                "Districts",
                 ("RegionId", query.RegionId)
             ));
         }

@@ -6,10 +6,10 @@ using System;
 using Infrastructure.Dapper;
 using Dapper;
 using Npgsql;
+using Domain.Interfaces.Write;
 
 namespace Infrastructure.Repositories
 {
-    /*
     public class UserRegistratorWriteRepository : IUserRegistratorWriteRepository
     {
         private readonly EncumbrancesRegisterDbContext _db;
@@ -56,5 +56,5 @@ namespace Infrastructure.Repositories
 
             return await _dbDapper.QueryFirstAsync<Identificator>(sqlQuery, new { userId = userId });
         }
-    }*/
+    }
 }

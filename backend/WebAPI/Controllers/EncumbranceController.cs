@@ -27,9 +27,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetFilteredEncumbrances([FromBody] EncumbranceSelectFilter filter)
+        public async Task<IActionResult> GetFilteredEncumbrances([FromBody] EncumbranceSelectFilter filter, [FromQuery] int page = 1, [FromQuery] int length = 10)
         {
-            return Ok(await Mediator.Send(new GetFilteredEncumbrancesQuery(filter)));
+            return Ok(await Mediator.Send(new GetFilteredEncumbrancesQuery(filter, page, length)));
         }
         #endregion
 
@@ -38,28 +38,56 @@ namespace WebAPI.Controllers
         [Route("Register/Statement/{statementId}/Accept")]
         public async Task<IActionResult> AddEncumbranceByStatement(Guid statementId)
         {
-            return Ok(await Mediator.Send(new AddEncumbranceCommand(statementId)));
+            Guid? registratorId = ValidateUserToken(HttpContext);
+            if (registratorId == null)
+            {
+                return Unauthorized();
+            }
+
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            return Ok(await Mediator.Send(new AddEncumbranceCommand(statementId, (Guid)registratorId, ipAddress)));
         }
 
         [HttpPost]
         [Route("Update/Statement/{statementId}/Accept")]
         public async Task<IActionResult> UpdateEncumbranceByStatement(Guid statementId)
         {
-            return Ok(await Mediator.Send(new UpdateEncumbranceCommand(statementId)));
+            Guid? registratorId = ValidateUserToken(HttpContext);
+            if (registratorId == null)
+            {
+                return Unauthorized();
+            }
+
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            return Ok(await Mediator.Send(new UpdateEncumbranceCommand(statementId, (Guid)registratorId, ipAddress)));
         }
 
         [HttpPost]
         [Route("Remove/Statement/{statementId}/Accept")]
         public async Task<IActionResult> RemoveEncumbranceByStatement(Guid statementId)
         {
-            return Ok(await Mediator.Send(new RemoveEncumbranceCommand(statementId)));
+            Guid? registratorId = ValidateUserToken(HttpContext);
+            if (registratorId == null)
+            {
+                return Unauthorized();
+            }
+
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            return Ok(await Mediator.Send(new RemoveEncumbranceCommand(statementId, (Guid)registratorId, ipAddress)));
         }
 
         [HttpPost]
         [Route("Statement/{statementId}/Decline")]
         public async Task<IActionResult> DeclineEncumbranceAddingStatement(Guid statementId)
         {
-            return Ok(await Mediator.Send(new DeclineEncumbranceStatementCommand(statementId)));
+            Guid? registratorId = ValidateUserToken(HttpContext);
+            if (registratorId == null)
+            {
+                return Unauthorized();
+            }
+
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            return Ok(await Mediator.Send(new DeclineEncumbranceStatementCommand(statementId, (Guid)registratorId, ipAddress)));
         }
         #endregion
     }
