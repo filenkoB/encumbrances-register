@@ -80,7 +80,7 @@
         </div>
         <div class="col-2">
           <input type="data" class="form-control d-inline" 
-            :disabled="editing_status || path.street == ''" @change="changed" required :pattern="patterns.flat.str" v-model="path.flat">
+            :disabled="editing_status || path.street == ''" @change="changed" :pattern="patterns.flat.str" v-model="path.flat">
         </div>
       </div>
     </div>
@@ -115,8 +115,8 @@ export default {
     },
     isInvalid() {
       if(!this.patterns.building.var.exec(this.path.build)) { return true; }
-      if(!this.patterns.text.var.exec(this.path.flat)) { return true; }
-      if(this.path.corps == null || ((this.path.corps.length > 0) && !this.patterns.corps.var.exec(this.path.corps)))  { return true; }
+      if((this.path.corps.length > 0) && !this.patterns.corps.var.exec(this.path.corps))  { return true; }
+      if((this.path.flat.length > 0) && !this.patterns.flat.var.exec(this.path.flat)) { return true; }
       return false;
     },
     async get_region(item){
