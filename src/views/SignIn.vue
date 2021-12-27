@@ -27,7 +27,7 @@
         </div>
       </div>
       <div v-if="failedAuthorization" class="row mt-3 alert alert-danger fs-7" role="alert">
-        Неправильний логін або пароль! Будь ласка, спробуйте ще раз!
+        {{message}}
       </div>
       <div v-if="failedResponse" class="row mt-3 alert alert-warning fs-7" role="alert">
         Наразі серевер не може обробити ваш запит, будь ласка спробуйте пізніше.
@@ -58,7 +58,8 @@ export default {
     return {
       wasClicked: false, waitingForResponse: false,
       failedAuthorization: false, failedResponse: false,
-      reqBody: { login: "", password: "" }
+      reqBody: { login: "", password: "" },
+      message: ""
     }
   },
   methods: {
@@ -87,7 +88,11 @@ export default {
                     this.$root.$children[0].$children[0].user_status = user_status;
                     this.$router.push({ name: "Info" }).catch(() => {});
                   }
-                  else if(res.status === 400)  this.failedAuthorization = true;
+                  else if(res.status === 400) {
+                    const data = await res.json();
+                    this.message = data.error;
+                    this.failedAuthorization = true;
+                  }
                   else this.failedResponse = true;
                   this.waitingForResponse = false;
                 }
