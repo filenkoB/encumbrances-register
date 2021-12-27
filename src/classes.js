@@ -64,7 +64,7 @@ export class EncumbranceTierDebtor{
     path:{}
   }
   name = null;
-  constructor(taxpayerAccountCardNumber, isForeigner, name, additionalInfo, address) {
+  constructor(taxpayerAccountCardNumber, isForeigner, name, additionalInfo, address, id) {
     this.taxpayerAccountCardNumber = taxpayerAccountCardNumber,
     this.isForeigner = isForeigner;
     this.name = name; 
@@ -78,6 +78,7 @@ export class EncumbranceTierDebtor{
     this.address.path.build = address.building;
     this.address.path.corps = address.corps;
     this.address.path.flat = address.flat;
+    this.id = id;
   }
   get_info(){
     return {
@@ -95,6 +96,7 @@ export class EncumbranceTierDebtor{
         corps: this.address.path.corps,
         flat: this.address.path.flat
       },
+      id: this.id,
       additionalInfo: this.typeDescription
     }
   }
@@ -102,11 +104,12 @@ export class EncumbranceTierDebtor{
 
 export class BasisDocument{
   visible_status = false;
-  constructor(name, number, issuer, issueDate) {
+  constructor(name, number, issuer, issueDate, id) {
     this.name =name;
     this.number = number;
     this.issuer = issuer;
     this.issueDate = issueDate.split('T')[0];
+    this.id = id;
   }
   get_info(){
     const current_time = new Date();
@@ -114,7 +117,8 @@ export class BasisDocument{
       name: this.name,
       number: this.number,
       issuer: this.issuer,
-      issueDate: (new Date(this.issueDate+'T'+current_time.toISOString().split('T')[1])).toISOString()
+      issueDate: (new Date(this.issueDate+'T'+current_time.toISOString().split('T')[1])).toISOString(),
+      id: this.id,
     }
   }
 }
@@ -122,13 +126,14 @@ export class BasisDocument{
 export class EncumbranceInfo{
   visible_status = false;
   constructor(encumbranceKindId, registrationTypeId, lastEncumbranceOccurrenceDate, encumbranceTypeId, 
-    alienationLimitId, typeDescription) {
+    alienationLimitId, typeDescription, id) {
     this.encumbranceKindId = encumbranceKindId;
     this.registrationTypeId = registrationTypeId;
     this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate.split('T')[0];
     this.encumbranceTypeId = encumbranceTypeId;
     this.alienationLimitId = alienationLimitId;
-    this.typeDescription = typeDescription
+    this.typeDescription = typeDescription;
+    this.id = id;
   }
   get_info(){
     const current_time = new Date();
@@ -138,18 +143,20 @@ export class EncumbranceInfo{
       lastEncumbranceOccurrenceDate:(new Date(this.lastEncumbranceOccurrenceDate+'T'+current_time.toISOString().split('T')[1])).toISOString(),
       encumbranceTypeId: this.encumbranceTypeId,
       alienationLimitId: this.alienationLimitId,
-      typeDescription: this.typeDescription
+      typeDescription: this.typeDescription,
+      id: this.id,
     }
   }
 }
 
 export class EncumbranceTerm{
   visible_status = false;
-  constructor(obligationAmount, termTo, additionalTerms, currencyTypeId) {
+  constructor(obligationAmount, termTo, additionalTerms, currencyTypeId, id) {
     this.obligationAmount = obligationAmount;
     this.termTo = termTo.split('T')[0];
     this.additionalTerms = additionalTerms;
     this.currencyTypeId = currencyTypeId;
+    this.id = id;
   }
   get_info(){
     const current_time = new Date();
@@ -157,7 +164,8 @@ export class EncumbranceTerm{
       obligationAmount: this.obligationAmount,
       termTo:(new Date(this.termTo+'T'+current_time.toISOString().split('T')[1])).toISOString(),
       additionalTerms: this.additionalTerms,
-      currencyTypeId: this.currencyTypeId
+      currencyTypeId: this.currencyTypeId,
+      id: this.id,
     }
   }
 }
@@ -168,18 +176,20 @@ export class DescriptionSubject{
   number_2 = null;
   value = null;
   visible_status = false;
-  constructor(objectDescription, serialNumber, stateRegistrationNumber, anotherObjectsDesc) {
+  constructor(objectDescription, serialNumber, stateRegistrationNumber, anotherObjectsDesc, id) {
     this.name = objectDescription;
     this.number = serialNumber;
     this.number_2 = stateRegistrationNumber;
     this.value = anotherObjectsDesc;
+    this.id = id;
   }
   get_info(){
     return {
       objectDescription: this.name,
       serialNumber: this.number,
       stateRegistrationNumber: this.number_2,
-      anotherObjectsDesc: this.value
+      anotherObjectsDesc: this.value,
+      id: this.id,
     }
   }
 }

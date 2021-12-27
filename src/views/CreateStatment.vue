@@ -126,13 +126,14 @@ export default {
         if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=undefined){
           let el = {
             statementTypeId: "beca126e-1e23-4db3-865a-a4645baf0428",        
-            encumbranceTier: this.element.encumbranceTier,
-            encumbranceDebtor: this.element.encumbranceDebtor,
-            basisDocument: this.element.basisDocument,
-            encumbranceInfo: this.element.encumbranceInfo,
-            encumbranceTerm: this.element.encumbranceTerm,
-            encumbranceObject: this.element.encumbranceDescriptionSubject
+            encumbranceTier: this.element.encumbranceTier.get_info(),
+            encumbranceDebtor: this.element.encumbranceDebtor.get_info(),
+            basisDocument: this.element.basisDocument.get_info(),
+            encumbranceInfo: this.element.encumbranceInfo.get_info(),
+            encumbranceTerm: this.element.encumbranceTerm.get_info(),
+            encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
           }
+          console.log(el)
           const new_id = await this.main.CreateStatement(el);
           if(this.user_status == 'registrar'){
             await this.registrator.EncumbranceRemoveStatementAccept(new_id.id);
@@ -179,7 +180,7 @@ export default {
           }
         }
         else{
-          if(this.element.otherChange.changes_checked == 2){
+          if(this.element.otherChange.changes_checked == 2 && this.element.encumbranceTier!=null){
             let el = {
               statementTypeId: "3c63d55d-4b8f-4c06-8122-6a1c3ac72699",        
               encumbranceTier: this.element.encumbranceTier.get_info(),

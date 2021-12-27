@@ -2,21 +2,24 @@
   <div>  
     <div v-if="statements.length > 0">
       <div class="row border mt-2 border-2 border-primary rounded">
-        <div class="col border-end border-3">
+        <div class="col-7 border-end border-3">
           <label class="col-form-label">Тип заяви</label>
         </div>
-        <div class="col">
+        <div class="col-2 border-end border-3">
           <label class="col-form-label">Статус заяви</label>
+        </div>
+        <div class="col">
+          <label class="col-form-label">Можливі дії</label>
         </div>
       </div>
       <div id="statements_area">
         <div class="row border mt-2 border-primary rounded text-start" 
           v-for="item in statements" :key="item.number">
-          <div class="col border-end border-3 p-2">{{item.statementType}}</div>
-          <div class="col border-end border-3 p-2" v-if="item.statementStatus == 0">Надано в обробку</div>
-          <div class="col border-end border-3 p-2" v-else-if="item.statementStatus == 1">Прийнято</div>
-          <div class="col border-end border-3 p-2" v-else-if="item.statementStatus == 2">Відхилено</div>
-          <div class="col border-end border-3 p-2" v-if="item.statementStatus == 1 && item.statementType=='Заява про надання витягу з Державного реєстру обтяжень рухомого майна'">
+          <div class="col-7 border-end border-3 p-2 pt-3">{{item.statementType}}</div>
+          <div class="col-2 border-end border-3 p-2 pt-3" v-if="item.statementStatus == 0">Надано в обробку</div>
+          <div class="col-2 border-end border-3 p-2 pt-3" v-else-if="item.statementStatus == 1">Прийнято</div>
+          <div class="col-2 border-end border-3 p-2 pt-3" v-else-if="item.statementStatus == 2">Відхилено</div>
+          <div class="col p-2" v-show="item.statementStatus == 1 && item.statementType=='Заява про надання витягу з Державного реєстру обтяжень рухомого майна'">
             <button type="button" class="btn btn-outline-success" v-on:click="extract(item.id)">
               Отримати витяг
             </button>
@@ -60,7 +63,6 @@ export default {
       if (this.pagination.max_items_count < 1) this.pagination.max_items_count = 1;
       if (this.pagination.max_items_count > 7) this.pagination.max_items_count = 7;
       const data = await this.user.GetAllMyStatements(this.pagination.active_page + 1, this.pagination.max_items_count);
-      console.log(data);
       if(data.length < this.pagination.max_items_count) this.pagination.max_items_count = data.length
       this.pagination.count_page = Math.ceil(data.length / this.pagination.max_items_count);
       this.statements = data.statements;

@@ -5,7 +5,7 @@
         <div class="row" v-for="item in statements"
         v-bind:key="item.number">
           <div :class="colour(item)">
-            <div class="col-auto pt-1 border-end border-3">
+            <div class="col-2 pt-1 border-end border-3">
               <label class="col-form-label me-3">Вихідний номер:</label>
               <label class="col-form-label">{{item.number}}</label>
             </div>
