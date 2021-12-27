@@ -298,6 +298,7 @@ export default {
       if(this.user_autority){
         const statementId = await this.success();
         this.registrator.StatementExtractAccept(statementId);
+        await this.main.GetExtract(statementId, false)
       }
       else this.card = true;
     },

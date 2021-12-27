@@ -13,9 +13,14 @@
         <div class="row border mt-2 border-primary rounded text-start" 
           v-for="item in statements" :key="item.number">
           <div class="col border-end border-3 p-2">{{item.statementType}}</div>
-          <div class="col p-2" v-if="item.statementStatus == 0">Надано в обробку</div>
-          <div class="col p-2" v-else-if="item.statementStatus == 1">Прийнято</div>
-          <div class="col p-2" v-else-if="item.statementStatus == 2">Відхилено</div>
+          <div class="col border-end border-3 p-2" v-if="item.statementStatus == 0">Надано в обробку</div>
+          <div class="col border-end border-3 p-2" v-else-if="item.statementStatus == 1">Прийнято</div>
+          <div class="col border-end border-3 p-2" v-else-if="item.statementStatus == 2">Відхилено</div>
+          <div class="col border-end border-3 p-2" v-if="item.statementStatus == 1 && item.statementType=='Заява про надання витягу з Державного реєстру обтяжень рухомого майна'">
+            <button type="button" class="btn btn-outline-success" v-on:click="extract(item.id)">
+              Отримати витяг
+            </button>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -59,6 +64,9 @@ export default {
       if(data.length < this.pagination.max_items_count) this.pagination.max_items_count = data.length
       this.pagination.count_page = Math.ceil(data.length / this.pagination.max_items_count);
       this.statements = data.statements;
+    },
+    async extract(statement_id){
+      await this.main.GetExtract(statement_id, true);
     },
     tools(item){
       if(item.type == "Отримання витягу" && item.status == "Прийнята") return true;

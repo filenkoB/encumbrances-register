@@ -111,5 +111,9 @@ export class Main{
 
   //Створення заяв на обтяження
   async CreateStatement(item){ return await create("/Statement/Register", GetRequestOptions("POST", item)) }
-  async StatementRegisterExtract(encumbranceId){ return await create("/Statement/Register/Extract/" + encumbranceId, GetRequestOptions("POST", null)) }
+  async StatementRegisterExtract(encumbranceId){ 
+    return await create("/Statement/Register/Extract/" + encumbranceId, GetRequestOptions("POST", null)) }
+  async GetExtract(statement_id, status){
+    return await create("/Extract/" + statement_id + "?payed=" + status, GetRequestOptions("POST", null))
+  }
 }
