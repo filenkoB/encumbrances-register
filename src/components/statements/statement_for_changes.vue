@@ -80,7 +80,7 @@ export default {
       this.element.encumbranceTier = item.encumbranceTier;
       this.element.encumbranceDebtor = item.encumbranceDebtor;
       this.element.basisDocument = item.basisDocument;
-      this.element.encumbranceitem = item.encumbranceitem;
+      this.element.encumbranceInfo = item.encumbranceInfo;
       this.element.encumbranceTerm = item.encumbranceTerm;
       this.element.encumbranceDescriptionSubject = item.encumbranceDescriptionSubject;
     }

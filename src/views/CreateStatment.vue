@@ -125,8 +125,10 @@ export default {
       console.log("Сабміт",this.element);
       this.waitingForResponse = true;
       if (!this.statement_type) {
+        console.log("type 2 1");
         if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=undefined){
           if(this.user_status == 'registrar'){
+            console.log("type 2 registrar");
             await this.registrator.EncumbranceRemoveStatementAccept(this.element.searchedInfo);
             console.log("remove");
             this.message.title ="Заява про припинення обтяження була успішно зареєстрована!";
@@ -135,6 +137,7 @@ export default {
             this.succeeded = true;
           }
           else {
+            console.log("type 2 no registrar");
             this.message.title ="Заява про припинення обтяження була успішно відправлена на реєстрацію!";
             this.message.text ="Заява про реєстрацію змін обтяження рухомого майна (припинення обтяження) була успішно відправлена на реєстрацію у Реєстрі. " + this.user_message;
             this.waitingForResponse = false;
@@ -145,8 +148,11 @@ export default {
           this.waitingForResponse = false
         }
       }
+      console.log("type is valid");
       if(this.isvalid){
+        console.log("type",this.statement_type);
         if(this.statement_type){
+          console.log("type 1");
           let el = {
             statementTypeId: "b231d49d-8c34-4efc-bde2-e398d35a5587",        
             encumbranceTier: this.element.encumbranceTier.get_info(),
@@ -173,6 +179,7 @@ export default {
           }
         }
         else{
+          console.log("type 2");
           if(this.element.otherChange.changes_checked == 2){
             let el = {
               statementTypeId: "3c63d55d-4b8f-4c06-8122-6a1c3ac72699",        
@@ -183,7 +190,8 @@ export default {
               encumbranceTerm: this.element.encumbranceTerm.get_info(),
               encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
             }
-            const new_id = await this.main.CreateStatement(el)
+            const new_id = await this.main.CreateStatement(el);
+            console.log("ID", new_id)
             if(this.user_status == 'registrar'){
               await this.registrator.EncumbranceUpdateStatementAccept(new_id.id);
               console.log("update");
