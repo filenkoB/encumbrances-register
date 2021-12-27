@@ -131,7 +131,6 @@ export default {
     },
     changed() {
       this.item.invalid = this.isInvalid();
-      console.log(this.item.invalid);
     },
     get_collapsed_status() {
         if (!this.editing_status) return " collapsible collapsed";

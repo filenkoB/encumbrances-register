@@ -44,7 +44,6 @@ export default {
       this.element.searched = false;
       const encumbrance = new Encumbrance();
       const info = await encumbrance.EncumbranceRegistrationNumber(item);
-      console.log("Info", info)
       if(info.maxStatements!=0){
         this.visible_status_info = true;
         this.element.searched = this.visible_status_info;
