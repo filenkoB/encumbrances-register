@@ -44,7 +44,7 @@
               <label class="col-form-label">Додаткові умови, у тому числі відомості про особу, на користь якої встановлено публічне обтяження:</label>
             </div>
             <div class="col-9">
-              <textarea class="form-control" rows="1" @change="changed" :pattern="patterns.text.str" :disabled="editing_status" v-model="item.additionalTerms"></textarea>
+              <input type="text" class="form-control" rows="1" @change="changed" :pattern="patterns.text.str" :disabled="editing_status" v-model="item.additionalTerms">
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default {
       if(!this.patterns.money.var.exec(this.item.obligationAmount)) { return true; }
       if(!this.item.currencyTypeId) { return true; }
       if(this.item.termTo == this.today) { return true; }
-      if((this.item.additionalTerms.length > 0) && !this.patterns.text.var.exec(this.item.additionalTerms)) { return true;}
+      if(this.item.additionalTerms != null && (this.item.additionalTerms.length > 0) && !this.patterns.text.var.exec(this.item.additionalTerms)) { return true;}
       return false;
     }
   },
