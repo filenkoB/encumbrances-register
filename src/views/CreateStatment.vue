@@ -99,7 +99,7 @@ export default {
         if (this.element.searched) {
           if (this.element.otherChange.changes_checked === 2) {
             Object.keys(this.element).forEach( i => { 
-              if ( i !== 'searched' && i !== 'otherChange' && i !== 'generalInfo' && this.isvalid) {
+              if ( i !== 'searched' && i !== 'otherChange' && i !== 'generalInfo' && i !== 'reset' && i !== 'id' && i !== 'searchedInfo' && this.isvalid) {
                 if (this.element[i].invalid) {
                   if (!this.element[i].visible_status) {
                     this.element[i].change_visibility();
