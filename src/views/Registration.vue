@@ -125,6 +125,9 @@
           <option v-for="el in authority" :key="el.id" :value="el.id">{{el.name}}</option>
         </select>
       </div>
+      <div v-if="failedRegistration" class="row mt-3 alert alert-danger fs-7" role="alert">
+        {{message}}
+      </div>
       <div class="row mt-3">
         <button class="w-100 btn btn-outline-dark" type="submit">Подати заявку на реєстрацію</button>
       </div>
@@ -147,7 +150,7 @@
 
 <script>
 import {validation} from "../data";
-import {Main, Registration} from "../connect_to_server"
+import {Main, GetRequestOptions} from "../connect_to_server"
 export default {
   name: "registration",
   data() {
@@ -163,6 +166,7 @@ export default {
       pasNumber: "", pasNumberB: "", pasSeriaB: "", 
       email: "", agency: "", idNumber: "",
       pasAgency: "", pasAgencyB: "", pasDate: "", userIsAuthorized: false,
+      failedRegistration: false, message: ""
     }
   },
   methods: {
@@ -176,7 +180,6 @@ export default {
       }
 
       if (valid) {
-        this.registration = false;
         let passport = null;
         if(this.chosenPassType == 'pasType-Id'){
           passport = {
@@ -207,8 +210,24 @@ export default {
             taxpayerACNAbsenceReason: "",
             authorityId: this.authorityId
         }
-        if(this.chosenRole == 'user') await this.registration_serve.RegistrationUserStatement(final_element)
-        else if(this.chosenRole == 'registrar') await this.registration_serve.RegistrationRegistratorStatement(final_element)
+        if(this.chosenRole == 'user') {
+          fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/User/Statement", GetRequestOptions("POST", final_element))
+                    .then(async res => await this.checkRegistration(res));
+        }
+        else if(this.chosenRole == 'registrar') {
+          fetch(process.env.VUE_APP_HEROKU_PATH + "/Registration/Registrator/Statement", GetRequestOptions("POST", final_element))
+                    .then(async res => await this.checkRegistration(res));
+        }
+      }
+    },
+    async checkRegistration(res) {
+      if (res.status == 200) {
+        this.registration = false;
+      }
+      else {
+        const data = await res.json();
+        this.message = data.error;
+        this.failedRegistration = true;
       }
     },
     clearPasData(type) {
@@ -234,7 +253,7 @@ export default {
   },
   async created() {
     this.main = new Main();
-    this.registration_serve = new Registration();
+    // this.registration_serve = new Registration();
     const sessionStorage = window.sessionStorage;
     if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
     if (sessionStorage.getItem('user_status')) sessionStorage.removeItem('user_status');
