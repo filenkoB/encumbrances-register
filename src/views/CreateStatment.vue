@@ -9,7 +9,7 @@
           <div class="col-auto">
             <select class="form-control" v-model="statement_type">
               <option :value="true">Заява про реєстрацію обтяження рухомого майна</option>
-              <option :value="false">Заяви про реєстрацію змін обтяження рухомого майна</option>
+              <option :value="false">Заява про реєстрацію змін обтяження рухомого майна</option>
             </select>
           </div>
         </div>
@@ -17,7 +17,7 @@
           <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заява про реєстрацію обтяження рухомого майна'}" :info="info" :fun="get_info"/>
         </div>
         <div class="row p-2" v-else>
-          <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заяви про реєстрацію змін обтяження рухомого майна'}" :info="info" :fun="get_info"/>
+          <Statement :editing_status="false" :statement_element="{id:null, typeName:'Заява про реєстрацію змін обтяження рухомого майна'}" :info="info" :fun="get_info"/>
         </div>
         <div class="row m-2">
             <button type="submit" id="submit" class="btn btn-outline-success me-5 hidden"></button>
@@ -76,13 +76,12 @@ export default {
       this.element = item;
     },
     get_stetement(){
-      this.statement.typeName = "Заяви про реєстрацію змін обтяження рухомого майна";
+      this.statement.typeName = "Заява про реєстрацію змін обтяження рухомого майна";
       if(this.statement_type) this.statement.typeName = "Заява про реєстрацію обтяження рухомого майна";
       this.statement.id = null;
       return this.statement;
     },
     fake_submit() {
-      console.log("Fake sybmit", this.element);
       this.isvalid = true;
       let time = 100;
       if (this.statement_type) {
@@ -114,7 +113,7 @@ export default {
             });
           }
         }
-        this.isvalid = false;
+        else this.isvalid = false;
       }
       setTimeout(this.click_submit, time);
     },
@@ -122,22 +121,27 @@ export default {
       document.getElementById('submit').click();
     },
     async submit(){
-      console.log("Сабміт",this.element);
       this.waitingForResponse = true;
       if (!this.statement_type) {
-        console.log("type 2 1");
         if(this.element.otherChange.changes_checked && this.element.otherChange.changes_checked==1 && this.element.searchedInfo!=undefined){
+          let el = {
+            statementTypeId: "beca126e-1e23-4db3-865a-a4645baf0428",        
+            encumbranceTier: this.element.encumbranceTier,
+            encumbranceDebtor: this.element.encumbranceDebtor,
+            basisDocument: this.element.basisDocument,
+            encumbranceInfo: this.element.encumbranceInfo,
+            encumbranceTerm: this.element.encumbranceTerm,
+            encumbranceObject: this.element.encumbranceDescriptionSubject
+          }
+          const new_id = await this.main.CreateStatement(el);
           if(this.user_status == 'registrar'){
-            console.log("type 2 registrar");
-            await this.registrator.EncumbranceRemoveStatementAccept(this.element.searchedInfo);
-            console.log("remove");
+            await this.registrator.EncumbranceRemoveStatementAccept(new_id.id);
             this.message.title ="Заява про припинення обтяження була успішно зареєстрована!";
             this.message.text ="Заява про реєстрацію змін обтяження рухомого майна (припинення обтяження) була успішно зареєстрована у Реєстрі.";
             this.waitingForResponse = false;
             this.succeeded = true;
           }
           else {
-            console.log("type 2 no registrar");
             this.message.title ="Заява про припинення обтяження була успішно відправлена на реєстрацію!";
             this.message.text ="Заява про реєстрацію змін обтяження рухомого майна (припинення обтяження) була успішно відправлена на реєстрацію у Реєстрі. " + this.user_message;
             this.waitingForResponse = false;
@@ -148,11 +152,8 @@ export default {
           this.waitingForResponse = false
         }
       }
-      console.log("type is valid");
       if(this.isvalid){
-        console.log("type",this.statement_type);
         if(this.statement_type){
-          console.log("type 1");
           let el = {
             statementTypeId: "b231d49d-8c34-4efc-bde2-e398d35a5587",        
             encumbranceTier: this.element.encumbranceTier.get_info(),
@@ -165,7 +166,6 @@ export default {
           const new_id = await this.main.CreateStatement(el)
           if(this.user_status == 'registrar'){
             await this.registrator.EncumbranceRegisterStatementAccept(new_id.id);
-            console.log("cr");
             this.message.title ="Заява про реєстрацію обтяження була успішно зареєстрована!";
             this.message.text ="Заява про реєстрацію обтяження рухомого майна була успішно зареєстрована у Реєстрі.";
             this.waitingForResponse = false;
@@ -179,7 +179,6 @@ export default {
           }
         }
         else{
-          console.log("type 2");
           if(this.element.otherChange.changes_checked == 2){
             let el = {
               statementTypeId: "3c63d55d-4b8f-4c06-8122-6a1c3ac72699",        
@@ -191,10 +190,8 @@ export default {
               encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
             }
             const new_id = await this.main.CreateStatement(el);
-            console.log("ID", new_id)
             if(this.user_status == 'registrar'){
               await this.registrator.EncumbranceUpdateStatementAccept(new_id.id);
-              console.log("update");
               this.message.title ="Заява про реєстрацію змін обтяження була успішно зареєстрована!";
               this.message.text ="Заява про реєстрацію змін обтяження рухомого майна була успішно зареєстрована у Реєстрі.";
               this.waitingForResponse = false;
@@ -206,7 +203,6 @@ export default {
               this.waitingForResponse = false;
               this.succeeded = true;
             }
-            console.log(el);
           }
         }
       }
@@ -214,14 +210,11 @@ export default {
     },
     reset(){
       if (this.statement_type) {
-        console.log("clearing...")
         this.element.reset();
       }
       else {
         if (this.element.searched) {
-            console.log("clearing...")
-            this.element.reset();
-            console.log(this.element);
+          this.element.reset();
         }
       }
     },

@@ -103,7 +103,6 @@ export default {
     },
   },
   async created(){
-    console.log("Create", this.statement_element );
     if(this.statement_element.id != null){
       const registrator = new Registrator();
       const data = await registrator.GetStatementById(this.statement_element.id);

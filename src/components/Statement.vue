@@ -1,7 +1,8 @@
 <template>
   <div class="p-3 border border-secondary border-2 rounded text-start">
     <CreateStatment :editing_status="editing_status" :statement_element="statement_element" :info="info" :fun="fun" v-if="statement_element.typeName == 'Заява про реєстрацію обтяження рухомого майна'"/>
-    <ChangeStatment :editing_status="editing_status" :statement_element="statement_element" :info="info" :fun="fun" v-if="statement_element.typeName == 'Заяви про реєстрацію змін обтяження рухомого майна'"/>
+    <ChangeStatment :editing_status="editing_status" :statement_element="statement_element" :info="info" :fun="fun" 
+    v-if="statement_element.typeName == 'Заява про реєстрацію змін обтяження рухомого майна' || statement_element.typeName == 'Заява про реєстрацію змін обтяження рухомого майна (зняття з обтяження)'"/>
   </div>
 </template>
 

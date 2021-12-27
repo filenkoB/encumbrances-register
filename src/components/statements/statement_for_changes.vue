@@ -1,12 +1,13 @@
 <template>
   <div class="row">
     <div class="col">
-      <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info" :text="text" :button_search="button_search"/>
+      <div v-if="search_visible">
+        <GeneralInformation :item="element.generalInfo" :visible_status="visible_status_info" :text="text" :button_search="button_search" />
+        <hr class="border-info border border-2" v-if="visible_status_info">
+        <OtherChanges :item="element.otherChange" :editing_status="editing_status" v-if="visible_status_info"/>
+      </div>
       
-      <hr class="border-info border border-2" v-if="visible_status_info">
-      <OtherChanges :item="element.otherChange" :editing_status="editing_status" v-if="visible_status_info"/>
-
-      <hr class="border-info border border-2" v-if="visible_status_info && (element.otherChange.changes_checked === 2)">
+      <hr class="border-info border border-2" v-if="visible_status_info && (element.otherChange.changes_checked === 2) && search_visible">
       <CreateStatment :editing_status="editing_status" :statement_element="element"
                       :info="info" :fun="update_element"  v-if="visible_status_info && (element.otherChange.changes_checked === 2)"/>
     </div>
@@ -23,8 +24,9 @@ export default {
   data(){
     return {
       text: null,
+      search_visible:true,
       registrator: null,
-      element: {},
+      element: {otherChange:{changes_checked:1}},
       visible_status_info: false
     }
   },
@@ -53,7 +55,6 @@ export default {
         this.element.encumbranceTerm = info.encumbranceTerm;
         this.element.encumbranceDescriptionSubject = info.encumbranceObject;
         this.element.id = null;
-        console.log("Info", info);
       }
       else{
         this.text = "За вашим запитом не було знайдено обтяження з номером " + item;
@@ -88,19 +89,20 @@ export default {
   async created(){
     this.registrator = new Registrator();
     if(this.statement_element.id != null){
-      const data = await this.registrator.GetStatement(this.statement_element.id);
-      console.log(data.encumbranceTerm)
+      this.search_visible = false;
+      this.visible_status_info = true;
+      const data = await this.registrator.GetStatementById(this.statement_element.id);
       this.element = {
         reset: this.reset,
-        generalInfo: {},
+        generalInfo: data.generalInfo,
         otherChange: new Changes(),
         searched: this.visible_status_info,
-        encumbranceTier: null,
-        encumbranceDebtor: null,
-        basisDocument: null,
-        encumbranceInfo: null,
-        encumbranceTerm: null,
-        encumbranceDescriptionSubject: null,
+        encumbranceTier: data.encumbranceTier,
+        encumbranceDebtor: data.encumbranceDebtor,
+        basisDocument: data.basisDocument,
+        encumbranceInfo: data.encumbranceInfo,
+        encumbranceTerm: data.encumbranceTerm,
+        encumbranceDescriptionSubject: data.encumbranceObject,
       }
     }
     else{

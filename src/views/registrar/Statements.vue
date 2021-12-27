@@ -13,8 +13,10 @@
               <label class="col-form-label me-3">Дата заяви:</label>
               <label class="col-form-label">{{item.date}}</label>
             </div>
-            <div class="col-auto pt-1">
+            <div class="col-auto pt-1" >
               <label class="col-form-label me-3">Тип заяви:</label>
+            </div>
+            <div class="col-auto pt-1" style="width: 450px">
               <label class="col-form-label">{{item.typeName}}</label>
             </div>
             <div class="col text-end p-1">
@@ -29,14 +31,14 @@
                   </span>
                 </button>
                 <button type="button" class="btn btn-outline-success" v-if="item.visible_status"
-                v-on:click="button_1(item.id)" :disabled="!item.visible_status">Підтвертити</button>
+                v-on:click="button_1(item)" :disabled="!item.visible_status">Підтвертити</button>
                 <button  type="button" class="btn btn-outline-danger" v-if="item.visible_status"
                 v-on:click="button_2(item.id)" :disabled="!item.visible_status">Відхилити</button>
               </div>
             </div>
           </div>
           <div class="row mb-2" v-if="item.visible_status">
-            <Statement :statement_element='item' :editing_status='editing_status' />
+            <Statement :statement_element='item' :editing_status='editing_status' :fun="fun"/>
           </div>
         </div>
       </div>
@@ -82,6 +84,7 @@ export default {
       if(!item.visible_status) return "btn btn-info";
       return "btn btn-outline-secondary";
     },
+    fun(){},
     async show_statement_info(item){
       for(let i = 0; i < this.statements.length; i++){
         if(this.statements[i]!=item) this.statements[i].visible_status = false;
@@ -94,14 +97,20 @@ export default {
       
     },
     async button_1(el){
-      //await this.registrator.EncumbranceStatementAccept(el);
-      console.log(el);
+      if(el.typeName == "Заява про реєстрацію змін обтяження рухомого майна"){
+        await this.registrator.EncumbranceUpdateStatementAccept(el.id);
+      }
+      else if(el.typeName == "Заява про реєстрацію обтяження рухомого майна"){
+        await this.registrator.EncumbranceRegisterStatementAccept(el.id);
+      }
+      else if(el.typeName == "Заява про реєстрацію змін обтяження рухомого майна (зняття з обтяження)"){
+        await this.registrator.EncumbranceRemoveStatementAccept(el.id);
+      }
       this.pagination.active_page = 0;
       this.get_statements();
     },
     async button_2(el){
-      //await this.registrator.EncumbranceStatementDecline(el);
-      console.log(el);
+      await this.registrator.EncumbranceStatementDecline(el);
       this.pagination.active_page = 0;
       await this.get_statements();
     },

@@ -185,7 +185,7 @@ export class DescriptionSubject{
 }
 
 export class Changes{
-  changes_checked = 1;
+  changes_checked = 2;
   changeTypechecked = 1
   constructor() {
   }
