@@ -43,6 +43,7 @@
         <h4 class="alert-heading ">{{message.title}}</h4>
         <p>{{message.text}}</p>
       </div>
+      <button @click="backToForm" class="btn btn-outline-secondary mt-2">Повернутися до створення заяв</button>
     </div>
   </div>
 </template>
@@ -211,6 +212,10 @@ export default {
             console.log(this.element);
         }
       }
+    },
+    backToForm() {
+      this.reset();
+      this.succeeded = false;
     }
   },
   mounted(){
