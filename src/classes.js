@@ -87,7 +87,7 @@ export class EncumbranceTierDebtor{
       isForeigner: this.isForeigner,
       name: this.name,
       address: {
-        id: this.address.address_id,
+        id: this.address.id,
         countryId: this.address.path.country,
         regionId: this.address.path.region,
         districtId: this.address.path.district,
