@@ -33,7 +33,7 @@
                 <button type="button" class="btn btn-outline-success" v-if="item.visible_status"
                 v-on:click="button_1(item)" :disabled="!item.visible_status">Підтвертити</button>
                 <button  type="button" class="btn btn-outline-danger" v-if="item.visible_status"
-                v-on:click="button_2(item.id)" :disabled="!item.visible_status">Відхилити</button>
+                v-on:click="button_2(item)" :disabled="!item.visible_status">Відхилити</button>
               </div>
             </div>
           </div>
@@ -106,11 +106,19 @@ export default {
       else if(el.typeName == "Заява про реєстрацію змін обтяження рухомого майна (зняття з обтяження)"){
         await this.registrator.EncumbranceRemoveStatementAccept(el.id);
       }
+      else if(el.typeName == "Заява про надання витягу з Державного реєстру обтяжень рухомого майна"){
+        await this.registrator.StatementExtractAccept(el.id)
+      }
       this.pagination.active_page = 0;
       this.get_statements();
     },
     async button_2(el){
-      await this.registrator.EncumbranceStatementDecline(el);
+      if(el.typeName == "Заява про надання витягу з Державного реєстру обтяжень рухомого майна"){
+        await this.registrator.StatementExtractDecline(el.id);
+      }
+      else{
+        await this.registrator.EncumbranceStatementDecline(el.id);
+      }
       this.pagination.active_page = 0;
       await this.get_statements();
     },
