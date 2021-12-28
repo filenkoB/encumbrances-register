@@ -39,7 +39,7 @@
 </template>
 <script>
 import Pagination from "../../components/Pagination.vue"
-import {User} from "../../connect_to_server"
+import {User, Main} from "../../connect_to_server"
 export default {
   name: 'MyStatements',
   data: function () {
@@ -51,7 +51,8 @@ export default {
       },
       date: null,
       statements: [],
-      user: null
+      user: null,
+      main: null
     };
   },
   components:{
@@ -84,6 +85,7 @@ export default {
   },
   async created(){
     this.user = new User();
+    this.main = new Main();
     await this.get_statements();
   }
 }
