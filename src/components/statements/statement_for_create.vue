@@ -134,7 +134,7 @@ export default {
     }
     else{
       const time = new Date();
-      const address = {countryId:'', regionId:'', districtId:'', cityId:'', indexCode:'', streetId:'', building:'', corps:'',flat:''};
+      const address = {id:'00000000-0000-0000-0000-000000000000', countryId:'', regionId:'', districtId:'', cityId:'', indexCode:'', streetId:'', building:'', corps:'',flat:''};
       if(this.statement_element.encumbranceTier && this.statement_element.encumbranceTier!=null)
       {
         this.element = {
@@ -143,7 +143,7 @@ export default {
           encumbranceTier: new EncumbranceTierDebtor(this.statement_element.encumbranceTier.taxpayerAccountCardNumber, 
                                                     this.statement_element.encumbranceTier.isForeigner, this.statement_element.encumbranceTier.name, 
                                                     this.statement_element.encumbranceTier.additionalInfo, this.statement_element.encumbranceTier.address, 
-                                                    this.statement_element.encumbranceTier.id),
+                                                    this.statement_element.encumbranceTier.id, ),
           encumbranceDebtor: new EncumbranceTierDebtor(this.statement_element.encumbranceDebtor.taxpayerAccountCardNumber, 
                                                     this.statement_element.encumbranceDebtor.isForeigner, this.statement_element.encumbranceDebtor.name,
                                                     this.statement_element.encumbranceDebtor.additionalInfo, this.statement_element.encumbranceDebtor.address, 
