@@ -140,7 +140,7 @@ export default {
       if(!this.patterns.idNumber.var.test(this.item.taxpayerAccountCardNumber)) { return true; }
       if(!this.item.name || !this.patterns.text.var.test(this.item.name)) { return true; }
       if(this.item.address.path.invalid) { return true; }
-      if((this.item.typeDescription.length > 0) && !this.patterns.text.var.test(this.item.typeDescription)) { return true; }
+      if(this.item.typeDescription != null && (this.item.typeDescription.length > 0) && !this.patterns.text.var.test(this.item.typeDescription)) { return true; }
       return false;
     },
     foreigner(){
