@@ -70,8 +70,8 @@
             </div>
             <div class="col-7">
               <select class="form-control" v-model="registrator.status" :disabled="!change_status || saving">
-                <option value="0">Активований</option>
-                <option value="1">Деактивований</option>
+                <option value="1">Активований</option>
+                <option value="0">Деактивований</option>
               </select>
             </div>
           </div>
