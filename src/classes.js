@@ -126,7 +126,7 @@ export class BasisDocument{
 export class EncumbranceInfo{
   visible_status = false;
   constructor(encumbranceKindId, registrationTypeId, lastEncumbranceOccurrenceDate, encumbranceTypeId, 
-    alienationLimitId, typeDescription, id) {
+    alienationLimitId, typeDescription, id, number) {
     this.encumbranceKindId = encumbranceKindId;
     this.registrationTypeId = registrationTypeId;
     this.lastEncumbranceOccurrenceDate = lastEncumbranceOccurrenceDate.split('T')[0];
@@ -134,6 +134,7 @@ export class EncumbranceInfo{
     this.alienationLimitId = alienationLimitId;
     this.typeDescription = typeDescription;
     this.id = id;
+    this.number = number
   }
   get_info(){
     const current_time = new Date();
@@ -145,6 +146,7 @@ export class EncumbranceInfo{
       alienationLimitId: this.alienationLimitId,
       typeDescription: this.typeDescription,
       id: this.id,
+      number: this.number
     }
   }
 }

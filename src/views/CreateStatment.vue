@@ -133,7 +133,6 @@ export default {
             encumbranceTerm: this.element.encumbranceTerm.get_info(),
             encumbranceObject: this.element.encumbranceDescriptionSubject.get_info()
           }
-          console.log(el)
           const new_id = await this.main.CreateStatement(el);
           if(this.user_status == 'registrar'){
             await this.registrator.EncumbranceRemoveStatementAccept(new_id.id);
